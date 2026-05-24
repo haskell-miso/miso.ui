@@ -31,7 +31,7 @@ common cpp
 
 common options
   ghc-options:
-    -funbox-strict-fields -O2 -ferror-spans -fspecialise-aggressively -Wall -fdicts-cheap
+    -funbox-strict-fields -O2 -ferror-spans -fspecialise-aggressively -Wall -fdicts-cheap -fexpose-all-unfoldings
 
 common wasm
   if arch(wasm32)
