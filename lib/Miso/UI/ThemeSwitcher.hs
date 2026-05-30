@@ -18,6 +18,6 @@ import           Miso.Types
 -- import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-themeSwitcher_ :: Component parent model action
+themeSwitcher_ :: Component parent props model action
 themeSwitcher_ = undefined
 -----------------------------------------------------------------------------

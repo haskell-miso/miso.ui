@@ -15,8 +15,8 @@ import           Miso
 import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
-tooltip_ :: Component parent model action
-tooltip_ = component undefined noop (const view_)
+tooltip_ :: Component parent props model action
+tooltip_ = component undefined noop (\_ _ -> view_)
 -----------------------------------------------------------------------------
 view_ :: View model action
 view_ =

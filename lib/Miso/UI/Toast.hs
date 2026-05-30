@@ -18,7 +18,7 @@ import           Miso.Types
 -- import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-toast_ :: Component parent model action
+toast_ :: Component parent props model action
 toast_ = undefined
 -----------------------------------------------------------------------------
 

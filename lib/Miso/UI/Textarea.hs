@@ -15,8 +15,8 @@ import           Miso
 import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
-textarea_ :: Component parent model action
-textarea_ = component undefined noop (const view_)
+textarea_ :: Component parent props model action
+textarea_ = component undefined noop (\_ _ -> view_)
 -----------------------------------------------------------------------------
 view_ :: View model action
 view_ =

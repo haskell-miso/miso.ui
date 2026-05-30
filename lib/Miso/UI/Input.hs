@@ -19,7 +19,7 @@ import           Miso.Types
 -- import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-input_ :: Component parent model action
+input_ :: Component parent props model action
 input_ = undefined
 -----------------------------------------------------------------------------
 

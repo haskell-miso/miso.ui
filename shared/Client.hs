@@ -34,7 +34,7 @@ import           Types
 currentPage :: Lens Model Page
 currentPage = lens _currentPage $ \r x -> r { _currentPage = x }
 -----------------------------------------------------------------------------
-app :: Component parent Model Action
+app :: Component parent props Model Action
 app = (component emptyModel update_ homeView) { mount = Just ScrollIntoView }
   where
     update_ = \case
@@ -88,8 +88,8 @@ withMainAs content = vfrag
     ]
   ]
 -----------------------------------------------------------------------------
-homeView :: Model -> View Model Action
-homeView = \case
+homeView :: props -> Model -> View Model Action
+homeView _ = \case
   Model Index ->
     withMainAs mainContent
 

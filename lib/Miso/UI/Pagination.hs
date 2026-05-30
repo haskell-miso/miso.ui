@@ -18,7 +18,7 @@ import           Miso.Types
 -- import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-pagination_ :: Component parent model action
+pagination_ :: Component parent props model action
 pagination_ = undefined
 -----------------------------------------------------------------------------
 

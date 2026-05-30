@@ -16,8 +16,8 @@ import           Miso.Html
 import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
-card_ :: Component parent model action
-card_ = component undefined noop (const view_)
+card_ :: Component parent props model action
+card_ = component undefined noop (\_ _ -> view_)
 -----------------------------------------------------------------------------
 view_ :: View model action
 view_ =

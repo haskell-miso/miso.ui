@@ -26,8 +26,8 @@ data Action
   = ShowModal DOMRef
   | CloseDialog
 -----------------------------------------------------------------------------
-alertDialogComponent :: Component parent () Action
-alertDialogComponent = vcomp
+alertDialogComponent :: Component parent () () Action
+alertDialogComponent = vcomp_
   where
     update_ (ShowModal domRef) = io_ $ do
       dialogRef <- nextSibling domRef
@@ -39,7 +39,7 @@ alertDialogComponent = vcomp
         $ ["alert-dialog-demo" :: MisoString]
       void $ dialog # ("close" :: MisoString) $ ()
 
-    vcomp = component () update_ $ \() ->
+    vcomp_ = component () update_ $ \() () ->
       H.div_
       []
       [ H.button_
@@ -99,7 +99,7 @@ alertDialogCodeSample =
     = ShowModal DOMRef
     | CloseDialog
   -----------------------------------------------------------------------------
-  alertDialogComponent :: Component parent () Action
+  alertDialogComponent :: Component parent props () Action
   alertDialogComponent = vcomp
     where
       update_ (ShowModal domRef) = io_ $ do
@@ -112,7 +112,7 @@ alertDialogCodeSample =
           $ ["alert-dialog-demo" :: MisoString]
         void $ dialog # ("close" :: MisoString) $ ()
 
-      vcomp = component () update_ $ \\() ->
+      vcomp = component () update_ $ \\_ () ->
         H.div_
         []
         [ H.button_

@@ -19,7 +19,7 @@ import           Miso.Types
 -- import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-slider_ :: Component parent model action
+slider_ :: Component parent props model action
 slider_ = undefined
 -----------------------------------------------------------------------------
 

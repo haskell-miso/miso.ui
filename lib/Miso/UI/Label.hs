@@ -18,7 +18,7 @@ import           Miso
 -- import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-label_ :: Component parent model action
+label_ :: Component parent props model action
 label_ = undefined
 -----------------------------------------------------------------------------
 

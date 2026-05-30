@@ -15,8 +15,8 @@ import           Miso
 import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
-switch_ :: Component parent model action
-switch_ = component undefined noop (const view_)
+switch_ :: Component parent props model action
+switch_ = component undefined noop (\_ _ -> view_)
 -----------------------------------------------------------------------------
 view_ :: View model action
 view_ =

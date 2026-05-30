@@ -17,8 +17,8 @@ import qualified Miso.Svg.Property as SP
 import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
-combobox_ :: Component parent model action
-combobox_ = component undefined noop (const view_)
+combobox_ :: Component parent props model action
+combobox_ = component undefined noop (\_ _ -> view_)
 -----------------------------------------------------------------------------
 view_ :: View model action
 view_ =

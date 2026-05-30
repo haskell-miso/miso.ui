@@ -19,8 +19,8 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-breadcrumb_ :: Component parent model action
-breadcrumb_ = component undefined noop (const view_)
+breadcrumb_ :: Component parent props model action
+breadcrumb_ = component undefined noop (\_ _ -> view_)
 -----------------------------------------------------------------------------
 view_ :: View model action
 view_ = H.ol_

@@ -19,7 +19,7 @@ import           Miso.Types
 -- import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-sidebar_ :: Component parent model action
+sidebar_ :: Component parent props model action
 sidebar_ = undefined
 -----------------------------------------------------------------------------
 

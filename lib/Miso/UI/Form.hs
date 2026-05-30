@@ -18,7 +18,7 @@ import           Miso.Types
 -- import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-form_ :: Component parent model action
+form_ :: Component parent props model action
 form_ = undefined
 -----------------------------------------------------------------------------
 

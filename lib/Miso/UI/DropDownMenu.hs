@@ -18,7 +18,7 @@ import           Miso.Types
 -- import qualified Miso.Html.Property as P
 -- import           Miso.Lens
 -----------------------------------------------------------------------------
-dropDownMenu_ :: Component parent model action
+dropDownMenu_ :: Component parent props model action
 dropDownMenu_ = undefined
 -----------------------------------------------------------------------------
 
