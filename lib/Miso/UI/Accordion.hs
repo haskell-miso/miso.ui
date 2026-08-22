@@ -1,134 +1,159 @@
 -----------------------------------------------------------------------------
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE ExistentialQuantification  #-}
-{-# LANGUAGE DerivingStrategies         #-}
-{-# LANGUAGE OverloadedStrings          #-}
-{-# LANGUAGE MultilineStrings           #-}
-{-# LANGUAGE RecordWildCards            #-}
-{-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE MultilineStrings  #-}
+{-# LANGUAGE RecordWildCards   #-}
 -----------------------------------------------------------------------------
 module Miso.UI.Accordion
-  ( -- ** Views
-    accordion_
+  ( -- ** Props
+    AccordionProps (..)
+  , defaultAccordionProps
+  , AccordionItemProps (..)
+  , defaultAccordionItemProps
+    -- ** Views
+  , accordion_
   , accordionSection_
   , accordionHeader_
   , accordionBody_
-  -- ** Sample
+    -- ** Sample
   , accordionSample
   , accordionCodeSample
+  , accordionPropsApi
   ) where
 -----------------------------------------------------------------------------
 import           Miso
 import qualified Miso.Html          as H
 import qualified Miso.Html.Property as P
-import qualified Miso.Svg           as S
-import qualified Miso.Svg.Property  as SP
 -----------------------------------------------------------------------------
+import           Miso.UI.Icons
+-----------------------------------------------------------------------------
+-- | Props for 'accordion_'
+data AccordionProps action
+  = AccordionProps
+  { accordionMultiple :: Bool
+    -- ^ Allow several sections open at once (@data-multiple@)
+  , accordionClasses :: [MisoString]
+    -- ^ Extra classes appended to the root @section.accordion@
+  , accordionAttrs :: [Attribute action]
+  }
+-----------------------------------------------------------------------------
+-- | Smart constructor: exclusive expand
+defaultAccordionProps :: AccordionProps action
+defaultAccordionProps
+  = AccordionProps
+  { accordionMultiple = False
+  , accordionClasses = []
+  , accordionAttrs = []
+  }
+-----------------------------------------------------------------------------
+-- | Props for 'accordionSection_'
+data AccordionItemProps action
+  = AccordionItemProps
+  { accordionItemOpen :: Bool
+    -- ^ Section expanded initially
+  , accordionItemDisabled :: Bool
+    -- ^ Renders with @aria-disabled@
+  , accordionItemClasses :: [MisoString]
+  , accordionItemAttrs :: [Attribute action]
+  }
+-----------------------------------------------------------------------------
+-- | Smart constructor: collapsed, enabled
+defaultAccordionItemProps :: AccordionItemProps action
+defaultAccordionItemProps
+  = AccordionItemProps
+  { accordionItemOpen = False
+  , accordionItemDisabled = False
+  , accordionItemClasses = []
+  , accordionItemAttrs = []
+  }
+-----------------------------------------------------------------------------
+-- | <https://basecoatui.com/components/accordion/ Accordion>, driven by 'AccordionProps'
 accordion_
-  :: [ Attribute a ]
-  -> [ View m a ]
-  -> View m a
-accordion_ attrs kids =
-  optionalAttrs
-    H.section_
-    attrs
-    True
-    [ P.class_ "accordion"
-    ]
-    kids
+  :: AccordionProps action
+  -> [View model action]
+  -> View model action
+accordion_ AccordionProps {..} kids =
+  H.section_
+    ( concat
+      [ [ P.classes_ ("accordion" : accordionClasses) ]
+      , [ P.data_ "multiple" "" | accordionMultiple ]
+      , accordionAttrs
+      ]
+    ) kids
 -----------------------------------------------------------------------------
 accordionSection_
-  :: [ Attribute a ]
-  -> [ View m a ]
-  -> View m a
-accordionSection_ attrs kids =
-  optionalAttrs
-    H.details_
-    attrs
-    True
-    [ P.classes_
-      [ "group"
-      , "border-b"
-      , "last:border-b-0"
+  :: AccordionItemProps action
+  -> [View model action]
+  -> View model action
+accordionSection_ AccordionItemProps {..} kids =
+  H.details_
+    ( concat
+      [ [ P.classes_
+          ( [ "group", "border-b", "last:border-b-0" ] ++ accordionItemClasses )
+        ]
+      , [ P.open_ True | accordionItemOpen ]
+      , [ P.aria_ "disabled" "true" | accordionItemDisabled ]
+      , accordionItemAttrs
       ]
-    ]
-    kids
+    ) kids
 -----------------------------------------------------------------------------
 accordionHeader_
-  :: [ Attribute a ]
-  -> [ View m a ]
-  -> View m a
-accordionHeader_ attrs kids = optionalAttrs
-  H.summary_
-  attrs
-  True
-  [ P.className
+  :: [ Attribute action ]
+  -> [ View model action ]
+  -> View model action
+accordionHeader_ attrs kids = H.summary_
+  ( P.className
       "w-full focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all outline-none rounded-md"
-  ]
+  : attrs
+  )
   [ H.h2_
     [ P.className "flex flex-1 items-start justify-between gap-4 py-4 text-left text-sm font-medium hover:underline"
     ]
     kids
-  , H.svg_
-      [ P.classes_
-          [ "text-muted-foreground"
-          , "pointer-events-none"
-          , "size-4"
-          , "shrink-0"
-          , "translate-y-0.5"
-          , "transition-transform"
-          , "duration-200"
-          , "group-open:rotate-180"
-          ]
-      , SP.strokeLinejoin_ "round"
-      , SP.strokeLinecap_ "round"
-      , SP.strokeWidth_ "2"
-      , SP.stroke_ "currentColor"
-      , SP.fill_ "none"
-      , SP.viewBox_ "0 0 24 24"
-      , P.height_ "24"
-      , P.width_ "24"
-      , P.xmlns_ "http://www.w3.org/2000/svg"
-      ]
-    [ S.path_
-      [ SP.d_ "m6 9 6 6 6-6"
+  , chevronDownIcon
+    [ P.classes_
+      [ "text-muted-foreground"
+      , "pointer-events-none"
+      , "size-4"
+      , "shrink-0"
+      , "translate-y-0.5"
+      , "transition-transform"
+      , "duration-200"
+      , "group-open:rotate-180"
       ]
     ]
   ]
 -----------------------------------------------------------------------------
 accordionBody_
-  :: [ Attribute a ]
-  -> [ View m a ]
-  -> View m a
+  :: [ Attribute action ]
+  -> [ View model action ]
+  -> View model action
 accordionBody_ attrs kids =
-  optionalAttrs
-    H.section_
-    attrs
-    True
-    [ P.className "pb-4"
-    ]
+  H.section_
+    ( P.className "pb-4"
+    : attrs
+    )
     [ H.p_
       [ P.classes_ ["text-sm"]
       ]
       kids
     ]
 -----------------------------------------------------------------------------
-accordionSample :: View m a
+accordionSample :: View model action
 accordionSample =
-  accordion_ []
-    [ accordionSection_ []
+  accordion_ defaultAccordionProps
+    [ accordionSection_ defaultAccordionItemProps { accordionItemOpen = True }
       [ accordionHeader_ []
         [ "Is it accessible?" ]
       , accordionBody_ []
         [ "Yes. It adheres to the WAI-ARIA design pattern." ]
       ]
-    , accordionSection_ []
+    , accordionSection_ defaultAccordionItemProps
       [ accordionHeader_ []
         [ "Is it styled?" ]
       , accordionBody_ []
         [ "Yes. It comes with default styles that match other component aesthetic." ]
       ]
-    , accordionSection_ []
+    , accordionSection_ defaultAccordionItemProps
       [ accordionHeader_ []
         [ "Is it animated?" ]
       , accordionBody_ []
@@ -136,41 +161,83 @@ accordionSample =
       ]
     ]
 -----------------------------------------------------------------------------
-accordionCodeSample :: View m a
-accordionCodeSample = text
+accordionCodeSample :: View model action
+accordionCodeSample =
   """
   -----------------------------------------------------------------------------
-  module MyAccordion (myAccordion) where
+  module MyAccordion (accordionSample) where
   -----------------------------------------------------------------------------
-  import Miso
-  import Miso.UI.Accordion
-    ( accordion_
-    , accordionSection_
-    , accordionHeader_
-    , accordionBody_
-    )
+  import           Miso
+  import qualified Miso.Html          as H
+  import qualified Miso.Html.Property as P
+  import           Miso.UI.Icons
+  import           Miso.UI.Accordion
   -----------------------------------------------------------------------------
-  myAccordion :: View model action
-  myAccordion = accordion_ []
-    [ accordionSection_ []
-      [ accordionHeader_ []
-        [ "Is it accessible?" ]
-      , accordionBody_ []
-        [ "Yes. It adheres to the WAI-ARIA design pattern." ]
+  accordionSample :: View model action
+  accordionSample =
+    accordion_ defaultAccordionProps
+      [ accordionSection_ defaultAccordionItemProps { accordionItemOpen = True }
+        [ accordionHeader_ []
+          [ "Is it accessible?" ]
+        , accordionBody_ []
+          [ "Yes. It adheres to the WAI-ARIA design pattern." ]
+        ]
+      , accordionSection_ defaultAccordionItemProps
+        [ accordionHeader_ []
+          [ "Is it styled?" ]
+        , accordionBody_ []
+          [ "Yes. It comes with default styles that match other component aesthetic." ]
+        ]
+      , accordionSection_ defaultAccordionItemProps
+        [ accordionHeader_ []
+          [ "Is it animated?" ]
+        , accordionBody_ []
+          [ "Yes. It's animated by default, but you can disable it if you prefer." ]
+        ]
       ]
-    , accordionSection_ []
-      [ accordionHeader_ []
-        [ "Is it styled?" ]
-      , accordionBody_ []
-        [ "Yes. It comes with default styles , that matches the other components aesthetic." ]
-      ]
-    , accordionSection_ []
-      [ accordionHeader_ []
-        [ "Is it animated?" ]
-      , accordionBody_ []
-        [ "Yes. It's animated by default, but you can disable it if you prefer." ]
-      ]
-    ]
+  """
+-----------------------------------------------------------------------------
+accordionPropsApi :: View model action
+accordionPropsApi =
+  """
+  -- | Props for 'accordion_'
+  data AccordionProps action
+    = AccordionProps
+    { accordionMultiple :: Bool
+      -- ^ Allow several sections open at once (@data-multiple@)
+    , accordionClasses :: [MisoString]
+      -- ^ Extra classes appended to the root @section.accordion@
+    , accordionAttrs :: [Attribute action]
+    }
   -----------------------------------------------------------------------------
+  -- | Smart constructor: exclusive expand
+  defaultAccordionProps :: AccordionProps action
+  defaultAccordionProps
+    = AccordionProps
+    { accordionMultiple = False
+    , accordionClasses = []
+    , accordionAttrs = []
+    }
+  -----------------------------------------------------------------------------
+  -- | Props for 'accordionSection_'
+  data AccordionItemProps action
+    = AccordionItemProps
+    { accordionItemOpen :: Bool
+      -- ^ Section expanded initially
+    , accordionItemDisabled :: Bool
+      -- ^ Renders with @aria-disabled@
+    , accordionItemClasses :: [MisoString]
+    , accordionItemAttrs :: [Attribute action]
+    }
+  -----------------------------------------------------------------------------
+  -- | Smart constructor: collapsed, enabled
+  defaultAccordionItemProps :: AccordionItemProps action
+  defaultAccordionItemProps
+    = AccordionItemProps
+    { accordionItemOpen = False
+    , accordionItemDisabled = False
+    , accordionItemClasses = []
+    , accordionItemAttrs = []
+    }
   """
 -----------------------------------------------------------------------------

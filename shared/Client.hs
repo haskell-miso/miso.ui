@@ -459,6 +459,7 @@ asideView = aside_
                     , li_ [] [a_ [ P.href_ "#label"] ["Label"]]
                     , li_ [] [a_ [ P.href_ "#pagination"] ["Pagination"]]
                     , li_ [] [a_ [ P.href_ "#popover"] ["Popover"]]
+                    , li_ [] [a_ [ P.href_ "#progress"] ["Progress"]]
                     , li_ [] [a_ [ P.href_ "#radio-group"] ["Radio Group"]]
                     , li_ [] [a_ [ P.href_ "#select"] ["Select"]]
                     , li_ [] [a_ [ P.href_ "#skeleton"] ["Skeleton"]]

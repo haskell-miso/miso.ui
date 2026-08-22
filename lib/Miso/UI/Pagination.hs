@@ -1,24 +1,161 @@
 -----------------------------------------------------------------------------
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE ExistentialQuantification  #-}
-{-# LANGUAGE DerivingStrategies         #-}
-{-# LANGUAGE RecordWildCards            #-}
-{-# LANGUAGE OverloadedStrings          #-}
-{-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE MultilineStrings  #-}
+{-# LANGUAGE RecordWildCards   #-}
 -----------------------------------------------------------------------------
 module Miso.UI.Pagination
-  ( -- ** Component
-    pagination_
+  ( -- ** Props
+    PaginationProps (..)
+  , defaultPaginationProps
+    -- ** Views
+  , pagination_
+  , paginationLink_
+  , paginationPrevious_
+  , paginationNext_
+  , paginationEllipsis_
+    -- ** Samples
+  , paginationSample
+  , paginationCodeSample
+  , paginationPropsApi
   ) where
 -----------------------------------------------------------------------------
-import           Miso.Types
--- import qualified Miso.Svg as S
--- import qualified Miso.Svg.Property as SP
--- import qualified Miso.Html.Element as H
--- import qualified Miso.Html.Property as P
--- import           Miso.Lens
+import           Miso
+import qualified Miso.Html.Element as H
+import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
-pagination_ :: Component parent props model action
-pagination_ = undefined
+import           Miso.UI.Icons
 -----------------------------------------------------------------------------
-
+-- | Props for 'pagination_'
+data PaginationProps action
+  = PaginationProps
+  { paginationClasses :: [MisoString]
+    -- ^ Extra classes appended to the @nav@
+  , paginationAttrs :: [Attribute action]
+  }
+-----------------------------------------------------------------------------
+-- | Smart constructor
+defaultPaginationProps :: PaginationProps action
+defaultPaginationProps
+  = PaginationProps
+  { paginationClasses = []
+  , paginationAttrs = []
+  }
+-----------------------------------------------------------------------------
+-- | <https://basecoatui.com/components/pagination/ Pagination>.
+-- Children are 'paginationLink_' \/ 'paginationPrevious_' \/ etc.
+pagination_
+  :: PaginationProps action
+  -> [View model action]
+  -> View model action
+pagination_ PaginationProps {..} kids =
+  H.nav_
+    ( P.classes_ ("mx-auto" : "flex" : "w-full" : "justify-center" : paginationClasses)
+    : P.aria_ "label" "pagination"
+    : P.role_ "navigation"
+    : paginationAttrs
+    )
+    [ H.ul_
+      [ P.class_ "flex flex-row items-center gap-1" ]
+      kids
+    ]
+-----------------------------------------------------------------------------
+-- | Page number link; the 'Bool' marks the current page
+paginationLink_
+  :: Bool
+  -> MisoString
+  -- ^ href
+  -> [View model action]
+  -> View model action
+paginationLink_ current url kids =
+  H.li_ []
+  [ H.a_
+    [ P.classes_ [ if current then "btn-outline" else "btn-ghost", "size-9" ]
+    , P.href_ url
+    ] kids
+  ]
+-----------------------------------------------------------------------------
+paginationPrevious_ :: MisoString -> View model action
+paginationPrevious_ url =
+  H.li_ []
+  [ H.a_
+    [ P.class_ "btn-ghost", P.href_ url ]
+    [ chevronLeftIcon [], "Previous" ]
+  ]
+-----------------------------------------------------------------------------
+paginationNext_ :: MisoString -> View model action
+paginationNext_ url =
+  H.li_ []
+  [ H.a_
+    [ P.class_ "btn-ghost", P.href_ url ]
+    [ "Next", chevronRightIcon [] ]
+  ]
+-----------------------------------------------------------------------------
+paginationEllipsis_ :: MisoString -> View model action
+paginationEllipsis_ url =
+  H.li_ []
+  [ H.a_
+    [ P.class_ "btn-icon-ghost", P.href_ url ]
+    [ dotsIcon [] ]
+  ]
+-----------------------------------------------------------------------------
+paginationSample :: View model action
+paginationSample =
+  H.div_
+  [ P.class_ "inline-flex" ]
+  [ pagination_ defaultPaginationProps
+    [ paginationPrevious_ "#"
+    , paginationLink_ False "#" [ "1" ]
+    , paginationLink_ True "#" [ "2" ]
+    , paginationLink_ False "#" [ "3" ]
+    , paginationEllipsis_ "#"
+    , paginationNext_ "#"
+    ]
+  ]
+-----------------------------------------------------------------------------
+paginationCodeSample :: View model action
+paginationCodeSample =
+  """
+  -----------------------------------------------------------------------------
+  module MyPagination (paginationSample) where
+  -----------------------------------------------------------------------------
+  import           Miso
+  import qualified Miso.Html.Element as H
+  import qualified Miso.Html.Property as P
+  import           Miso.UI.Icons
+  import           Miso.UI.Pagination
+  -----------------------------------------------------------------------------
+  paginationSample :: View model action
+  paginationSample =
+    H.div_
+    [ P.class_ "inline-flex" ]
+    [ pagination_ defaultPaginationProps
+      [ paginationPrevious_ "#"
+      , paginationLink_ False "#" [ "1" ]
+      , paginationLink_ True "#" [ "2" ]
+      , paginationLink_ False "#" [ "3" ]
+      , paginationEllipsis_ "#"
+      , paginationNext_ "#"
+      ]
+    ]
+  """
+-----------------------------------------------------------------------------
+paginationPropsApi :: View model action
+paginationPropsApi =
+  """
+  -- | Props for 'pagination_'
+  data PaginationProps action
+    = PaginationProps
+    { paginationClasses :: [MisoString]
+      -- ^ Extra classes appended to the @nav@
+    , paginationAttrs :: [Attribute action]
+    }
+  -----------------------------------------------------------------------------
+  -- | Smart constructor
+  defaultPaginationProps :: PaginationProps action
+  defaultPaginationProps
+    = PaginationProps
+    { paginationClasses = []
+    , paginationAttrs = []
+    }
+  """
+-----------------------------------------------------------------------------

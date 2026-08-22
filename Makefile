@@ -28,6 +28,12 @@ optim:
 serve:
 	http-server public
 
+sync-samples:
+	runghc scripts/sync-samples.hs
+
+check-samples:
+	runghc scripts/sync-samples.hs --check
+
 clean:
 	rm -rf dist-newstyle public
 
