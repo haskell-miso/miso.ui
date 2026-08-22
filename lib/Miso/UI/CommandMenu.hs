@@ -6,8 +6,14 @@
 {-# LANGUAGE TypeApplications           #-}
 {-# LANGUAGE RecordWildCards            #-}
 {-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE MultilineStrings           #-}
 -----------------------------------------------------------------------------
-module Miso.UI.CommandMenu where
+module Miso.UI.CommandMenu
+  ( -- ** Component
+    commandMenuComponent
+    -- ** Samples
+  , commandMenuCodeSample
+  ) where
 -----------------------------------------------------------------------------
 import           Miso
 import qualified Miso.CSS as CSS
@@ -317,3 +323,19 @@ view_ = section_
     ]
  ]
 
+-----------------------------------------------------------------------------
+commandMenuCodeSample :: View model action
+commandMenuCodeSample =
+  """
+  -----------------------------------------------------------------------------
+  module MyCommandMenu (myView) where
+  -----------------------------------------------------------------------------
+  import           Miso
+  -----------------------------------------------------------------------------
+  import           Miso.UI.CommandMenu
+  -----------------------------------------------------------------------------
+  -- Mounts the stateful command menu component (Ctrl-K style palette)
+  myView :: View model action
+  myView = mount_ commandMenuComponent
+  """
+-----------------------------------------------------------------------------

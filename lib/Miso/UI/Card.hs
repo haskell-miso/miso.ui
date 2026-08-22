@@ -1,75 +1,266 @@
 -----------------------------------------------------------------------------
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE ExistentialQuantification  #-}
-{-# LANGUAGE DerivingStrategies         #-}
-{-# LANGUAGE RecordWildCards            #-}
-{-# LANGUAGE OverloadedStrings          #-}
-{-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE MultilineStrings  #-}
+{-# LANGUAGE RecordWildCards   #-}
 -----------------------------------------------------------------------------
 module Miso.UI.Card
-  ( -- ** Component
-    card_
+  ( -- ** Props
+    CardProps (..)
+  , defaultCardProps
+    -- ** Views
+  , card_
+  , cardHeader_
+  , cardContent_
+  , cardFooter_
+    -- ** Samples
+  , cardUsage
+  , cardSample
+  , cardCodeSample
+  , cardPropsApi
   ) where
 -----------------------------------------------------------------------------
 import           Miso
-import           Miso.Html
 import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
-card_ :: Component parent props model action
-card_ = component undefined noop (\_ _ -> view_)
+import           Miso.UI.Button
+import           Miso.UI.Input
+import           Miso.UI.Label
+import           Miso.UI.Types
 -----------------------------------------------------------------------------
-view_ :: View model action
-view_ =
+-- | Props for 'card_'. Title, description and footer nest other views.
+data CardProps model action
+  = CardProps
+  { cardTitle :: Maybe (View model action)
+    -- ^ Heading shown in the card header
+  , cardDescription :: Maybe (View model action)
+    -- ^ Sub-heading shown under the title
+  , cardFooter :: Maybe [View model action]
+    -- ^ Footer content
+  , cardFooterClasses :: [MisoString]
+  , cardClasses :: [MisoString]
+    -- ^ Extra classes appended to @div.card@ (e.g. @w-full max-w-sm@)
+  , cardAttrs :: [Attribute action]
+  }
+-----------------------------------------------------------------------------
+-- | Smart constructor: bare card
+defaultCardProps :: CardProps model action
+defaultCardProps
+  = CardProps
+  { cardTitle = Nothing
+  , cardDescription = Nothing
+  , cardFooter = Nothing
+  , cardFooterClasses = []
+  , cardClasses = []
+  , cardAttrs = []
+  }
+-----------------------------------------------------------------------------
+-- | <https://basecoatui.com/components/card/ Card>, driven by 'CardProps'.
+-- Children render inside the card's content section.
+card_
+  :: CardProps model action
+  -> [View model action]
+  -> View model action
+card_ CardProps {..} kids =
   H.div_
-  [ P.class_ "card w-full" ]
-  [ H.header_ []
-    [ H.h2_ [][ "Login to your account" ]
-    , H.p_ [][ "Enter your details below to login to your account" ]
-    ]
-  , H.section_ []
-    [ H.form_
-      [ P.class_ "form grid gap-6"
+    ( P.classes_ ("card" : cardClasses)
+    : cardAttrs
+    )
+    $ concat
+    [ [ cardHeader_ [] $ concat
+        [ [ H.h2_ [] [ t ] | Just t <- [cardTitle] ]
+        , [ H.p_ [] [ d ] | Just d <- [cardDescription] ]
+        ]
+      | any id [ maybe False (const True) cardTitle
+               , maybe False (const True) cardDescription
+               ]
       ]
+    , [ cardContent_ [] kids | not (null kids) ]
+    , [ cardFooter_ [ P.classes_ cardFooterClasses ] f | Just f <- [cardFooter] ]
+    ]
+-----------------------------------------------------------------------------
+cardHeader_
+  :: [Attribute action]
+  -> [View model action]
+  -> View model action
+cardHeader_ = H.header_
+-----------------------------------------------------------------------------
+cardContent_
+  :: [Attribute action]
+  -> [View model action]
+  -> View model action
+cardContent_ = H.section_
+-----------------------------------------------------------------------------
+cardFooter_
+  :: [Attribute action]
+  -> [View model action]
+  -> View model action
+cardFooter_ = H.footer_
+-----------------------------------------------------------------------------
+-- | Compact usage example (source of the kitchen sink "Code" tab)
+cardUsage :: View model action
+cardUsage =
+  card_ defaultCardProps
+  { cardTitle = Just "Login to your account"
+  , cardDescription = Just "Enter your details below to login to your account"
+  , cardClasses = [ "w-full", "max-w-sm" ]
+  , cardFooter = Just
+    [ button_ defaultButtonProps { buttonClasses = [ "w-full" ] } [ "Login" ] ]
+  }
+  [ H.form_
+    [ P.class_ "form grid gap-6" ]
+    [ H.div_
+      [ P.class_ "grid gap-2" ]
+      [ label_ defaultLabelProps { labelFor = Just "my-email" } [ "Email" ]
+      , input_ defaultInputProps
+        { inputType = "email"
+        , inputId = Just "my-email"
+        }
+      ]
+    ]
+  ]
+-----------------------------------------------------------------------------
+cardSample :: View model action
+cardSample =
+  H.div_
+  [ P.class_ "flex flex-col gap-4" ]
+  [ card_ defaultCardProps
+    { cardTitle = Just "Login to your account"
+    , cardDescription = Just "Enter your details below to login to your account"
+    , cardClasses = [ "w-full", "max-w-sm" ]
+    , cardFooter = Just
+      [ button_ defaultButtonProps { buttonClasses = [ "w-full" ] } [ "Login" ]
+      , button_ defaultButtonProps { buttonVariant = Outline, buttonClasses = [ "w-full" ] }
+        [ "Login with Google" ]
+      , H.p_ [ P.class_ "mt-4 text-center text-sm" ]
+        [ "Don't have an account? "
+        , H.a_
+          [ P.href_ "#"
+          , P.class_ "underline-offset-4 hover:underline"
+          ] [ "Sign up" ]
+        ]
+      ]
+    , cardFooterClasses = [ "flex", "flex-col", "items-center", "gap-2" ]
+    }
+    [ H.form_
+      [ P.class_ "form grid gap-6" ]
       [ H.div_
         [ P.class_ "grid gap-2" ]
-        [ H.label_ [ P.for_ "demo-card-form-email" ][ "Email" ]
-        , input_
-          [ P.type_ "email"
-          , P.id_ "demo-card-form-email"
-          ]
+        [ label_ defaultLabelProps { labelFor = Just "demo-card-form-email" } [ "Email" ]
+        , input_ defaultInputProps
+          { inputType = "email"
+          , inputId = Just "demo-card-form-email"
+          }
         ]
       , H.div_ [ P.class_ "grid gap-2" ]
         [ H.div_ [ P.class_ "flex items-center gap-2" ]
-          [ H.label_ [ P.for_ "demo-card-form-password" ][ "Password" ]
+          [ label_ defaultLabelProps { labelFor = Just "demo-card-form-password" } [ "Password" ]
           , H.a_
             [ P.href_ "#"
             , P.class_ "ml-auto inline-block text-sm underline-offset-4 hover:underline"
             ] [ "Forgot your password?" ]
           ]
-        , H.input_
-          [ P.type_ "password"
-          , P.id_ "demo-card-form-password"
-          ]
+        , input_ defaultInputProps
+          { inputType = "password"
+          , inputId = Just "demo-card-form-password"
+          }
         ]
       ]
     ]
-  , H.footer_ [ P.class_ "flex flex-col items-center gap-2" ]
-    [ H.button_
-      [ P.type_ "button"
-      , P.class_ "btn w-full"
-      ] [ "Login" ]
-    , H.button_
-      [ P.type_ "button"
-      , P.class_ "btn-outline w-full"
-      ] [ "Login with Google" ]
-    , H.p_ [ P.class_ "mt-4 text-center text-sm" ]
-      [ "Don't have an account? "
-      , H.a_
-        [ P.href_ "#"
-        , P.class_ "underline-offset-4 hover:underline"
-        ] [ "Sign up" ]
-      ]
+  , H.div_
+    [ P.class_ "flex w-full flex-wrap items-start gap-8 md:*:[.card]:basis-1/4" ]
+    [ card_ defaultCardProps [ "Content Only" ]
+    , card_ defaultCardProps
+      { cardTitle = Just "Header Only"
+      , cardDescription = Just "This is a card with a header and a description."
+      } []
+    , card_ defaultCardProps
+      { cardTitle = Just "Header and Content"
+      , cardDescription = Just "This is a card with a header and a content."
+      }
+      [ "Content only." ]
+    , card_ defaultCardProps { cardFooter = Just [ "Footer Only" ] } []
+    , card_ defaultCardProps
+      { cardTitle = Just "Header + Footer"
+      , cardDescription = Just "This is a card with a header and a footer."
+      , cardFooter = Just [ "Footer" ]
+      } []
+    , card_ defaultCardProps { cardFooter = Just [ "Footer" ] } [ "Content" ]
+    , card_ defaultCardProps
+      { cardTitle = Just "Header + Content + Footer"
+      , cardDescription = Just "This is a card with a header, content and footer."
+      , cardFooter = Just [ "Footer" ]
+      }
+      [ "Content" ]
     ]
   ]
-
+-----------------------------------------------------------------------------
+cardCodeSample :: View model action
+cardCodeSample =
+  """
+  -----------------------------------------------------------------------------
+  module MyCard (cardUsage) where
+  -----------------------------------------------------------------------------
+  import           Miso
+  import qualified Miso.Html.Element as H
+  import qualified Miso.Html.Property as P
+  import           Miso.UI.Button
+  import           Miso.UI.Input
+  import           Miso.UI.Label
+  import           Miso.UI.Types
+  import           Miso.UI.Card
+  -----------------------------------------------------------------------------
+  cardUsage :: View model action
+  cardUsage =
+    card_ defaultCardProps
+    { cardTitle = Just "Login to your account"
+    , cardDescription = Just "Enter your details below to login to your account"
+    , cardClasses = [ "w-full", "max-w-sm" ]
+    , cardFooter = Just
+      [ button_ defaultButtonProps { buttonClasses = [ "w-full" ] } [ "Login" ] ]
+    }
+    [ H.form_
+      [ P.class_ "form grid gap-6" ]
+      [ H.div_
+        [ P.class_ "grid gap-2" ]
+        [ label_ defaultLabelProps { labelFor = Just "my-email" } [ "Email" ]
+        , input_ defaultInputProps
+          { inputType = "email"
+          , inputId = Just "my-email"
+          }
+        ]
+      ]
+    ]
+  """
+-----------------------------------------------------------------------------
+cardPropsApi :: View model action
+cardPropsApi =
+  """
+  -- | Props for 'card_'. Title, description and footer nest other views.
+  data CardProps model action
+    = CardProps
+    { cardTitle :: Maybe (View model action)
+      -- ^ Heading shown in the card header
+    , cardDescription :: Maybe (View model action)
+      -- ^ Sub-heading shown under the title
+    , cardFooter :: Maybe [View model action]
+      -- ^ Footer content
+    , cardFooterClasses :: [MisoString]
+    , cardClasses :: [MisoString]
+      -- ^ Extra classes appended to @div.card@ (e.g. @w-full max-w-sm@)
+    , cardAttrs :: [Attribute action]
+    }
+  -----------------------------------------------------------------------------
+  -- | Smart constructor: bare card
+  defaultCardProps :: CardProps model action
+  defaultCardProps
+    = CardProps
+    { cardTitle = Nothing
+    , cardDescription = Nothing
+    , cardFooter = Nothing
+    , cardFooterClasses = []
+    , cardClasses = []
+    , cardAttrs = []
+    }
+  """
+-----------------------------------------------------------------------------

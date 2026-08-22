@@ -1,127 +1,84 @@
 -----------------------------------------------------------------------------
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
+{-# LANGUAGE OverloadedStrings #-}
 {-# LANGUAGE MultilineStrings  #-}
-{-# LANGUAGE ExistentialQuantification  #-}
-{-# LANGUAGE DerivingStrategies         #-}
-{-# LANGUAGE RecordWildCards            #-}
-{-# LANGUAGE OverloadedStrings          #-}
-{-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE RecordWildCards   #-}
 -----------------------------------------------------------------------------
 module Miso.UI.Alert
-  ( -- ** Views
-    alert_
+  ( -- ** Props
+    AlertProps (..)
+  , defaultAlertProps
+    -- ** Views
+  , alert_
   , alertHeader_
   , alertSection_
-  , successIcon
-  , destructiveIcon
     -- ** Sample
   , alertSample
   , alertCodeSample
+  , alertPropsApi
   ) where
 -----------------------------------------------------------------------------
 import           Miso hiding (alert)
-import qualified Miso.Svg as S
-import qualified Miso.Svg.Property as SP
 import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
+import           Miso.UI.Icons
+import           Miso.UI.Types
+-----------------------------------------------------------------------------
+-- | Props for 'alert_'
+data AlertProps action
+  = AlertProps
+  { alertVariant :: Variant
+    -- ^ 'Primary' (default) or 'Destructive'
+  , alertClasses :: [MisoString]
+    -- ^ Extra classes appended to the alert
+  , alertAttrs :: [Attribute action]
+  }
+-----------------------------------------------------------------------------
+-- | Smart constructor: default (success-styled) alert
+defaultAlertProps :: AlertProps action
+defaultAlertProps
+  = AlertProps
+  { alertVariant = Primary
+  , alertClasses = []
+  , alertAttrs = []
+  }
+-----------------------------------------------------------------------------
+-- | <https://basecoatui.com/components/alert/ Alert>, driven by 'AlertProps'.
+-- Children are typically an icon, an 'alertHeader_' and an 'alertSection_'.
 alert_
-  :: [Attribute action]
+  :: AlertProps action
   -> [View model action]
   -> View model action
-alert_ attrs kids = do
-  optionalAttrs
-   H.div_
-   attrs
-   True
-   [ P.class_ "alert" ]
-   kids
+alert_ AlertProps {..} kids =
+  H.div_
+    ( P.classes_
+      ( ( case alertVariant of
+            Destructive -> "alert-destructive"
+            _ -> "alert"
+        ) : alertClasses
+      )
+    : alertAttrs
+    ) kids
 -----------------------------------------------------------------------------
 alertHeader_
   :: [Attribute action]
   -> [View model action]
   -> View model action
-alertHeader_ attrs kids =
-  optionalAttrs
-  H.h2_
-  attrs
-  True
-  []
-  kids
+alertHeader_ attrs kids = H.h2_ attrs kids
 -----------------------------------------------------------------------------
 alertSection_
   :: [Attribute action]
   -> [View model action]
   -> View model action
-alertSection_ attrs kids =
-  optionalAttrs
-  H.section_
-  attrs
-  True
-  []
-  kids
------------------------------------------------------------------------------
-successIcon :: View model action
-successIcon = S.svg_
-  [ P.xmlns_ "http://www.w3.org/2000/svg"
-  , P.width_ "24"
-  , P.height_ "24"
-  , SP.viewBox_ "0 0 24 24"
-  , SP.fill_ "none"
-  , SP.stroke_ "currentColor"
-  , SP.strokeWidth_ "2"
-  , SP.strokeLinecap_ "round" 
-  , SP.strokeLinejoin_ "round"
-  ]
-  [ S.circle_
-    [ SP.cx_ "12"
-    , SP.cy_ "12"
-    , SP.r_ "10"
-    ]
-  , S.path_
-    [ SP.d_ "m9 12 2 2 4-4"
-    ]
-  ]
------------------------------------------------------------------------------
-destructiveIcon :: View model action
-destructiveIcon =
-  S.svg_
-    [ SP.strokeWidth_ "2"
-    , SP.strokeLinecap_ "round"
-    , SP.strokeLinejoin_ "round"
-    , SP.stroke_ "currentColor"
-    , SP.fill_ "none"
-    , SP.viewBox_ "0 0 24 24"
-    , P.height_ "24"
-    , P.width_ "24"
-    , P.xmlns_ "http://www.w3.org/2000/svg"
-    ]
-    [ S.circle_
-      [ SP.r_ "10"
-      , SP.cy_ "12"
-      , SP.cx_ "12"
-      ]
-    , S.line_
-      [ SP.y2_ "12"
-      , SP.y1_ "8"
-      , SP.x2_ "12"
-      , SP.x1_ "12"
-      ]
-    , S.line_
-      [ SP.y2_ "16"
-      , SP.y1_ "16"
-      , SP.x2_ "12.01"
-      , SP.x1_ "12"
-      ]
-    ]
+alertSection_ attrs kids = H.section_ attrs kids
 -----------------------------------------------------------------------------
 alertSample :: View model action
 alertSample =
   H.div_
   [ P.class_ "p-4" ]
   [ H.div_ [ P.class_ "grid max-w-xl items-start gap-4" ]
-    [ alert_ []
-      [ successIcon
+    [ alert_ defaultAlertProps
+      [ circleCheckIcon []
       , alertHeader_ [] [ "Success!" ]
       , alertSection_ []
         [ """
@@ -130,9 +87,8 @@ alertSample =
           """
         ]
       ]
-    , alert_
-      [ P.class_ "alert-destructive" ]
-      [ destructiveIcon
+    , alert_ defaultAlertProps { alertVariant = Destructive }
+      [ circleAlertIcon []
       , alertHeader_ [] [ "Warning!" ]
       , alertSection_ []
         [ """
@@ -150,34 +106,32 @@ alertCodeSample =
   -----------------------------------------------------------------------------
   module MyAlert (alertSample) where
   -----------------------------------------------------------------------------
-  import           Miso
-  import qualified Miso.Html as H
+  import           Miso hiding (alert)
+  import qualified Miso.Html.Element as H
   import qualified Miso.Html.Property as P
-  -----------------------------------------------------------------------------
-  import qualified Miso.UI.Alert as Alert
+  import           Miso.UI.Icons
+  import           Miso.UI.Types
+  import           Miso.UI.Alert
   -----------------------------------------------------------------------------
   alertSample :: View model action
   alertSample =
     H.div_
     [ P.class_ "p-4" ]
-    [ H.div_
-      [ P.class_ "grid max-w-xl items-start gap-4"
-      ]
-      [ Alert.alert_ []
-        [ Alert.successIcon
-        , Alert.alertHeader_ [] [ "Success!" ]
-        , Alert.alertSection_ []
+    [ H.div_ [ P.class_ "grid max-w-xl items-start gap-4" ]
+      [ alert_ defaultAlertProps
+        [ circleCheckIcon []
+        , alertHeader_ [] [ "Success!" ]
+        , alertSection_ []
           [ \"\"\"
             Congratulations this is a
             successful alert !
             \"\"\"
           ]
         ]
-      , Alert.alert_
-        [ P.class_ "alert-destructive" ]
-        [ Alert.destructiveIcon
-        , Alert.alertHeader_ [] [ "Warning!" ]
-        , Alert.alertSection_ []
+      , alert_ defaultAlertProps { alertVariant = Destructive }
+        [ circleAlertIcon []
+        , alertHeader_ [] [ "Warning!" ]
+        , alertSection_ []
           [ \"\"\"
             Something bad happened :( you're getting
             a destructive alert!
@@ -186,5 +140,28 @@ alertCodeSample =
         ]
       ]
     ]
+  """
+-----------------------------------------------------------------------------
+alertPropsApi :: View model action
+alertPropsApi =
+  """
+  -- | Props for 'alert_'
+  data AlertProps action
+    = AlertProps
+    { alertVariant :: Variant
+      -- ^ 'Primary' (default) or 'Destructive'
+    , alertClasses :: [MisoString]
+      -- ^ Extra classes appended to the alert
+    , alertAttrs :: [Attribute action]
+    }
+  -----------------------------------------------------------------------------
+  -- | Smart constructor: default (success-styled) alert
+  defaultAlertProps :: AlertProps action
+  defaultAlertProps
+    = AlertProps
+    { alertVariant = Primary
+    , alertClasses = []
+    , alertAttrs = []
+    }
   """
 -----------------------------------------------------------------------------

@@ -1,122 +1,314 @@
 -----------------------------------------------------------------------------
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE ExistentialQuantification  #-}
-{-# LANGUAGE DerivingStrategies         #-}
-{-# LANGUAGE RecordWildCards            #-}
-{-# LANGUAGE OverloadedStrings          #-}
-{-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE MultilineStrings  #-}
+{-# LANGUAGE RecordWildCards   #-}
 -----------------------------------------------------------------------------
 module Miso.UI.Combobox
-  ( -- ** Component
-    combobox_
+  ( -- ** Props
+    ComboboxProps (..)
+  , defaultComboboxProps
+    -- ** Views
+  , combobox_
+  , comboboxOption_
+  , comboboxGroup_
+    -- ** Samples
+  , comboboxUsage
+  , comboboxSample
+  , comboboxCodeSample
+  , comboboxPropsApi
   ) where
 -----------------------------------------------------------------------------
 import           Miso
-import           Miso.Html
-import qualified Miso.Svg.Property as SP
 import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
+import qualified Miso.Svg           as S
+import qualified Miso.Svg.Property  as SP
 -----------------------------------------------------------------------------
-combobox_ :: Component parent props model action
-combobox_ = component undefined noop (\_ _ -> view_)
+import           Miso.UI.Icons
 -----------------------------------------------------------------------------
-view_ :: View model action
-view_ =
+-- | Props for 'combobox_'
+data ComboboxProps model action
+  = ComboboxProps
+  { comboboxId :: MisoString
+    -- ^ Base id; trigger\/popover\/listbox ids are derived from it (required)
+  , comboboxLabel :: [View model action]
+    -- ^ Content of the trigger button (current selection)
+  , comboboxValue :: MisoString
+    -- ^ Currently selected value (kept in a hidden input)
+  , comboboxSearchPlaceholder :: MisoString
+  , comboboxEmptyText :: MisoString
+    -- ^ Shown when the search yields nothing (@data-empty@)
+  , comboboxPopoverClasses :: [MisoString]
+    -- ^ Extra classes for the popover (e.g. @w-48@)
+  , comboboxTriggerClasses :: [MisoString]
+    -- ^ Extra classes for the trigger button
+  , comboboxAttrs :: [Attribute action]
+  }
+-----------------------------------------------------------------------------
+-- | Smart constructor
+defaultComboboxProps :: ComboboxProps model action
+defaultComboboxProps
+  = ComboboxProps
+  { comboboxId = "combobox"
+  , comboboxLabel = []
+  , comboboxValue = ""
+  , comboboxSearchPlaceholder = "Search entries..."
+  , comboboxEmptyText = "No results found."
+  , comboboxPopoverClasses = [ "w-48" ]
+  , comboboxTriggerClasses = []
+  , comboboxAttrs = []
+  }
+-----------------------------------------------------------------------------
+-- | <https://basecoatui.com/components/combobox/ Combobox>: searchable select.
+-- Children are 'comboboxOption_' \/ 'comboboxGroup_' views.
+combobox_
+  :: ComboboxProps model action
+  -> [View model action]
+  -> View model action
+combobox_ cfg kids =
   H.div_
-  [ P.id_ "select-909078"
-  , P.class_ "select"
-  ]
+  ( P.class_ "select"
+  : P.id_ (comboboxId cfg)
+  : comboboxAttrs cfg
+  )
   [ H.button_
     [ P.type_ "button"
-    , P.class_ "btn-outline justify-between font-normal w-[200px]"
-    , P.id_ "select-909078-trigger"
+    , P.classes_
+      ( "btn-outline" : "justify-between" : "font-normal"
+      : comboboxTriggerClasses cfg
+      )
+    , P.id_ (comboboxId cfg <> "-trigger")
     , P.aria_ "haspopup" "listbox"
     , P.aria_ "expanded" "false"
-    , P.aria_ "controls" "select-909078-listbox"
+    , P.aria_ "controls" (comboboxId cfg <> "-listbox")
     ]
-    [ H.span_
-      [ P.class_ "truncate" ][]
-    , svg_
-      [ P.height_ "24"
-      , SP.viewBox_ "0 0 24 24"
-      , SP.fill_ "none"
-      , SP.stroke_ "currentColor"
-      , SP.strokeWidth_ "2"
-      , SP.strokeLinecap_ "round"
-      , SP.strokeLinejoin_ "round"
-      , P.class_ "lucide lucide-chevrons-up-down-icon lucide-chevrons-up-down text-muted-foreground opacity-50 shrink-0"
-      ]
-      []
+    [ H.span_ [ P.class_ "truncate" ] (comboboxLabel cfg)
+    , chevronsUpDownIcon
+      [ P.class_ "text-muted-foreground opacity-50 shrink-0" ]
     ]
   , H.div_
-    [ P.id_ "select-909078-popover"
+    [ P.classes_ (comboboxPopoverClasses cfg)
     , P.aria_ "hidden" "true"
+    , P.data_ "popover" ""
+    , P.id_ (comboboxId cfg <> "-popover")
     ]
     [ H.header_ []
-      [ H.svg_
-        [ P.xmlns_ "http://www.w3.org/2000/svg"
-        , P.width_ "24"
-        , P.height_ "24"
-        , SP.viewBox_ "0 0 24 24"
-        , SP.fill_ "none"
-        , SP.stroke_ "currentColor"
-        , SP.strokeWidth_ "2"
-        , SP.strokeLinecap_ "round" 
-        , SP.strokeLinejoin_ "round"
-        , P.class_ "lucide lucide-search-icon lucide-search"
-        ] []
+      [ searchIcon []
       , H.input_
         [ P.type_ "text"
-        , P.value_ ""
-        , P.placeholder_ "Search framework..."
+        , P.placeholder_ (comboboxSearchPlaceholder cfg)
         , P.autocomplete_ False
         , P.autocorrect_ False
         , P.spellcheck_ False
         , P.aria_ "autocomplete" "list"
         , P.role_ "combobox"
         , P.aria_ "expanded" "false"
-        , P.aria_ "controls" "select-909078-listbox"
-        , P.aria_ "labelledby" "select-909078-trigger"
+        , P.aria_ "controls" (comboboxId cfg <> "-listbox")
+        , P.aria_ "labelledby" (comboboxId cfg <> "-trigger")
         ]
       ]
     , H.div_
       [ P.role_ "listbox"
-      , P.id_ "select-909078-listbox"
+      , P.id_ (comboboxId cfg <> "-listbox")
       , P.aria_ "orientation" "vertical"
-      , P.aria_ "labelledby" "select-909078-trigger"
-      , P.data_ "empty" "No framework found."
+      , P.aria_ "labelledby" (comboboxId cfg <> "-trigger")
+      , P.data_ "empty" (comboboxEmptyText cfg)
       ]
-      [ H.div_
-        [ P.role_ "option"
-        , P.data_ "value" "Next.js"
-        ]
-        [ "Next.js" ]
-      , H.div_
-        [ P.role_ "option"
-        , P.data_ "value" "SvelteKit"
-        ]
-        [ "SvelteKit" ]
-      , H.div_
-        [ P.role_ "option"
-        , P.data_ "value" "Nuxt.js"
-        ]
-        [ "Nuxt.js" ]
-      , H.div_
-        [ P.role_ "option"
-        , P.data_ "value" "Remix"
-        ]
-        [ "Remix" ]
-      , H.div_
-        [ P.role_ "option"
-        , P.data_ "value" "Astro"
-        ]
-        [ "Astro" ]
-      ]
+      kids
     ]
   , H.input_
     [ P.type_ "hidden"
-    , P.name_ "select-909078-value"
-    , P.value_ ""
+    , P.name_ (comboboxId cfg <> "-value")
+    , P.value_ (comboboxValue cfg)
     ]
   ]
+-----------------------------------------------------------------------------
+-- | Option inside 'combobox_'; the 'Bool' marks the current selection
+comboboxOption_
+  :: Bool
+  -> MisoString
+  -> [View model action]
+  -> View model action
+comboboxOption_ selected value kids =
+  optionalAttrs
+    H.div_
+    [ P.data_ "value" value
+    , P.role_ "option"
+    ]
+    selected
+    [ P.aria_ "selected" "true" ]
+    kids
+-----------------------------------------------------------------------------
+-- | Labelled group of options inside 'combobox_'
+comboboxGroup_
+  :: MisoString
+  -- ^ group heading id
+  -> MisoString
+  -- ^ heading text
+  -> [View model action]
+  -> View model action
+comboboxGroup_ headingId heading kids =
+  H.div_
+  [ P.aria_ "labelledby" headingId
+  , P.role_ "group"
+  ]
+  ( H.span_ [ P.role_ "heading", P.id_ headingId ] [ text heading ]
+  : kids
+  )
+-----------------------------------------------------------------------------
+-- | Compact usage example (source of the kitchen sink "Code" tab)
+comboboxUsage :: View model action
+comboboxUsage =
+  combobox_ defaultComboboxProps
+  { comboboxId = "my-combobox"
+  , comboboxLabel = [ "Next.js" ]
+  , comboboxValue = "Next.js"
+  , comboboxSearchPlaceholder = "Search framework..."
+  , comboboxEmptyText = "No framework found."
+  }
+  [ comboboxOption_ True "Next.js" [ "Next.js" ]
+  , comboboxOption_ False "SvelteKit" [ "SvelteKit" ]
+  , comboboxOption_ False "Nuxt.js" [ "Nuxt.js" ]
+  , comboboxOption_ False "Remix" [ "Remix" ]
+  , comboboxOption_ False "Astro" [ "Astro" ]
+  ]
+-----------------------------------------------------------------------------
+comboboxSample :: View model action
+comboboxSample =
+  H.div_
+  [ P.class_ "flex flex-wrap items-start gap-4" ]
+  [ combobox_ defaultComboboxProps
+    { comboboxId = "combobox-frameworks"
+    , comboboxLabel = [ "Next.js" ]
+    , comboboxValue = "Next.js"
+    , comboboxEmptyText = "No framework found."
+    }
+    [ comboboxOption_ True "Next.js" [ "Next.js" ]
+    , comboboxOption_ False "SvelteKit" [ "SvelteKit" ]
+    , comboboxOption_ False "Nuxt.js" [ "Nuxt.js" ]
+    , comboboxOption_ False "Remix" [ "Remix" ]
+    , comboboxOption_ False "Astro" [ "Astro" ]
+    ]
+  , combobox_ defaultComboboxProps
+    { comboboxId = "combobox-timezones"
+    , comboboxLabel = [ "(GMT-5) New York" ]
+    , comboboxValue = "America/New_York"
+    , comboboxEmptyText = "No timezone found."
+    , comboboxPopoverClasses = [ "w-72" ]
+    }
+    [ H.div_
+      [ P.class_ "max-h-64 overflow-y-auto scrollbar" ]
+      [ comboboxGroup_ "demo-combobox-timezones-group-0" "Americas"
+        [ comboboxOption_ (tz == "America/New_York") tz [ text label ]
+        | (tz, label) <- americas
+        ]
+      , comboboxGroup_ "demo-combobox-timezones-group-1" "Europe"
+        [ comboboxOption_ False tz [ text label ] | (tz, label) <- europe ]
+      , comboboxGroup_ "demo-combobox-timezones-group-2" "Asia/Pacific"
+        [ comboboxOption_ False tz [ text label ] | (tz, label) <- asiaPacific ]
+      ]
+    , H.hr_ [ P.role_ "separator" ]
+    , H.div_
+      [ P.role_ "option" ]
+      [ plusIcon, "Create timezone" ]
+    ]
+  ]
+  where
+    americas =
+      [ ("America/New_York", "(GMT-5) New York")
+      , ("America/Los_Angeles", "(GMT-8) Los Angeles")
+      , ("America/Chicago", "(GMT-6) Chicago")
+      , ("America/Toronto", "(GMT-5) Toronto")
+      , ("America/Vancouver", "(GMT-8) Vancouver")
+      , ("America/Sao_Paulo", "(GMT-3) São Paulo")
+      ]
+    europe =
+      [ ("Europe/London", "(GMT+0) London")
+      , ("Europe/Paris", "(GMT+1) Paris")
+      , ("Europe/Berlin", "(GMT+1) Berlin")
+      , ("Europe/Rome", "(GMT+1) Rome")
+      , ("Europe/Madrid", "(GMT+1) Madrid")
+      , ("Europe/Amsterdam", "(GMT+1) Amsterdam")
+      ]
+    asiaPacific =
+      [ ("Asia/Tokyo", "(GMT+9) Tokyo")
+      , ("Asia/Shanghai", "(GMT+8) Shanghai")
+      , ("Asia/Singapore", "(GMT+8) Singapore")
+      , ("Asia/Dubai", "(GMT+4) Dubai")
+      , ("Australia/Sydney", "(GMT+11) Sydney")
+      , ("Asia/Seoul", "(GMT+9) Seoul")
+      ]
+    plusIcon = lucide_ []
+      [ S.circle_ [ SP.cx_ "12", SP.cy_ "12", SP.r_ "10" ]
+      , S.path_ [ SP.d_ "M8 12h8" ]
+      , S.path_ [ SP.d_ "M12 8v8" ]
+      ]
+-----------------------------------------------------------------------------
+comboboxCodeSample :: View model action
+comboboxCodeSample =
+  """
+  -----------------------------------------------------------------------------
+  module MyCombobox (comboboxUsage) where
+  -----------------------------------------------------------------------------
+  import           Miso
+  import qualified Miso.Html.Element as H
+  import qualified Miso.Html.Property as P
+  import qualified Miso.Svg           as S
+  import qualified Miso.Svg.Property  as SP
+  import           Miso.UI.Icons
+  import           Miso.UI.Combobox
+  -----------------------------------------------------------------------------
+  comboboxUsage :: View model action
+  comboboxUsage =
+    combobox_ defaultComboboxProps
+    { comboboxId = "my-combobox"
+    , comboboxLabel = [ "Next.js" ]
+    , comboboxValue = "Next.js"
+    , comboboxSearchPlaceholder = "Search framework..."
+    , comboboxEmptyText = "No framework found."
+    }
+    [ comboboxOption_ True "Next.js" [ "Next.js" ]
+    , comboboxOption_ False "SvelteKit" [ "SvelteKit" ]
+    , comboboxOption_ False "Nuxt.js" [ "Nuxt.js" ]
+    , comboboxOption_ False "Remix" [ "Remix" ]
+    , comboboxOption_ False "Astro" [ "Astro" ]
+    ]
+  """
+-----------------------------------------------------------------------------
+comboboxPropsApi :: View model action
+comboboxPropsApi =
+  """
+  -- | Props for 'combobox_'
+  data ComboboxProps model action
+    = ComboboxProps
+    { comboboxId :: MisoString
+      -- ^ Base id; trigger\\/popover\\/listbox ids are derived from it (required)
+    , comboboxLabel :: [View model action]
+      -- ^ Content of the trigger button (current selection)
+    , comboboxValue :: MisoString
+      -- ^ Currently selected value (kept in a hidden input)
+    , comboboxSearchPlaceholder :: MisoString
+    , comboboxEmptyText :: MisoString
+      -- ^ Shown when the search yields nothing (@data-empty@)
+    , comboboxPopoverClasses :: [MisoString]
+      -- ^ Extra classes for the popover (e.g. @w-48@)
+    , comboboxTriggerClasses :: [MisoString]
+      -- ^ Extra classes for the trigger button
+    , comboboxAttrs :: [Attribute action]
+    }
+  -----------------------------------------------------------------------------
+  -- | Smart constructor
+  defaultComboboxProps :: ComboboxProps model action
+  defaultComboboxProps
+    = ComboboxProps
+    { comboboxId = "combobox"
+    , comboboxLabel = []
+    , comboboxValue = ""
+    , comboboxSearchPlaceholder = "Search entries..."
+    , comboboxEmptyText = "No results found."
+    , comboboxPopoverClasses = [ "w-48" ]
+    , comboboxTriggerClasses = []
+    , comboboxAttrs = []
+    }
+  """
 -----------------------------------------------------------------------------

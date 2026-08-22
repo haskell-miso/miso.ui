@@ -1,158 +1,179 @@
 -----------------------------------------------------------------------------
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE ExistentialQuantification  #-}
-{-# LANGUAGE DerivingStrategies         #-}
-{-# LANGUAGE RecordWildCards            #-}
-{-# LANGUAGE OverloadedStrings          #-}
-{-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE MultilineStrings  #-}
+{-# LANGUAGE RecordWildCards   #-}
 -----------------------------------------------------------------------------
 module Miso.UI.Breadcrumb
-  ( -- ** Component
-    breadcrumb_
+  ( -- ** Props
+    BreadcrumbProps (..)
+  , defaultBreadcrumbProps
+    -- ** Views
+  , breadcrumb_
+  , breadcrumbLink_
+  , breadcrumbPage_
+  , breadcrumbSeparator_
+  , breadcrumbItem_
+    -- ** Samples
+  , breadcrumbSample
+  , breadcrumbCodeSample
+  , breadcrumbPropsApi
   ) where
 -----------------------------------------------------------------------------
 import           Miso
-import           Miso.Html
-import qualified Miso.Svg as S
-import qualified Miso.Svg.Property as SP
 import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
--- import           Miso.Lens
 -----------------------------------------------------------------------------
-breadcrumb_ :: Component parent props model action
-breadcrumb_ = component undefined noop (\_ _ -> view_)
+import           Miso.UI.DropDownMenu
+import           Miso.UI.Icons
 -----------------------------------------------------------------------------
-view_ :: View model action
-view_ = H.ol_
-    [ P.class_
-        "text-muted-foreground flex flex-wrap items-center gap-1.5 text-sm break-words sm:gap-2.5"
+-- | Props for 'breadcrumb_'
+data BreadcrumbProps action
+  = BreadcrumbProps
+  { breadcrumbClasses :: [MisoString]
+    -- ^ Extra classes appended to the @ol@
+  , breadcrumbAttrs :: [Attribute action]
+  }
+-----------------------------------------------------------------------------
+-- | Smart constructor
+defaultBreadcrumbProps :: BreadcrumbProps action
+defaultBreadcrumbProps
+  = BreadcrumbProps
+  { breadcrumbClasses = []
+  , breadcrumbAttrs = []
+  }
+-----------------------------------------------------------------------------
+-- | <https://basecoatui.com/components/breadcrumb/ Breadcrumb>.
+-- Children are 'breadcrumbItem_' \/ 'breadcrumbSeparator_' views.
+breadcrumb_
+  :: BreadcrumbProps action
+  -> [View model action]
+  -> View model action
+breadcrumb_ BreadcrumbProps {..} kids =
+  H.ol_
+    ( P.classes_
+      ( [ "text-muted-foreground"
+        , "flex", "flex-wrap", "items-center"
+        , "gap-1.5", "text-sm", "break-words", "sm:gap-2.5"
+        ] ++ breadcrumbClasses
+      )
+    : breadcrumbAttrs
+    ) kids
+-----------------------------------------------------------------------------
+breadcrumbItem_
+  :: [Attribute action]
+  -> [View model action]
+  -> View model action
+breadcrumbItem_ attrs kids =
+  H.li_ (P.class_ "inline-flex items-center gap-1.5" : attrs) kids
+-----------------------------------------------------------------------------
+-- | Link to an ancestor page
+breadcrumbLink_
+  :: MisoString
+  -- ^ href
+  -> [View model action]
+  -> View model action
+breadcrumbLink_ url kids = breadcrumbItem_ []
+  [ H.a_
+    [ P.class_ "hover:text-foreground transition-colors"
+    , P.href_ url
+    ] kids
+  ]
+-----------------------------------------------------------------------------
+-- | The current page (last crumb)
+breadcrumbPage_
+  :: [View model action]
+  -> View model action
+breadcrumbPage_ kids = breadcrumbItem_ []
+  [ H.span_ [ P.class_ "text-foreground font-normal" ] kids
+  ]
+-----------------------------------------------------------------------------
+breadcrumbSeparator_ :: View model action
+breadcrumbSeparator_ =
+  H.li_ [] [ chevronRightIcon [ P.class_ "size-3.5" ] ]
+-----------------------------------------------------------------------------
+breadcrumbSample :: View model action
+breadcrumbSample =
+  breadcrumb_ defaultBreadcrumbProps
+  [ breadcrumbLink_ "#" [ "Home" ]
+  , breadcrumbSeparator_
+  , breadcrumbItem_ []
+    [ dropdownMenu_ defaultDropdownMenuProps
+      { dropdownMenuId = "demo-breadcrumb-menu"
+      , dropdownMenuTriggerClasses =
+        [ "flex", "size-9", "items-center", "justify-center"
+        , "h-4", "w-4", "hover:text-foreground", "cursor-pointer"
+        ]
+      , dropdownMenuTrigger = [ dotsIcon [] ]
+      , dropdownMenuPopoverClasses = [ "p-1" ]
+      }
+      [ menuItem_ [] [ "Documentation" ]
+      , menuItem_ [] [ "Themes" ]
+      , menuItem_ [] [ "GitHub" ]
+      ]
     ]
-    [ H.li_
-        [ P.class_ "inline-flex items-center gap-1.5"]
-        [ H.a_
-            [ P.class_ "hover:text-foreground transition-colors"
-            , P.href_ "#"
-            ]
-            ["Home"]
+  , breadcrumbSeparator_
+  , breadcrumbLink_ "#" [ "Components" ]
+  , breadcrumbSeparator_
+  , breadcrumbPage_ [ "Breadcrumb" ]
+  ]
+-----------------------------------------------------------------------------
+breadcrumbCodeSample :: View model action
+breadcrumbCodeSample =
+  """
+  -----------------------------------------------------------------------------
+  module MyBreadcrumb (breadcrumbSample) where
+  -----------------------------------------------------------------------------
+  import           Miso
+  import qualified Miso.Html.Element as H
+  import qualified Miso.Html.Property as P
+  import           Miso.UI.DropDownMenu
+  import           Miso.UI.Icons
+  import           Miso.UI.Breadcrumb
+  -----------------------------------------------------------------------------
+  breadcrumbSample :: View model action
+  breadcrumbSample =
+    breadcrumb_ defaultBreadcrumbProps
+    [ breadcrumbLink_ "#" [ "Home" ]
+    , breadcrumbSeparator_
+    , breadcrumbItem_ []
+      [ dropdownMenu_ defaultDropdownMenuProps
+        { dropdownMenuId = "demo-breadcrumb-menu"
+        , dropdownMenuTriggerClasses =
+          [ "flex", "size-9", "items-center", "justify-center"
+          , "h-4", "w-4", "hover:text-foreground", "cursor-pointer"
+          ]
+        , dropdownMenuTrigger = [ dotsIcon [] ]
+        , dropdownMenuPopoverClasses = [ "p-1" ]
+        }
+        [ menuItem_ [] [ "Documentation" ]
+        , menuItem_ [] [ "Themes" ]
+        , menuItem_ [] [ "GitHub" ]
         ]
-    , H.li_
-        []
-        [ H.svg_
-            [ P.class_ "size-3.5"
-            , SP.strokeWidth_ "2"
-            , SP.strokeLinecap_ "round" 
-            , SP.strokeLinejoin_ "round"
-            , SP.stroke_ "currentColor"
-            , SP.fill_ "none"
-            , SP.viewBox_ "0 0 24 24"
-            , P.height_ "24"
-            , P.width_ "24"
-            , P.xmlns_ "http://www.w3.org/2000/svg"
-            ]
-            [S.path_ [SP.d_ "m9 18 6-6-6-6"]]
-        ]
-    , H.li_
-        [P.class_ "inline-flex items-center gap-1.5"]
-        [ H.div_
-            [ P.class_ "dropdown-menu"
-            , P.id_ "demo-breadcrumb-menu"
-            ]
-            [ H.button_
-                [ P.class_
-                    "flex size-9 items-center justify-center h-4 w-4 hover:text-foreground cursor-pointer"
-                , P.aria_ "expanded" "false"
-                , P.aria_ "controls" "demo-breadcrumb-menu-menu"
-                , P.aria_ "haspopup" "menu"
-                , P.id_ "demo-breadcrumb-menu-trigger"
-                , P.type_ "button"
-                ]
-                [ H.svg_
-                    [ SP.strokeWidth_ "2"
-                    , SP.strokeLinecap_ "round" 
-                    , SP.strokeLinejoin_ "round"
-                    , SP.stroke_ "currentColor"
-                    , SP.fill_ "none"
-                    , SP.viewBox_ "0 0 24 24"
-                    , P.height_ "24"
-                    , P.width_ "24"
-                    , P.xmlns_ "http://www.w3.org/2000/svg"
-                    ]
-                    [ S.circle_ [SP.r_ "1", SP.cy_ "12", SP.cx_ "12"]
-                    , S.circle_ [SP.r_ "1", SP.cy_ "12", SP.cx_ "19"]
-                    , S.circle_ [SP.r_ "1", SP.cy_ "12", SP.cx_ "5"]
-                    ]
-                ]
-            , H.div_
-                [ P.aria_ "hidden" "true"
-                , P.data_ "popover" ""
-                , P.id_ "demo-breadcrumb-menu-popover"
-                ]
-                [ div_
-                    [ P.aria_ "labelledby" "demo-breadcrumb-menu-trigger"
-                    , P.id_ "demo-breadcrumb-menu-menu"
-                    , P.role_ "menu"
-                    ]
-                    [ nav_
-                        [P.role_ "menu"]
-                        [ H.button_
-                            [P.role_ "menuitem", P.type_ "button"]
-                            ["Documentation"]
-                        , H.button_
-                            [P.role_ "menuitem", P.type_ "button"]
-                            ["Themes"]
-                        , H.button_
-                            [P.role_ "menuitem", P.type_ "button"]
-                            ["GitHub"]
-                        ]
-                    ]
-                ]
-            ]
-        ]
-    , H.li_
-        []
-        [ H.svg_
-            [ P.class_ "size-3.5"
-            , SP.strokeWidth_ "2"
-            , SP.strokeLinecap_ "round" 
-            , SP.strokeLinejoin_ "round"
-            , SP.stroke_ "currentColor"
-            , SP.fill_ "none"
-            , SP.viewBox_ "0 0 24 24"
-            , P.height_ "24"
-            , P.width_ "24"
-            , P.xmlns_ "http://www.w3.org/2000/svg"
-            ]
-            [S.path_ [SP.d_ "m9 18 6-6-6-6"]]
-        ]
-    , H.li_
-        [P.class_ "inline-flex items-center gap-1.5"]
-        [ H.a_
-            [ P.class_ "hover:text-foreground transition-colors"
-            , P.href_ "#"
-            ]
-            ["Components"]
-        ]
-    , H.li_
-        []
-        [ H.svg_
-            [ P.class_ "size-3.5"
-            , SP.strokeWidth_ "2"
-            , SP.strokeLinecap_ "round" 
-            , SP.strokeLinejoin_ "round"
-            , SP.stroke_ "currentColor"
-            , SP.fill_ "none"
-            , SP.viewBox_ "0 0 24 24"
-            , P.height_ "24"
-            , P.width_ "24"
-            , P.xmlns_ "http://www.w3.org/2000/svg"
-            ]
-            [S.path_ [SP.d_ "m9 18 6-6-6-6"]]
-        ]
-    , H.li_
-        [P.class_ "inline-flex items-center gap-1.5"]
-        [ H.span_
-            [P.class_ "text-foreground font-normal"]
-            ["Breadcrumb"]
-        ]
+      ]
+    , breadcrumbSeparator_
+    , breadcrumbLink_ "#" [ "Components" ]
+    , breadcrumbSeparator_
+    , breadcrumbPage_ [ "Breadcrumb" ]
     ]
-
+  """
+-----------------------------------------------------------------------------
+breadcrumbPropsApi :: View model action
+breadcrumbPropsApi =
+  """
+  -- | Props for 'breadcrumb_'
+  data BreadcrumbProps action
+    = BreadcrumbProps
+    { breadcrumbClasses :: [MisoString]
+      -- ^ Extra classes appended to the @ol@
+    , breadcrumbAttrs :: [Attribute action]
+    }
+  -----------------------------------------------------------------------------
+  -- | Smart constructor
+  defaultBreadcrumbProps :: BreadcrumbProps action
+  defaultBreadcrumbProps
+    = BreadcrumbProps
+    { breadcrumbClasses = []
+    , breadcrumbAttrs = []
+    }
+  """
+-----------------------------------------------------------------------------

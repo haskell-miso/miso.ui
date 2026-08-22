@@ -1,25 +1,146 @@
 -----------------------------------------------------------------------------
-{-# LANGUAGE GeneralizedNewtypeDeriving #-}
-{-# LANGUAGE ExistentialQuantification  #-}
-{-# LANGUAGE DerivingStrategies         #-}
-{-# LANGUAGE RecordWildCards            #-}
-{-# LANGUAGE OverloadedStrings          #-}
-{-# LANGUAGE LambdaCase                 #-}
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE MultilineStrings  #-}
+{-# LANGUAGE RecordWildCards   #-}
 -----------------------------------------------------------------------------
 module Miso.UI.Sidebar
-  ( -- ** Component
-    sidebar_
+  ( -- ** Props
+    SidebarProps (..)
+  , defaultSidebarProps
+    -- ** Views
+  , sidebar_
+  , sidebarGroup_
+  , sidebarNav_
+  , sidebarItem_
+    -- ** Samples
+  , sidebarCodeSample
+  , sidebarPropsApi
   ) where
 -----------------------------------------------------------------------------
-import           Miso.Types
--- import           Miso.Html
--- import qualified Miso.Svg as S
--- import qualified Miso.Svg.Property as SP
--- import qualified Miso.Html.Element as H
--- import qualified Miso.Html.Property as P
--- import           Miso.Lens
+import           Miso
+import qualified Miso.Html.Element as H
+import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
-sidebar_ :: Component parent props model action
-sidebar_ = undefined
+-- | Props for 'sidebar_'
+data SidebarProps action
+  = SidebarProps
+  { sidebarId :: MisoString
+  , sidebarOpen :: Bool
+    -- ^ Visible (@aria-hidden@ when closed)
+  , sidebarClasses :: [MisoString]
+    -- ^ Extra classes appended to @aside.sidebar@
+  , sidebarAttrs :: [Attribute action]
+  }
 -----------------------------------------------------------------------------
-
+-- | Smart constructor: open sidebar
+defaultSidebarProps :: SidebarProps action
+defaultSidebarProps
+  = SidebarProps
+  { sidebarId = "sidebar"
+  , sidebarOpen = True
+  , sidebarClasses = []
+  , sidebarAttrs = []
+  }
+-----------------------------------------------------------------------------
+-- | <https://basecoatui.com/components/sidebar/ Sidebar>, driven by 'SidebarProps'.
+-- Children are 'sidebarGroup_' views wrapped in a @nav@.
+sidebar_
+  :: SidebarProps action
+  -> [View model action]
+  -> View model action
+sidebar_ SidebarProps {..} kids =
+  H.aside_
+    ( concat
+      [ [ P.classes_ ("sidebar" : sidebarClasses)
+        , P.id_ sidebarId
+        , P.aria_ "hidden" (if sidebarOpen then "false" else "true")
+        ]
+      , sidebarAttrs
+      ]
+    )
+    [ H.nav_ [] kids ]
+-----------------------------------------------------------------------------
+-- | Labelled group of sidebar items
+sidebarGroup_
+  :: MisoString
+  -- ^ group heading
+  -> [View model action]
+  -> View model action
+sidebarGroup_ heading kids =
+  H.section_
+  [ P.class_ "scrollbar" ]
+  [ H.h3_ [] [ text heading ]
+  , sidebarNav_ [] kids
+  ]
+-----------------------------------------------------------------------------
+sidebarNav_
+  :: [Attribute action]
+  -> [View model action]
+  -> View model action
+sidebarNav_ attrs kids =
+  H.ul_ attrs [ H.li_ [] [ k ] | k <- kids ]
+-----------------------------------------------------------------------------
+-- | Sidebar link; the 'Bool' marks the current page
+sidebarItem_
+  :: Bool
+  -> MisoString
+  -- ^ href
+  -> [View model action]
+  -> View model action
+sidebarItem_ current url kids =
+  optionalAttrs
+    H.a_
+    [ P.href_ url ]
+    current
+    [ P.aria_ "current" "page" ]
+    kids
+-----------------------------------------------------------------------------
+sidebarCodeSample :: View model action
+sidebarCodeSample =
+  """
+  -----------------------------------------------------------------------------
+  module MySidebar (mySidebar) where
+  -----------------------------------------------------------------------------
+  import           Miso
+  -----------------------------------------------------------------------------
+  import           Miso.UI.Sidebar
+  -----------------------------------------------------------------------------
+  mySidebar :: View model action
+  mySidebar =
+    sidebar_ defaultSidebarProps
+    [ sidebarGroup_ "Getting Started"
+      [ sidebarItem_ True "#introduction" [ "Introduction" ]
+      , sidebarItem_ False "#installation" [ "Installation" ]
+      ]
+    , sidebarGroup_ "Components"
+      [ sidebarItem_ False "#accordion" [ "Accordion" ]
+      , sidebarItem_ False "#button" [ "Button" ]
+      ]
+    ]
+  """
+-----------------------------------------------------------------------------
+sidebarPropsApi :: View model action
+sidebarPropsApi =
+  """
+  -- | Props for 'sidebar_'
+  data SidebarProps action
+    = SidebarProps
+    { sidebarId :: MisoString
+    , sidebarOpen :: Bool
+      -- ^ Visible (@aria-hidden@ when closed)
+    , sidebarClasses :: [MisoString]
+      -- ^ Extra classes appended to @aside.sidebar@
+    , sidebarAttrs :: [Attribute action]
+    }
+  -----------------------------------------------------------------------------
+  -- | Smart constructor: open sidebar
+  defaultSidebarProps :: SidebarProps action
+  defaultSidebarProps
+    = SidebarProps
+    { sidebarId = "sidebar"
+    , sidebarOpen = True
+    , sidebarClasses = []
+    , sidebarAttrs = []
+    }
+  """
+-----------------------------------------------------------------------------
