@@ -26,15 +26,15 @@ import           Miso.UI.Icons
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'buttonGroup_'
-data ButtonGroupProps action
+data ButtonGroupProps model action
   = ButtonGroupProps
   { buttonGroupClasses :: [MisoString]
     -- ^ Extra classes appended to @div.button-group@
-  , buttonGroupAttrs :: [Attribute action]
+  , buttonGroupAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultButtonGroupProps :: ButtonGroupProps action
+defaultButtonGroupProps :: ButtonGroupProps model action
 defaultButtonGroupProps
   = ButtonGroupProps
   { buttonGroupClasses = []
@@ -44,9 +44,9 @@ defaultButtonGroupProps
 -- | <https://basecoatui.com/components/button-group/ Button Group>: attached
 -- row of buttons (children are typically 'Miso.UI.Button.button_' views)
 buttonGroup_
-  :: ButtonGroupProps action
-  -> [View model action]
-  -> View model action
+  :: ButtonGroupProps model action
+  -> [View context model action]
+  -> View context model action
 buttonGroup_ ButtonGroupProps {..} kids =
   H.div_
     ( P.classes_ ("button-group" : buttonGroupClasses)
@@ -55,7 +55,7 @@ buttonGroup_ ButtonGroupProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-buttonGroupUsage :: View model action
+buttonGroupUsage :: View context model action
 buttonGroupUsage =
   buttonGroup_ defaultButtonGroupProps
   [ button_ defaultButtonProps { buttonVariant = Outline } [ "Archive" ]
@@ -64,7 +64,7 @@ buttonGroupUsage =
     [ dotsIcon [] ]
   ]
 -----------------------------------------------------------------------------
-buttonGroupSample :: View model action
+buttonGroupSample :: View context model action
 buttonGroupSample =
   H.div_
   [ P.class_ "flex w-fit items-stretch gap-2" ]
@@ -100,7 +100,7 @@ buttonGroupSample =
     ]
   ]
 -----------------------------------------------------------------------------
-buttonGroupCodeSample :: View model action
+buttonGroupCodeSample :: View context model action
 buttonGroupCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ buttonGroupCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.ButtonGroup
   -----------------------------------------------------------------------------
-  buttonGroupUsage :: View model action
+  buttonGroupUsage :: View context model action
   buttonGroupUsage =
     buttonGroup_ defaultButtonGroupProps
     [ button_ defaultButtonProps { buttonVariant = Outline } [ "Archive" ]
@@ -125,19 +125,19 @@ buttonGroupCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-buttonGroupPropsApi :: View model action
+buttonGroupPropsApi :: View context model action
 buttonGroupPropsApi =
   """
   -- | Props for 'buttonGroup_'
-  data ButtonGroupProps action
+  data ButtonGroupProps model action
     = ButtonGroupProps
     { buttonGroupClasses :: [MisoString]
       -- ^ Extra classes appended to @div.button-group@
-    , buttonGroupAttrs :: [Attribute action]
+    , buttonGroupAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultButtonGroupProps :: ButtonGroupProps action
+  defaultButtonGroupProps :: ButtonGroupProps model action
   defaultButtonGroupProps
     = ButtonGroupProps
     { buttonGroupClasses = []

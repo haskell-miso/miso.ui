@@ -30,11 +30,11 @@ import           Miso.UI.Icons
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'dropdownMenu_'
-data DropdownMenuProps model action
+data DropdownMenuProps context model action
   = DropdownMenuProps
   { dropdownMenuId :: MisoString
     -- ^ Base id; trigger\/popover\/menu ids are derived from it (required)
-  , dropdownMenuTrigger :: [View model action]
+  , dropdownMenuTrigger :: [View context model action]
     -- ^ Content of the trigger button (nests other views)
   , dropdownMenuTriggerClasses :: [MisoString]
     -- ^ Classes of the trigger button (defaults to @btn-outline@)
@@ -42,11 +42,11 @@ data DropdownMenuProps model action
     -- ^ Popover alignment (@data-align@)
   , dropdownMenuPopoverClasses :: [MisoString]
     -- ^ Extra classes for the popover (e.g. @min-w-56@)
-  , dropdownMenuAttrs :: [Attribute action]
+  , dropdownMenuAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: outline trigger button, no alignment override
-defaultDropdownMenuProps :: DropdownMenuProps model action
+defaultDropdownMenuProps :: DropdownMenuProps context model action
 defaultDropdownMenuProps
   = DropdownMenuProps
   { dropdownMenuId = "dropdown-menu"
@@ -60,9 +60,9 @@ defaultDropdownMenuProps
 -- | <https://basecoatui.com/components/dropdown-menu/ Dropdown Menu>.
 -- Children are 'menuItem_' \/ 'menuGroup_' \/ 'menuSeparator_' views.
 dropdownMenu_
-  :: DropdownMenuProps model action
-  -> [View model action]
-  -> View model action
+  :: DropdownMenuProps context model action
+  -> [View context model action]
+  -> View context model action
 dropdownMenu_ cfg kids =
   H.div_
   ( P.class_ "dropdown-menu"
@@ -100,17 +100,17 @@ dropdownMenu_ cfg kids =
   ]
 -----------------------------------------------------------------------------
 menuItem_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 menuItem_ attrs kids = H.div_ (P.role_ "menuitem" : attrs) kids
 -----------------------------------------------------------------------------
 -- | Checkable menu item; the 'Bool' is the checked state
 menuCheckboxItem_
   :: Bool
-  -> [Attribute action]
-  -> [View model action]
-  -> View model action
+  -> [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 menuCheckboxItem_ checked attrs kids =
   H.div_
     ( P.class_ "group"
@@ -128,9 +128,9 @@ menuCheckboxItem_ checked attrs kids =
 -- | Radio menu item; the 'Bool' is the selected state
 menuRadioItem_
   :: Bool
-  -> [Attribute action]
-  -> [View model action]
-  -> View model action
+  -> [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 menuRadioItem_ checked attrs kids =
   H.div_
     ( P.class_ "group"
@@ -155,8 +155,8 @@ menuGroup_
   -- ^ heading id
   -> MisoString
   -- ^ heading text
-  -> [View model action]
-  -> View model action
+  -> [View context model action]
+  -> View context model action
 menuGroup_ headingId heading kids =
   H.div_
   [ P.aria_ "labelledby" headingId
@@ -166,18 +166,18 @@ menuGroup_ headingId heading kids =
   : kids
   )
 -----------------------------------------------------------------------------
-menuSeparator_ :: View model action
+menuSeparator_ :: View context model action
 menuSeparator_ = H.hr_ [ P.role_ "separator" ]
 -----------------------------------------------------------------------------
 -- | Right-aligned keyboard shortcut inside a menu item
-menuShortcut_ :: MisoString -> View model action
+menuShortcut_ :: MisoString -> View context model action
 menuShortcut_ s =
   H.span_
   [ P.class_ "text-muted-foreground ml-auto text-xs tracking-widest" ]
   [ text s ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-dropdownMenuUsage :: View model action
+dropdownMenuUsage :: View context model action
 dropdownMenuUsage =
   dropdownMenu_ defaultDropdownMenuProps
   { dropdownMenuId = "my-dropdown"
@@ -195,7 +195,7 @@ dropdownMenuUsage =
   , menuRadioItem_ True [] [ "Activity Bar" ]
   ]
 -----------------------------------------------------------------------------
-dropdownMenuSample :: View model action
+dropdownMenuSample :: View context model action
 dropdownMenuSample =
   H.div_
   [ P.class_ "flex flex-wrap items-start gap-4" ]
@@ -295,7 +295,7 @@ dropdownMenuSample =
     ]
   ]
 -----------------------------------------------------------------------------
-dropdownMenuCodeSample :: View model action
+dropdownMenuCodeSample :: View context model action
 dropdownMenuCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -308,7 +308,7 @@ dropdownMenuCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.DropDownMenu
   -----------------------------------------------------------------------------
-  dropdownMenuUsage :: View model action
+  dropdownMenuUsage :: View context model action
   dropdownMenuUsage =
     dropdownMenu_ defaultDropdownMenuProps
     { dropdownMenuId = "my-dropdown"
@@ -327,15 +327,15 @@ dropdownMenuCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-dropdownMenuPropsApi :: View model action
+dropdownMenuPropsApi :: View context model action
 dropdownMenuPropsApi =
   """
   -- | Props for 'dropdownMenu_'
-  data DropdownMenuProps model action
+  data DropdownMenuProps context model action
     = DropdownMenuProps
     { dropdownMenuId :: MisoString
       -- ^ Base id; trigger\\/popover\\/menu ids are derived from it (required)
-    , dropdownMenuTrigger :: [View model action]
+    , dropdownMenuTrigger :: [View context model action]
       -- ^ Content of the trigger button (nests other views)
     , dropdownMenuTriggerClasses :: [MisoString]
       -- ^ Classes of the trigger button (defaults to @btn-outline@)
@@ -343,11 +343,11 @@ dropdownMenuPropsApi =
       -- ^ Popover alignment (@data-align@)
     , dropdownMenuPopoverClasses :: [MisoString]
       -- ^ Extra classes for the popover (e.g. @min-w-56@)
-    , dropdownMenuAttrs :: [Attribute action]
+    , dropdownMenuAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: outline trigger button, no alignment override
-  defaultDropdownMenuProps :: DropdownMenuProps model action
+  defaultDropdownMenuProps :: DropdownMenuProps context model action
   defaultDropdownMenuProps
     = DropdownMenuProps
     { dropdownMenuId = "dropdown-menu"

@@ -28,17 +28,17 @@ import qualified Miso.Html.Property as P
 import           Miso.UI.Icons
 -----------------------------------------------------------------------------
 -- | Props for the native 'select_'
-data SelectProps action
+data SelectProps model action
   = SelectProps
   { selectId :: Maybe MisoString
   , selectDisabled :: Bool
   , selectClasses :: [MisoString]
     -- ^ Extra classes appended to @select@ (e.g. @w-[180px]@)
-  , selectAttrs :: [Attribute action]
+  , selectAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor for the native select
-defaultSelectProps :: SelectProps action
+defaultSelectProps :: SelectProps model action
 defaultSelectProps
   = SelectProps
   { selectId = Nothing
@@ -50,9 +50,9 @@ defaultSelectProps
 -- | <https://basecoatui.com/components/native-select/ Native select>.
 -- Children are native @optgroup_@ \/ @option_@ views.
 select_
-  :: SelectProps action
-  -> [View model action]
-  -> View model action
+  :: SelectProps model action
+  -> [View context model action]
+  -> View context model action
 select_ SelectProps {..} kids = H.select_
   ( concat
     [ [ P.classes_ ("select" : selectClasses) ]
@@ -63,11 +63,11 @@ select_ SelectProps {..} kids = H.select_
   ) kids
 -----------------------------------------------------------------------------
 -- | Props for the popover-based 'selectMenu_' (basecoat JS select)
-data SelectMenuProps model action
+data SelectMenuProps context model action
   = SelectMenuProps
   { selectMenuId :: MisoString
     -- ^ Base id; trigger\/popover\/listbox ids are derived from it (required)
-  , selectMenuLabel :: [View model action]
+  , selectMenuLabel :: [View context model action]
     -- ^ Content of the trigger button (current selection)
   , selectMenuValue :: MisoString
     -- ^ Currently selected value (kept in a hidden input)
@@ -76,11 +76,11 @@ data SelectMenuProps model action
     -- ^ Constrain the listbox height and scroll (@max-h-64@)
   , selectMenuTriggerClasses :: [MisoString]
     -- ^ Extra classes for the trigger button
-  , selectMenuAttrs :: [Attribute action]
+  , selectMenuAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor for the JS select
-defaultSelectMenuProps :: SelectMenuProps model action
+defaultSelectMenuProps :: SelectMenuProps context model action
 defaultSelectMenuProps
   = SelectMenuProps
   { selectMenuId = "select-menu"
@@ -95,9 +95,9 @@ defaultSelectMenuProps
 -- | <https://basecoatui.com/components/select/ Select> (popover listbox).
 -- Children are 'selectOption_' \/ 'selectGroup_' views.
 selectMenu_
-  :: SelectMenuProps model action
-  -> [View model action]
-  -> View model action
+  :: SelectMenuProps context model action
+  -> [View context model action]
+  -> View context model action
 selectMenu_ cfg kids =
   H.div_
   ( P.class_ "select"
@@ -150,8 +150,8 @@ selectMenu_ cfg kids =
 selectOption_
   :: Bool
   -> MisoString
-  -> [View model action]
-  -> View model action
+  -> [View context model action]
+  -> View context model action
 selectOption_ selected value kids =
   optionalAttrs
     H.div_
@@ -168,8 +168,8 @@ selectGroup_
   -- ^ group heading id
   -> MisoString
   -- ^ heading text
-  -> [View model action]
-  -> View model action
+  -> [View context model action]
+  -> View context model action
 selectGroup_ headingId heading kids =
   H.div_
   [ P.aria_ "labelledby" headingId
@@ -180,7 +180,7 @@ selectGroup_ headingId heading kids =
   )
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-selectUsage :: View model action
+selectUsage :: View context model action
 selectUsage =
   H.div_
   [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -201,7 +201,7 @@ selectUsage =
     ]
   ]
 -----------------------------------------------------------------------------
-selectSample :: View model action
+selectSample :: View context model action
 selectSample =
   H.div_
   [ P.class_ "flex flex-col gap-4" ]
@@ -255,7 +255,7 @@ selectSample =
     ]
   ]
 -----------------------------------------------------------------------------
-selectCodeSample :: View model action
+selectCodeSample :: View context model action
 selectCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -267,7 +267,7 @@ selectCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Select
   -----------------------------------------------------------------------------
-  selectUsage :: View model action
+  selectUsage :: View context model action
   selectUsage =
     H.div_
     [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -289,21 +289,21 @@ selectCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-selectPropsApi :: View model action
+selectPropsApi :: View context model action
 selectPropsApi =
   """
   -- | Props for the native 'select_'
-  data SelectProps action
+  data SelectProps model action
     = SelectProps
     { selectId :: Maybe MisoString
     , selectDisabled :: Bool
     , selectClasses :: [MisoString]
       -- ^ Extra classes appended to @select@ (e.g. @w-[180px]@)
-    , selectAttrs :: [Attribute action]
+    , selectAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor for the native select
-  defaultSelectProps :: SelectProps action
+  defaultSelectProps :: SelectProps model action
   defaultSelectProps
     = SelectProps
     { selectId = Nothing
@@ -313,11 +313,11 @@ selectPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for the popover-based 'selectMenu_' (basecoat JS select)
-  data SelectMenuProps model action
+  data SelectMenuProps context model action
     = SelectMenuProps
     { selectMenuId :: MisoString
       -- ^ Base id; trigger\\/popover\\/listbox ids are derived from it (required)
-    , selectMenuLabel :: [View model action]
+    , selectMenuLabel :: [View context model action]
       -- ^ Content of the trigger button (current selection)
     , selectMenuValue :: MisoString
       -- ^ Currently selected value (kept in a hidden input)
@@ -326,11 +326,11 @@ selectPropsApi =
       -- ^ Constrain the listbox height and scroll (@max-h-64@)
     , selectMenuTriggerClasses :: [MisoString]
       -- ^ Extra classes for the trigger button
-    , selectMenuAttrs :: [Attribute action]
+    , selectMenuAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor for the JS select
-  defaultSelectMenuProps :: SelectMenuProps model action
+  defaultSelectMenuProps :: SelectMenuProps context model action
   defaultSelectMenuProps
     = SelectMenuProps
     { selectMenuId = "select-menu"

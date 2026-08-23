@@ -20,7 +20,7 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'input_'
-data InputProps action
+data InputProps model action
   = InputProps
   { inputType :: MisoString
     -- ^ @type@ attribute (@text@, @email@, @password@, @date@, ...)
@@ -32,11 +32,11 @@ data InputProps action
     -- ^ Renders with @aria-invalid@ (error styling)
   , inputClasses :: [MisoString]
     -- ^ Extra classes appended to @input@
-  , inputAttrs :: [Attribute action]
+  , inputAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: text input, enabled, no placeholder
-defaultInputProps :: InputProps action
+defaultInputProps :: InputProps model action
 defaultInputProps
   = InputProps
   { inputType = "text"
@@ -50,7 +50,7 @@ defaultInputProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/input/ Input>, driven by 'InputProps'
-input_ :: InputProps action -> View model action
+input_ :: InputProps model action -> View context model action
 input_ InputProps {..} = H.input_ $ concat
   [ [ P.classes_ ("input" : inputClasses)
     , P.type_ inputType
@@ -63,7 +63,7 @@ input_ InputProps {..} = H.input_ $ concat
   , inputAttrs
   ]
 -----------------------------------------------------------------------------
-inputSample :: View model action
+inputSample :: View context model action
 inputSample =
   H.div_
   [ P.class_ "flex flex-col gap-y-4" ]
@@ -82,7 +82,7 @@ inputSample =
     | t <- [ "date", "datetime-local", "month", "week", "time" ]
     ]
 -----------------------------------------------------------------------------
-inputCodeSample :: View model action
+inputCodeSample :: View context model action
 inputCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ inputCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Input
   -----------------------------------------------------------------------------
-  inputSample :: View model action
+  inputSample :: View context model action
   inputSample =
     H.div_
     [ P.class_ "flex flex-col gap-y-4" ]
@@ -113,11 +113,11 @@ inputCodeSample =
       ]
   """
 -----------------------------------------------------------------------------
-inputPropsApi :: View model action
+inputPropsApi :: View context model action
 inputPropsApi =
   """
   -- | Props for 'input_'
-  data InputProps action
+  data InputProps model action
     = InputProps
     { inputType :: MisoString
       -- ^ @type@ attribute (@text@, @email@, @password@, @date@, ...)
@@ -129,11 +129,11 @@ inputPropsApi =
       -- ^ Renders with @aria-invalid@ (error styling)
     , inputClasses :: [MisoString]
       -- ^ Extra classes appended to @input@
-    , inputAttrs :: [Attribute action]
+    , inputAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: text input, enabled, no placeholder
-  defaultInputProps :: InputProps action
+  defaultInputProps :: InputProps model action
   defaultInputProps
     = InputProps
     { inputType = "text"

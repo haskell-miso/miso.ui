@@ -22,17 +22,17 @@ import qualified Miso.Html.Property as P
 import qualified Miso.String as MS
 -----------------------------------------------------------------------------
 -- | Props for 'progress_'
-data ProgressProps action
+data ProgressProps model action
   = ProgressProps
   { progressValue :: Int
     -- ^ Percentage complete (0-100)
   , progressClasses :: [MisoString]
     -- ^ Extra classes appended to the track
-  , progressAttrs :: [Attribute action]
+  , progressAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: empty bar
-defaultProgressProps :: ProgressProps action
+defaultProgressProps :: ProgressProps model action
 defaultProgressProps
   = ProgressProps
   { progressValue = 0
@@ -41,7 +41,7 @@ defaultProgressProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/progress/ Progress>, driven by 'ProgressProps'
-progress_ :: ProgressProps action -> View model action
+progress_ :: ProgressProps model action -> View context model action
 progress_ ProgressProps {..} =
   H.div_
     ( concat
@@ -64,7 +64,7 @@ progress_ ProgressProps {..} =
       []
     ]
 -----------------------------------------------------------------------------
-progressSample :: View model action
+progressSample :: View context model action
 progressSample =
   H.div_
   [ P.class_ "flex flex-col gap-4 max-w-sm" ]
@@ -72,7 +72,7 @@ progressSample =
   , progress_ defaultProgressProps { progressValue = 66 }
   ]
 -----------------------------------------------------------------------------
-progressCodeSample :: View model action
+progressCodeSample :: View context model action
 progressCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ progressCodeSample =
   import qualified Miso.String as MS
   import           Miso.UI.Progress
   -----------------------------------------------------------------------------
-  progressSample :: View model action
+  progressSample :: View context model action
   progressSample =
     H.div_
     [ P.class_ "flex flex-col gap-4 max-w-sm" ]
@@ -94,21 +94,21 @@ progressCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-progressPropsApi :: View model action
+progressPropsApi :: View context model action
 progressPropsApi =
   """
   -- | Props for 'progress_'
-  data ProgressProps action
+  data ProgressProps model action
     = ProgressProps
     { progressValue :: Int
       -- ^ Percentage complete (0-100)
     , progressClasses :: [MisoString]
       -- ^ Extra classes appended to the track
-    , progressAttrs :: [Attribute action]
+    , progressAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: empty bar
-  defaultProgressProps :: ProgressProps action
+  defaultProgressProps :: ProgressProps model action
   defaultProgressProps
     = ProgressProps
     { progressValue = 0

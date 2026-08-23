@@ -21,15 +21,15 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'kbd_'
-data KbdProps action
+data KbdProps model action
   = KbdProps
   { kbdClasses :: [MisoString]
     -- ^ Extra classes appended to @kbd@
-  , kbdAttrs :: [Attribute action]
+  , kbdAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultKbdProps :: KbdProps action
+defaultKbdProps :: KbdProps model action
 defaultKbdProps
   = KbdProps
   { kbdClasses = []
@@ -38,9 +38,9 @@ defaultKbdProps
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/kbd/ Kbd>, driven by 'KbdProps'
 kbd_
-  :: KbdProps action
-  -> [View model action]
-  -> View model action
+  :: KbdProps model action
+  -> [View context model action]
+  -> View context model action
 kbd_ KbdProps {..} kids =
   H.kbd_
     ( P.classes_ ("kbd" : kbdClasses)
@@ -49,16 +49,16 @@ kbd_ KbdProps {..} kids =
 -----------------------------------------------------------------------------
 -- | Groups several 'kbd_' keys on one line
 kbdGroup_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 kbdGroup_ attrs kids =
   H.span_
     ( P.class_ "inline-flex items-center gap-1"
     : attrs
     ) kids
 -----------------------------------------------------------------------------
-kbdSample :: View model action
+kbdSample :: View context model action
 kbdSample =
   H.div_
   [ P.class_ "flex flex-col items-center gap-4" ]
@@ -71,7 +71,7 @@ kbdSample =
     ]
   ]
 -----------------------------------------------------------------------------
-kbdCodeSample :: View model action
+kbdCodeSample :: View context model action
 kbdCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ kbdCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Kbd
   -----------------------------------------------------------------------------
-  kbdSample :: View model action
+  kbdSample :: View context model action
   kbdSample =
     H.div_
     [ P.class_ "flex flex-col items-center gap-4" ]
@@ -96,19 +96,19 @@ kbdCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-kbdPropsApi :: View model action
+kbdPropsApi :: View context model action
 kbdPropsApi =
   """
   -- | Props for 'kbd_'
-  data KbdProps action
+  data KbdProps model action
     = KbdProps
     { kbdClasses :: [MisoString]
       -- ^ Extra classes appended to @kbd@
-    , kbdAttrs :: [Attribute action]
+    , kbdAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultKbdProps :: KbdProps action
+  defaultKbdProps :: KbdProps model action
   defaultKbdProps
     = KbdProps
     { kbdClasses = []

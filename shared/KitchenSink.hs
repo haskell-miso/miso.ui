@@ -16,7 +16,7 @@ import           Miso.UI
 -----------------------------------------------------------------------------
 import           Types
 -----------------------------------------------------------------------------
-kitchenSinkPage :: View model Action
+kitchenSinkPage :: Eq context => View context model Action
 kitchenSinkPage = vfrag
     [ div_
         [ class_ "flex flex-col gap-4" ]
@@ -155,9 +155,9 @@ kitchenSinkPage = vfrag
 -- and (when the component has one) a collapsible props api reference
 uiComponent
   :: ( MisoString, MisoString, MisoString
-     , View model Action, View model Action, Maybe (View model Action)
+     , View context model Action, View context model Action, Maybe (View context model Action)
      )
-  -> [ View model Action ]
+  -> [ View context model Action ]
 uiComponent (name, anchor, description, sample, codeSample, mPropsApi) =
   [ h1_
       [ class_ "text-3xl font-semibold tracking-tight scroll-mt-14"
@@ -177,7 +177,7 @@ uiComponent (name, anchor, description, sample, codeSample, mPropsApi) =
 -----------------------------------------------------------------------------
 -- | Collapsible "Props API" panel showing the component's props records and
 -- smart-constructor defaults (generated from source by scripts\/sync-samples.hs)
-propsApiSection :: View model Action -> View model Action
+propsApiSection :: View context model Action -> View context model Action
 propsApiSection api =
   accordion_ defaultAccordionProps
     [ accordionSection_ defaultAccordionItemProps
@@ -202,8 +202,8 @@ propsApiSection api =
 uiSection
   :: MisoString
   -> MisoString
-  -> [View model action]
-  -> View model action
+  -> [View context model action]
+  -> View context model action
 uiSection name url content = section_
   [ class_ "w-full rounded-lg border scroll-mt-14"
   ]
@@ -250,7 +250,7 @@ uiSection name url content = section_
     ]
   ]
 -----------------------------------------------------------------------------
-copyButton :: View model Action
+copyButton :: View context model Action
 copyButton = button_
     defaultButtonProps
       { buttonIcon = True
@@ -291,9 +291,9 @@ copyButton = button_
 -----------------------------------------------------------------------------
 previewCode
   :: MisoString
-  -> View m Action
-  -> View m Action
-  -> View m Action
+  -> View context m Action
+  -> View context m Action
+  -> View context m Action
 previewCode name sample codeSample = tabs_
   defaultTabsProps
     { tabsId = "demo-tabs-with-panels-" <> name

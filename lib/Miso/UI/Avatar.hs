@@ -24,7 +24,7 @@ import qualified Miso.Html.Property as P
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'avatar_'
-data AvatarProps action
+data AvatarProps model action
   = AvatarProps
   { avatarSrc :: MisoString
   , avatarAlt :: MisoString
@@ -34,11 +34,11 @@ data AvatarProps action
     -- ^ @rounded-lg@ instead of @rounded-full@
   , avatarClasses :: [MisoString]
     -- ^ Extra classes appended to the @img@
-  , avatarAttrs :: [Attribute action]
+  , avatarAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: small round avatar
-defaultAvatarProps :: AvatarProps action
+defaultAvatarProps :: AvatarProps model action
 defaultAvatarProps
   = AvatarProps
   { avatarSrc = ""
@@ -50,7 +50,7 @@ defaultAvatarProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/avatar/ Avatar>, driven by 'AvatarProps'
-avatar_ :: AvatarProps action -> View model action
+avatar_ :: AvatarProps model action -> View context model action
 avatar_ AvatarProps {..} = H.img_ $ concat
   [ [ P.src_ avatarSrc
     , P.alt_ avatarAlt
@@ -66,9 +66,9 @@ avatar_ AvatarProps {..} = H.img_ $ concat
 -----------------------------------------------------------------------------
 -- | Initials fallback when no image is available
 avatarFallback_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 avatarFallback_ attrs kids =
   H.span_
     ( P.class_ "size-8 shrink-0 bg-muted flex items-center justify-center rounded-full"
@@ -79,9 +79,9 @@ avatarFallback_ attrs kids =
 -- (the group styles them via @[&_img]@ selectors).
 avatarGroup_
   :: Size
-  -> [Attribute action]
-  -> [View model action]
-  -> View model action
+  -> [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 avatarGroup_ size attrs kids =
   H.div_
     ( P.classes_
@@ -98,7 +98,7 @@ avatarGroup_ size attrs kids =
     : attrs
     ) kids
 -----------------------------------------------------------------------------
-avatarSample :: View model action
+avatarSample :: View context model action
 avatarSample =
   H.div_
   [ P.class_ "flex flex-row flex-wrap items-center gap-4" ]
@@ -129,7 +129,7 @@ avatarSample =
       | user <- [ "dmjio", "shadcn", "adamwathan", "hunvreus" ]
       ]
 -----------------------------------------------------------------------------
-avatarCodeSample :: View model action
+avatarCodeSample :: View context model action
 avatarCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -141,7 +141,7 @@ avatarCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Avatar
   -----------------------------------------------------------------------------
-  avatarSample :: View model action
+  avatarSample :: View context model action
   avatarSample =
     H.div_
     [ P.class_ "flex flex-row flex-wrap items-center gap-4" ]
@@ -173,11 +173,11 @@ avatarCodeSample =
         ]
   """
 -----------------------------------------------------------------------------
-avatarPropsApi :: View model action
+avatarPropsApi :: View context model action
 avatarPropsApi =
   """
   -- | Props for 'avatar_'
-  data AvatarProps action
+  data AvatarProps model action
     = AvatarProps
     { avatarSrc :: MisoString
     , avatarAlt :: MisoString
@@ -187,11 +187,11 @@ avatarPropsApi =
       -- ^ @rounded-lg@ instead of @rounded-full@
     , avatarClasses :: [MisoString]
       -- ^ Extra classes appended to the @img@
-    , avatarAttrs :: [Attribute action]
+    , avatarAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: small round avatar
-  defaultAvatarProps :: AvatarProps action
+  defaultAvatarProps :: AvatarProps model action
   defaultAvatarProps
     = AvatarProps
     { avatarSrc = ""

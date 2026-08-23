@@ -21,7 +21,7 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'slider_'
-data SliderProps action
+data SliderProps model action
   = SliderProps
   { sliderMin :: MisoString
   , sliderMax :: MisoString
@@ -31,13 +31,13 @@ data SliderProps action
     -- ^ Initial track fill, sets the @--slider-value@ CSS variable (e.g. @\"75%\"@)
   , sliderClasses :: [MisoString]
     -- ^ Extra classes appended to the @input@
-  , sliderAttrs :: [Attribute action]
+  , sliderAttrs :: [Attribute model action]
     -- ^ Extra attributes; basecoat's slider JS needs
     -- @onCreatedWith@ \/ @onBeforeDestroyedWith@ hooks passed here
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: 0-100, starts at 50
-defaultSliderProps :: SliderProps action
+defaultSliderProps :: SliderProps model action
 defaultSliderProps
   = SliderProps
   { sliderMin = "0"
@@ -50,7 +50,7 @@ defaultSliderProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/slider/ Slider>, driven by 'SliderProps'
-slider_ :: SliderProps action -> View model action
+slider_ :: SliderProps model action -> View context model action
 slider_ SliderProps {..} = H.input_ $ concat
   [ [ CSS.style_ [ "--slider-value" =: sliderPercent ]
     , P.classes_ ("input" : sliderClasses)
@@ -68,7 +68,7 @@ slider_ SliderProps {..} = H.input_ $ concat
 sliderSample
   :: (DOMRef -> action)
   -> (DOMRef -> action)
-  -> View model action
+  -> View context model action
 sliderSample initSlider destroySlider =
   H.div_
   [ P.class_ "max-w-sm" ]
@@ -83,7 +83,7 @@ sliderSample initSlider destroySlider =
     }
   ]
 -----------------------------------------------------------------------------
-sliderCodeSample :: View model action
+sliderCodeSample :: View context model action
 sliderCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -98,7 +98,7 @@ sliderCodeSample =
   sliderSample
     :: (DOMRef -> action)
     -> (DOMRef -> action)
-    -> View model action
+    -> View context model action
   sliderSample initSlider destroySlider =
     H.div_
     [ P.class_ "max-w-sm" ]
@@ -114,11 +114,11 @@ sliderCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-sliderPropsApi :: View model action
+sliderPropsApi :: View context model action
 sliderPropsApi =
   """
   -- | Props for 'slider_'
-  data SliderProps action
+  data SliderProps model action
     = SliderProps
     { sliderMin :: MisoString
     , sliderMax :: MisoString
@@ -128,13 +128,13 @@ sliderPropsApi =
       -- ^ Initial track fill, sets the @--slider-value@ CSS variable (e.g. @\\"75%\\"@)
     , sliderClasses :: [MisoString]
       -- ^ Extra classes appended to the @input@
-    , sliderAttrs :: [Attribute action]
+    , sliderAttrs :: [Attribute model action]
       -- ^ Extra attributes; basecoat's slider JS needs
       -- @onCreatedWith@ \\/ @onBeforeDestroyedWith@ hooks passed here
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: 0-100, starts at 50
-  defaultSliderProps :: SliderProps action
+  defaultSliderProps :: SliderProps model action
   defaultSliderProps
     = SliderProps
     { sliderMin = "0"

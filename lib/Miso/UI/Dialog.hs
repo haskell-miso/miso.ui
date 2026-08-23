@@ -37,17 +37,17 @@ import           Miso.UI.Label
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'dialog_' (the native @dialog@ element)
-data DialogProps action
+data DialogProps model action
   = DialogProps
   { dialogId :: MisoString
     -- ^ id of the dialog; @-title@ \/ @-description@ ids derive from it
   , dialogClasses :: [MisoString]
     -- ^ Extra classes appended to @dialog.dialog@
-  , dialogAttrs :: [Attribute action]
+  , dialogAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultDialogProps :: DialogProps action
+defaultDialogProps :: DialogProps model action
 defaultDialogProps
   = DialogProps
   { dialogId = "dialog"
@@ -59,9 +59,9 @@ defaultDialogProps
 -- Children typically include 'dialogHeader_', 'dialogSection_', 'dialogFooter_'
 -- and a 'dialogCloseButton_'.
 dialog_
-  :: DialogProps action
-  -> [View model action]
-  -> View model action
+  :: DialogProps model action
+  -> [View context model action]
+  -> View context model action
 dialog_ DialogProps {..} kids =
   H.dialog_
     ( concat
@@ -78,11 +78,11 @@ dialog_ DialogProps {..} kids =
 dialogHeader_
   :: MisoString
   -- ^ dialog id (matches 'dialogId')
-  -> [View model action]
+  -> [View context model action]
   -- ^ title
-  -> [View model action]
+  -> [View context model action]
   -- ^ description
-  -> View model action
+  -> View context model action
 dialogHeader_ did title description =
   H.header_ []
   [ H.h2_ [ P.id_ (did <> "-title") ] title
@@ -90,19 +90,19 @@ dialogHeader_ did title description =
   ]
 -----------------------------------------------------------------------------
 dialogSection_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 dialogSection_ = H.section_
 -----------------------------------------------------------------------------
 dialogFooter_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 dialogFooter_ = H.footer_
 -----------------------------------------------------------------------------
 -- | The x-shaped close button in the dialog's corner
-dialogCloseButton_ :: action -> View model action
+dialogCloseButton_ :: action -> View context model action
 dialogCloseButton_ close =
   H.button_
   [ P.type_ "button"
@@ -120,7 +120,7 @@ data Action
 -- | Demo component: two dialogs with triggers. The model tracks the id of
 -- the currently open dialog.
 dialogComponent :: Component parent props MisoString Action
-dialogComponent = component "" update_ $ \_ _ -> view_
+dialogComponent = component "" update_ $ \_ _ _ -> view_
   where
     update_ NoOp = pure ()
     update_ (ShowDialog sel domRef) = do
@@ -137,7 +137,7 @@ dialogComponent = component "" update_ $ \_ _ -> view_
           $ [sel :: MisoString]
         void $ dialog # ("close" :: MisoString) $ ()
 -----------------------------------------------------------------------------
-view_ :: View MisoString Action
+view_ :: View context MisoString Action
 view_ =
   H.div_
   [ P.class_ "flex flex-wrap items-center gap-4" ]
@@ -216,7 +216,7 @@ view_ =
     lorem =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 -----------------------------------------------------------------------------
-dialogCodeSample :: View model action
+dialogCodeSample :: View context model action
 dialogCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -239,7 +239,7 @@ dialogCodeSample =
     | NoOp
   -----------------------------------------------------------------------------
   dialogComponent :: Component parent props MisoString Action
-  dialogComponent = component "" update_ $ \\_ _ ->
+  dialogComponent = component "" update_ $ \\_ _ _ ->
       H.div_ []
       [ button_ defaultButtonProps
         { buttonVariant = Outline
@@ -280,21 +280,21 @@ dialogCodeSample =
           void $ dialog # ("close" :: MisoString) $ ()
   """
 -----------------------------------------------------------------------------
-dialogPropsApi :: View model action
+dialogPropsApi :: View context model action
 dialogPropsApi =
   """
   -- | Props for 'dialog_' (the native @dialog@ element)
-  data DialogProps action
+  data DialogProps model action
     = DialogProps
     { dialogId :: MisoString
       -- ^ id of the dialog; @-title@ \\/ @-description@ ids derive from it
     , dialogClasses :: [MisoString]
       -- ^ Extra classes appended to @dialog.dialog@
-    , dialogAttrs :: [Attribute action]
+    , dialogAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultDialogProps :: DialogProps action
+  defaultDialogProps :: DialogProps model action
   defaultDialogProps
     = DialogProps
     { dialogId = "dialog"

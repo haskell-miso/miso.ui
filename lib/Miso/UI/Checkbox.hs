@@ -24,7 +24,7 @@ import qualified Miso.Html.Property as P
 import           Miso.UI.Label
 -----------------------------------------------------------------------------
 -- | Props for 'checkbox_'
-data CheckboxProps action
+data CheckboxProps model action
   = CheckboxProps
   { checkboxId :: Maybe MisoString
   , checkboxName :: Maybe MisoString
@@ -35,11 +35,11 @@ data CheckboxProps action
     -- ^ Extra classes appended to the @input@
   , checkboxLabelClasses :: [MisoString]
     -- ^ Extra classes appended to the wrapping @label@
-  , checkboxAttrs :: [Attribute action]
+  , checkboxAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: unchecked, enabled
-defaultCheckboxProps :: CheckboxProps action
+defaultCheckboxProps :: CheckboxProps model action
 defaultCheckboxProps
   = CheckboxProps
   { checkboxId = Nothing
@@ -55,16 +55,16 @@ defaultCheckboxProps
 -- | <https://basecoatui.com/components/checkbox/ Checkbox>: label-wrapped checkbox.
 -- The children render as the label text.
 checkbox_
-  :: CheckboxProps action
-  -> [View model action]
-  -> View model action
+  :: CheckboxProps model action
+  -> [View context model action]
+  -> View context model action
 checkbox_ cfg kids =
   H.label_
   [ P.classes_ ("label" : "gap-3" : checkboxLabelClasses cfg) ]
   ( checkboxInput_ cfg : kids )
 -----------------------------------------------------------------------------
 -- | The bare checkbox @input@, for custom layouts
-checkboxInput_ :: CheckboxProps action -> View model action
+checkboxInput_ :: CheckboxProps model action -> View context model action
 checkboxInput_ CheckboxProps {..} = H.input_ $ concat
   [ [ P.classes_ ("input" : checkboxClasses)
     , P.type_ "checkbox"
@@ -78,7 +78,7 @@ checkboxInput_ CheckboxProps {..} = H.input_ $ concat
   ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-checkboxUsage :: View model action
+checkboxUsage :: View context model action
 checkboxUsage =
   H.div_
   [ P.class_ "flex flex-col gap-6" ]
@@ -87,7 +87,7 @@ checkboxUsage =
   , checkbox_ defaultCheckboxProps { checkboxDisabled = True } [ "Disabled" ]
   ]
 -----------------------------------------------------------------------------
-checkboxSample :: View model action
+checkboxSample :: View context model action
 checkboxSample =
   H.div_
   [ P.class_ "flex flex-col gap-6 max-w-lg" ]
@@ -129,7 +129,7 @@ checkboxSample =
     ]
   ]
 -----------------------------------------------------------------------------
-checkboxCodeSample :: View model action
+checkboxCodeSample :: View context model action
 checkboxCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -141,7 +141,7 @@ checkboxCodeSample =
   import           Miso.UI.Label
   import           Miso.UI.Checkbox
   -----------------------------------------------------------------------------
-  checkboxUsage :: View model action
+  checkboxUsage :: View context model action
   checkboxUsage =
     H.div_
     [ P.class_ "flex flex-col gap-6" ]
@@ -151,11 +151,11 @@ checkboxCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-checkboxPropsApi :: View model action
+checkboxPropsApi :: View context model action
 checkboxPropsApi =
   """
   -- | Props for 'checkbox_'
-  data CheckboxProps action
+  data CheckboxProps model action
     = CheckboxProps
     { checkboxId :: Maybe MisoString
     , checkboxName :: Maybe MisoString
@@ -166,11 +166,11 @@ checkboxPropsApi =
       -- ^ Extra classes appended to the @input@
     , checkboxLabelClasses :: [MisoString]
       -- ^ Extra classes appended to the wrapping @label@
-    , checkboxAttrs :: [Attribute action]
+    , checkboxAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: unchecked, enabled
-  defaultCheckboxProps :: CheckboxProps action
+  defaultCheckboxProps :: CheckboxProps model action
   defaultCheckboxProps
     = CheckboxProps
     { checkboxId = Nothing

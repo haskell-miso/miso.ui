@@ -25,17 +25,17 @@ import           Miso.UI.Icons
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'alert_'
-data AlertProps action
+data AlertProps model action
   = AlertProps
   { alertVariant :: Variant
     -- ^ 'Primary' (default) or 'Destructive'
   , alertClasses :: [MisoString]
     -- ^ Extra classes appended to the alert
-  , alertAttrs :: [Attribute action]
+  , alertAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: default (success-styled) alert
-defaultAlertProps :: AlertProps action
+defaultAlertProps :: AlertProps model action
 defaultAlertProps
   = AlertProps
   { alertVariant = Primary
@@ -46,9 +46,9 @@ defaultAlertProps
 -- | <https://basecoatui.com/components/alert/ Alert>, driven by 'AlertProps'.
 -- Children are typically an icon, an 'alertHeader_' and an 'alertSection_'.
 alert_
-  :: AlertProps action
-  -> [View model action]
-  -> View model action
+  :: AlertProps model action
+  -> [View context model action]
+  -> View context model action
 alert_ AlertProps {..} kids =
   H.div_
     ( P.classes_
@@ -61,18 +61,18 @@ alert_ AlertProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 alertHeader_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 alertHeader_ attrs kids = H.h2_ attrs kids
 -----------------------------------------------------------------------------
 alertSection_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 alertSection_ attrs kids = H.section_ attrs kids
 -----------------------------------------------------------------------------
-alertSample :: View model action
+alertSample :: View context model action
 alertSample =
   H.div_
   [ P.class_ "p-4" ]
@@ -100,7 +100,7 @@ alertSample =
     ]
   ]
 -----------------------------------------------------------------------------
-alertCodeSample :: View model action
+alertCodeSample :: View context model action
 alertCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ alertCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Alert
   -----------------------------------------------------------------------------
-  alertSample :: View model action
+  alertSample :: View context model action
   alertSample =
     H.div_
     [ P.class_ "p-4" ]
@@ -142,21 +142,21 @@ alertCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-alertPropsApi :: View model action
+alertPropsApi :: View context model action
 alertPropsApi =
   """
   -- | Props for 'alert_'
-  data AlertProps action
+  data AlertProps model action
     = AlertProps
     { alertVariant :: Variant
       -- ^ 'Primary' (default) or 'Destructive'
     , alertClasses :: [MisoString]
       -- ^ Extra classes appended to the alert
-    , alertAttrs :: [Attribute action]
+    , alertAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: default (success-styled) alert
-  defaultAlertProps :: AlertProps action
+  defaultAlertProps :: AlertProps model action
   defaultAlertProps
     = AlertProps
     { alertVariant = Primary
