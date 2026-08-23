@@ -21,7 +21,7 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'switch_'
-data SwitchProps action
+data SwitchProps model action
   = SwitchProps
   { switchId :: Maybe MisoString
   , switchName :: MisoString
@@ -31,11 +31,11 @@ data SwitchProps action
     -- ^ Extra classes appended to the @input@ (e.g. @checked:bg-blue-500@)
   , switchLabelClasses :: [MisoString]
     -- ^ Extra classes appended to the wrapping @label@
-  , switchAttrs :: [Attribute action]
+  , switchAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: unchecked, enabled
-defaultSwitchProps :: SwitchProps action
+defaultSwitchProps :: SwitchProps model action
 defaultSwitchProps
   = SwitchProps
   { switchId = Nothing
@@ -50,16 +50,16 @@ defaultSwitchProps
 -- | <https://basecoatui.com/components/switch/ Switch>: label-wrapped switch input.
 -- The children render as the label text.
 switch_
-  :: SwitchProps action
-  -> [View model action]
-  -> View model action
+  :: SwitchProps model action
+  -> [View context model action]
+  -> View context model action
 switch_ cfg kids =
   H.label_
   [ P.classes_ ("label" : switchLabelClasses cfg) ]
   ( switchInput_ cfg : kids )
 -----------------------------------------------------------------------------
 -- | The bare switch @input@, for custom layouts
-switchInput_ :: SwitchProps action -> View model action
+switchInput_ :: SwitchProps model action -> View context model action
 switchInput_ SwitchProps {..} = H.input_ $ concat
   [ [ P.classes_ ("input" : switchClasses)
     , P.type_ "checkbox"
@@ -72,7 +72,7 @@ switchInput_ SwitchProps {..} = H.input_ $ concat
   , switchAttrs
   ]
 -----------------------------------------------------------------------------
-switchSample :: View model action
+switchSample :: View context model action
 switchSample =
   H.div_
   [ P.class_ "inline-flex flex-col gap-y-6" ]
@@ -97,7 +97,7 @@ switchSample =
     ]
   ]
 -----------------------------------------------------------------------------
-switchCodeSample :: View model action
+switchCodeSample :: View context model action
 switchCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -108,7 +108,7 @@ switchCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Switch
   -----------------------------------------------------------------------------
-  switchSample :: View model action
+  switchSample :: View context model action
   switchSample =
     H.div_
     [ P.class_ "inline-flex flex-col gap-y-6" ]
@@ -134,11 +134,11 @@ switchCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-switchPropsApi :: View model action
+switchPropsApi :: View context model action
 switchPropsApi =
   """
   -- | Props for 'switch_'
-  data SwitchProps action
+  data SwitchProps model action
     = SwitchProps
     { switchId :: Maybe MisoString
     , switchName :: MisoString
@@ -148,11 +148,11 @@ switchPropsApi =
       -- ^ Extra classes appended to the @input@ (e.g. @checked:bg-blue-500@)
     , switchLabelClasses :: [MisoString]
       -- ^ Extra classes appended to the wrapping @label@
-    , switchAttrs :: [Attribute action]
+    , switchAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: unchecked, enabled
-  defaultSwitchProps :: SwitchProps action
+  defaultSwitchProps :: SwitchProps model action
   defaultSwitchProps
     = SwitchProps
     { switchId = Nothing

@@ -24,18 +24,18 @@ import           Miso.UI.Button
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'tooltip_'
-data TooltipProps action
+data TooltipProps model action
   = TooltipProps
   { tooltipText :: MisoString
     -- ^ Tooltip content (@data-tooltip@)
   , tooltipSide :: Side
     -- ^ Placement (@data-side@); 'TopSide' by default
-  , tooltipButton :: ButtonProps action
+  , tooltipButton :: ButtonProps model action
     -- ^ Props for the trigger button rendered by 'tooltip_'
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: tooltip on top of an outline button
-defaultTooltipProps :: TooltipProps action
+defaultTooltipProps :: TooltipProps model action
 defaultTooltipProps
   = TooltipProps
   { tooltipText = ""
@@ -44,7 +44,7 @@ defaultTooltipProps
   }
 -----------------------------------------------------------------------------
 -- | The basecoat tooltip attributes, for attaching to any element
-tooltipAttrs_ :: MisoString -> Side -> [Attribute action]
+tooltipAttrs_ :: MisoString -> Side -> [Attribute model action]
 tooltipAttrs_ tip side = concat
   [ [ P.data_ "tooltip" tip ]
   , [ P.data_ "side" (sideText side) | side /= TopSide ]
@@ -53,15 +53,15 @@ tooltipAttrs_ tip side = concat
 -- | <https://basecoatui.com/components/tooltip/ Tooltip>: button with a tooltip.
 -- For tooltips on arbitrary elements use 'tooltipAttrs_'.
 tooltip_
-  :: TooltipProps action
-  -> [View model action]
-  -> View model action
+  :: TooltipProps model action
+  -> [View context model action]
+  -> View context model action
 tooltip_ TooltipProps {..} kids =
   button_ tooltipButton
     { buttonAttrs = tooltipAttrs_ tooltipText tooltipSide ++ buttonAttrs tooltipButton
     } kids
 -----------------------------------------------------------------------------
-tooltipSample :: View model action
+tooltipSample :: View context model action
 tooltipSample =
   H.div_
   [ P.class_ "flex flex-wrap items-center gap-4" ]
@@ -71,7 +71,7 @@ tooltipSample =
   , tooltip_ defaultTooltipProps { tooltipText = "Left tooltip", tooltipSide = LeftSide } [ "Left" ]
   ]
 -----------------------------------------------------------------------------
-tooltipCodeSample :: View model action
+tooltipCodeSample :: View context model action
 tooltipCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ tooltipCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Tooltip
   -----------------------------------------------------------------------------
-  tooltipSample :: View model action
+  tooltipSample :: View context model action
   tooltipSample =
     H.div_
     [ P.class_ "flex flex-wrap items-center gap-4" ]
@@ -95,22 +95,22 @@ tooltipCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-tooltipPropsApi :: View model action
+tooltipPropsApi :: View context model action
 tooltipPropsApi =
   """
   -- | Props for 'tooltip_'
-  data TooltipProps action
+  data TooltipProps model action
     = TooltipProps
     { tooltipText :: MisoString
       -- ^ Tooltip content (@data-tooltip@)
     , tooltipSide :: Side
       -- ^ Placement (@data-side@); 'TopSide' by default
-    , tooltipButton :: ButtonProps action
+    , tooltipButton :: ButtonProps model action
       -- ^ Props for the trigger button rendered by 'tooltip_'
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: tooltip on top of an outline button
-  defaultTooltipProps :: TooltipProps action
+  defaultTooltipProps :: TooltipProps model action
   defaultTooltipProps
     = TooltipProps
     { tooltipText = ""

@@ -21,17 +21,17 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'table_'
-data TableProps action
+data TableProps model action
   = TableProps
   { tableClasses :: [MisoString]
     -- ^ Extra classes appended to the @table@
   , tableWrapperClasses :: [MisoString]
     -- ^ Extra classes appended to the scrollable wrapper
-  , tableAttrs :: [Attribute action]
+  , tableAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultTableProps :: TableProps action
+defaultTableProps :: TableProps model action
 defaultTableProps
   = TableProps
   { tableClasses = []
@@ -42,9 +42,9 @@ defaultTableProps
 -- | <https://basecoatui.com/components/table/ Table>: scroll-wrapped basecoat table.
 -- Children are the usual @caption_@ \/ @thead_@ \/ @tbody_@ \/ @tfoot_@ views.
 table_
-  :: TableProps action
-  -> [View model action]
-  -> View model action
+  :: TableProps model action
+  -> [View context model action]
+  -> View context model action
 table_ TableProps {..} kids =
   H.div_
   [ P.classes_ ("relative" : "w-full" : "overflow-x-auto" : tableWrapperClasses) ]
@@ -55,7 +55,7 @@ table_ TableProps {..} kids =
   ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-tableUsage :: View model action
+tableUsage :: View context model action
 tableUsage =
   table_ defaultTableProps
   [ H.caption_ [] [ "A list of your recent invoices." ]
@@ -75,7 +75,7 @@ tableUsage =
     ]
   ]
 -----------------------------------------------------------------------------
-tableSample :: View model action
+tableSample :: View context model action
 tableSample =
   table_ defaultTableProps
   [ H.caption_ [] [ "A list of your recent invoices." ]
@@ -114,7 +114,7 @@ tableSample =
       , ("INV007", "Unpaid", "Credit Card", "$300.00")
       ]
 -----------------------------------------------------------------------------
-tableCodeSample :: View model action
+tableCodeSample :: View context model action
 tableCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -125,7 +125,7 @@ tableCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Table
   -----------------------------------------------------------------------------
-  tableUsage :: View model action
+  tableUsage :: View context model action
   tableUsage =
     table_ defaultTableProps
     [ H.caption_ [] [ "A list of your recent invoices." ]
@@ -146,21 +146,21 @@ tableCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-tablePropsApi :: View model action
+tablePropsApi :: View context model action
 tablePropsApi =
   """
   -- | Props for 'table_'
-  data TableProps action
+  data TableProps model action
     = TableProps
     { tableClasses :: [MisoString]
       -- ^ Extra classes appended to the @table@
     , tableWrapperClasses :: [MisoString]
       -- ^ Extra classes appended to the scrollable wrapper
-    , tableAttrs :: [Attribute action]
+    , tableAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultTableProps :: TableProps action
+  defaultTableProps :: TableProps model action
   defaultTableProps
     = TableProps
     { tableClasses = []

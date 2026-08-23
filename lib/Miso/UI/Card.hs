@@ -29,22 +29,22 @@ import           Miso.UI.Label
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'card_'. Title, description and footer nest other views.
-data CardProps model action
+data CardProps context model action
   = CardProps
-  { cardTitle :: Maybe (View model action)
+  { cardTitle :: Maybe (View context model action)
     -- ^ Heading shown in the card header
-  , cardDescription :: Maybe (View model action)
+  , cardDescription :: Maybe (View context model action)
     -- ^ Sub-heading shown under the title
-  , cardFooter :: Maybe [View model action]
+  , cardFooter :: Maybe [View context model action]
     -- ^ Footer content
   , cardFooterClasses :: [MisoString]
   , cardClasses :: [MisoString]
     -- ^ Extra classes appended to @div.card@ (e.g. @w-full max-w-sm@)
-  , cardAttrs :: [Attribute action]
+  , cardAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: bare card
-defaultCardProps :: CardProps model action
+defaultCardProps :: CardProps context model action
 defaultCardProps
   = CardProps
   { cardTitle = Nothing
@@ -58,9 +58,9 @@ defaultCardProps
 -- | <https://basecoatui.com/components/card/ Card>, driven by 'CardProps'.
 -- Children render inside the card's content section.
 card_
-  :: CardProps model action
-  -> [View model action]
-  -> View model action
+  :: CardProps context model action
+  -> [View context model action]
+  -> View context model action
 card_ CardProps {..} kids =
   H.div_
     ( P.classes_ ("card" : cardClasses)
@@ -80,25 +80,25 @@ card_ CardProps {..} kids =
     ]
 -----------------------------------------------------------------------------
 cardHeader_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 cardHeader_ = H.header_
 -----------------------------------------------------------------------------
 cardContent_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 cardContent_ = H.section_
 -----------------------------------------------------------------------------
 cardFooter_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 cardFooter_ = H.footer_
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-cardUsage :: View model action
+cardUsage :: View context model action
 cardUsage =
   card_ defaultCardProps
   { cardTitle = Just "Login to your account"
@@ -120,7 +120,7 @@ cardUsage =
     ]
   ]
 -----------------------------------------------------------------------------
-cardSample :: View model action
+cardSample :: View context model action
 cardSample =
   H.div_
   [ P.class_ "flex flex-col gap-4" ]
@@ -195,7 +195,7 @@ cardSample =
     ]
   ]
 -----------------------------------------------------------------------------
-cardCodeSample :: View model action
+cardCodeSample :: View context model action
 cardCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -210,7 +210,7 @@ cardCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Card
   -----------------------------------------------------------------------------
-  cardUsage :: View model action
+  cardUsage :: View context model action
   cardUsage =
     card_ defaultCardProps
     { cardTitle = Just "Login to your account"
@@ -233,26 +233,26 @@ cardCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-cardPropsApi :: View model action
+cardPropsApi :: View context model action
 cardPropsApi =
   """
   -- | Props for 'card_'. Title, description and footer nest other views.
-  data CardProps model action
+  data CardProps context model action
     = CardProps
-    { cardTitle :: Maybe (View model action)
+    { cardTitle :: Maybe (View context model action)
       -- ^ Heading shown in the card header
-    , cardDescription :: Maybe (View model action)
+    , cardDescription :: Maybe (View context model action)
       -- ^ Sub-heading shown under the title
-    , cardFooter :: Maybe [View model action]
+    , cardFooter :: Maybe [View context model action]
       -- ^ Footer content
     , cardFooterClasses :: [MisoString]
     , cardClasses :: [MisoString]
       -- ^ Extra classes appended to @div.card@ (e.g. @w-full max-w-sm@)
-    , cardAttrs :: [Attribute action]
+    , cardAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: bare card
-  defaultCardProps :: CardProps model action
+  defaultCardProps :: CardProps context model action
   defaultCardProps
     = CardProps
     { cardTitle = Nothing

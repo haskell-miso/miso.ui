@@ -34,7 +34,7 @@ import           Types
 currentPage :: Lens Model Page
 currentPage = lens _currentPage $ \r x -> r { _currentPage = x }
 -----------------------------------------------------------------------------
-app :: Component parent props Model Action
+app :: Eq parent => Component parent props Model Action
 app = (component emptyModel update_ homeView) { mount = Just ScrollIntoView }
   where
     update_ = \case
@@ -72,8 +72,8 @@ app = (component emptyModel update_ homeView) { mount = Just ScrollIntoView }
                  return document.documentElement.classList.add('theme-' + ${theme}); |]
 -----------------------------------------------------------------------------
 withMainAs
-  :: View Model Action
-  -> View Model Action
+  :: View context Model Action
+  -> View context Model Action
 withMainAs content = vfrag
   [ asideView
   , main_
@@ -88,12 +88,12 @@ withMainAs content = vfrag
     ]
   ]
 -----------------------------------------------------------------------------
-homeView :: props -> Model -> View Model Action
-homeView _ = \case
+homeView :: Eq context => context -> props -> Model -> View context Model Action
+homeView _ _ = \case
   Model Index ->
     withMainAs mainContent
 
-topSection :: View Model Action
+topSection :: View context Model Action
 topSection = div_
             [ class_ "flex h-14 w-full items-center gap-2 px-4"
             ]
@@ -236,7 +236,7 @@ topSection = div_
                 ]
         ]
 -----------------------------------------------------------------------------
-mainContent :: View Model Action
+mainContent :: Eq context => View context Model Action
 mainContent = div_
         [ class_ "p-4 md:p-6 xl:p-12" ]
         [ div_
@@ -292,7 +292,7 @@ mainContent = div_
        , kitchenSinkPage
        ]
 -----------------------------------------------------------------------------
-asideView :: View Model Action
+asideView :: View context Model Action
 asideView = aside_
     [ aria_ "hidden" "true"
     , boolProp "inert" True

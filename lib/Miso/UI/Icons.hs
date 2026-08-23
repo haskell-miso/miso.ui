@@ -33,9 +33,9 @@ import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Smart constructor for a lucide-styled inline svg icon
 lucide_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 lucide_ attrs kids = S.svg_
   ( [ P.xmlns_ "http://www.w3.org/2000/svg"
     , P.width_ "24"
@@ -49,79 +49,79 @@ lucide_ attrs kids = S.svg_
     ] ++ attrs
   ) kids
 -----------------------------------------------------------------------------
-arrowLeftIcon :: [Attribute action] -> View model action
+arrowLeftIcon :: [Attribute model action] -> View context model action
 arrowLeftIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "m12 19-7-7 7-7" ]
   , S.path_ [ SP.d_ "M19 12H5" ]
   ]
 -----------------------------------------------------------------------------
-arrowRightIcon :: [Attribute action] -> View model action
+arrowRightIcon :: [Attribute model action] -> View context model action
 arrowRightIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "M5 12h14" ]
   , S.path_ [ SP.d_ "m12 5 7 7-7 7" ]
   ]
 -----------------------------------------------------------------------------
-checkIcon :: [Attribute action] -> View model action
+checkIcon :: [Attribute model action] -> View context model action
 checkIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "M20 6 9 17l-5-5" ]
   ]
 -----------------------------------------------------------------------------
-chevronDownIcon :: [Attribute action] -> View model action
+chevronDownIcon :: [Attribute model action] -> View context model action
 chevronDownIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "m6 9 6 6 6-6" ]
   ]
 -----------------------------------------------------------------------------
-chevronLeftIcon :: [Attribute action] -> View model action
+chevronLeftIcon :: [Attribute model action] -> View context model action
 chevronLeftIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "m15 18-6-6 6-6" ]
   ]
 -----------------------------------------------------------------------------
-chevronRightIcon :: [Attribute action] -> View model action
+chevronRightIcon :: [Attribute model action] -> View context model action
 chevronRightIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "m9 18 6-6-6-6" ]
   ]
 -----------------------------------------------------------------------------
-chevronsUpDownIcon :: [Attribute action] -> View model action
+chevronsUpDownIcon :: [Attribute model action] -> View context model action
 chevronsUpDownIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "m7 15 5 5 5-5" ]
   , S.path_ [ SP.d_ "m7 9 5-5 5 5" ]
   ]
 -----------------------------------------------------------------------------
-circleAlertIcon :: [Attribute action] -> View model action
+circleAlertIcon :: [Attribute model action] -> View context model action
 circleAlertIcon attrs = lucide_ attrs
   [ S.circle_ [ SP.cx_ "12", SP.cy_ "12", SP.r_ "10" ]
   , S.line_ [ SP.x1_ "12", SP.x2_ "12", SP.y1_ "8", SP.y2_ "12" ]
   , S.line_ [ SP.x1_ "12", SP.x2_ "12.01", SP.y1_ "16", SP.y2_ "16" ]
   ]
 -----------------------------------------------------------------------------
-circleCheckIcon :: [Attribute action] -> View model action
+circleCheckIcon :: [Attribute model action] -> View context model action
 circleCheckIcon attrs = lucide_ attrs
   [ S.circle_ [ SP.cx_ "12", SP.cy_ "12", SP.r_ "10" ]
   , S.path_ [ SP.d_ "m9 12 2 2 4-4" ]
   ]
 -----------------------------------------------------------------------------
-dotsIcon :: [Attribute action] -> View model action
+dotsIcon :: [Attribute model action] -> View context model action
 dotsIcon attrs = lucide_ attrs
   [ S.circle_ [ SP.cx_ "12", SP.cy_ "12", SP.r_ "1" ]
   , S.circle_ [ SP.cx_ "19", SP.cy_ "12", SP.r_ "1" ]
   , S.circle_ [ SP.cx_ "5",  SP.cy_ "12", SP.r_ "1" ]
   ]
 -----------------------------------------------------------------------------
-downloadIcon :: [Attribute action] -> View model action
+downloadIcon :: [Attribute model action] -> View context model action
 downloadIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" ]
   , S.polyline_ [ SP.points_ "7 10 12 15 17 10" ]
   , S.line_ [ SP.x1_ "12", SP.x2_ "12", SP.y1_ "15", SP.y2_ "3" ]
   ]
 -----------------------------------------------------------------------------
-infoIcon :: [Attribute action] -> View model action
+infoIcon :: [Attribute model action] -> View context model action
 infoIcon attrs = lucide_ attrs
   [ S.circle_ [ SP.cx_ "12", SP.cy_ "12", SP.r_ "10" ]
   , S.path_ [ SP.d_ "M12 16v-4" ]
   , S.path_ [ SP.d_ "M12 8h.01" ]
   ]
 -----------------------------------------------------------------------------
-loaderIcon :: [Attribute action] -> View model action
+loaderIcon :: [Attribute model action] -> View context model action
 loaderIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "M12 2v4" ]
   , S.path_ [ SP.d_ "m16.2 7.8 2.9-2.9" ]
@@ -133,13 +133,13 @@ loaderIcon attrs = lucide_ attrs
   , S.path_ [ SP.d_ "m4.9 4.9 2.9 2.9" ]
   ]
 -----------------------------------------------------------------------------
-searchIcon :: [Attribute action] -> View model action
+searchIcon :: [Attribute model action] -> View context model action
 searchIcon attrs = lucide_ attrs
   [ S.circle_ [ SP.cx_ "11", SP.cy_ "11", SP.r_ "8" ]
   , S.path_ [ SP.d_ "m21 21-4.3-4.3" ]
   ]
 -----------------------------------------------------------------------------
-sendIcon :: [Attribute action] -> View model action
+sendIcon :: [Attribute model action] -> View context model action
 sendIcon attrs = lucide_ attrs
   [ S.path_
     [ SP.d_ "M14.536 21.686a.5.5 0 0 0 .937-.024l6.5-19a.496.496 0 0 0-.635-.635l-19 6.5a.5.5 0 0 0-.024.937l7.93 3.18a2 2 0 0 1 1.112 1.11z"
@@ -147,7 +147,7 @@ sendIcon attrs = lucide_ attrs
   , S.path_ [ SP.d_ "m21.854 2.147-10.94 10.939" ]
   ]
 -----------------------------------------------------------------------------
-trashIcon :: [Attribute action] -> View model action
+trashIcon :: [Attribute model action] -> View context model action
 trashIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "M3 6h18" ]
   , S.path_ [ SP.d_ "M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" ]
@@ -156,14 +156,14 @@ trashIcon attrs = lucide_ attrs
   , S.line_ [ SP.x1_ "14", SP.x2_ "14", SP.y1_ "11", SP.y2_ "17" ]
   ]
 -----------------------------------------------------------------------------
-uploadIcon :: [Attribute action] -> View model action
+uploadIcon :: [Attribute model action] -> View context model action
 uploadIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" ]
   , S.polyline_ [ SP.points_ "17 8 12 3 7 8" ]
   , S.line_ [ SP.x1_ "12", SP.x2_ "12", SP.y1_ "3", SP.y2_ "15" ]
   ]
 -----------------------------------------------------------------------------
-xIcon :: [Attribute action] -> View model action
+xIcon :: [Attribute model action] -> View context model action
 xIcon attrs = lucide_ attrs
   [ S.path_ [ SP.d_ "M18 6 6 18" ]
   , S.path_ [ SP.d_ "m6 6 12 12" ]

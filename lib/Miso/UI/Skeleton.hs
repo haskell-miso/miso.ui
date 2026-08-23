@@ -20,17 +20,17 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'skeleton_'
-data SkeletonProps action
+data SkeletonProps model action
   = SkeletonProps
   { skeletonCircle :: Bool
     -- ^ Round skeleton (e.g. avatar placeholder) instead of rounded rectangle
   , skeletonClasses :: [MisoString]
     -- ^ Size the skeleton with utility classes (e.g. @h-4 w-[150px]@)
-  , skeletonAttrs :: [Attribute action]
+  , skeletonAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: rounded rectangle
-defaultSkeletonProps :: SkeletonProps action
+defaultSkeletonProps :: SkeletonProps model action
 defaultSkeletonProps
   = SkeletonProps
   { skeletonCircle = False
@@ -39,7 +39,7 @@ defaultSkeletonProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/skeleton/ Skeleton>, driven by 'SkeletonProps'
-skeleton_ :: SkeletonProps action -> View model action
+skeleton_ :: SkeletonProps model action -> View context model action
 skeleton_ SkeletonProps {..} =
   H.div_
     ( P.classes_
@@ -50,7 +50,7 @@ skeleton_ SkeletonProps {..} =
     : skeletonAttrs
     ) []
 -----------------------------------------------------------------------------
-skeletonSample :: View model action
+skeletonSample :: View context model action
 skeletonSample =
   H.div_
   [ P.class_ "flex flex-col gap-4" ]
@@ -83,7 +83,7 @@ skeletonSample =
         ]
       ]
 -----------------------------------------------------------------------------
-skeletonCodeSample :: View model action
+skeletonCodeSample :: View context model action
 skeletonCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -94,7 +94,7 @@ skeletonCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Skeleton
   -----------------------------------------------------------------------------
-  skeletonSample :: View model action
+  skeletonSample :: View context model action
   skeletonSample =
     H.div_
     [ P.class_ "flex flex-col gap-4" ]
@@ -128,21 +128,21 @@ skeletonCodeSample =
         ]
   """
 -----------------------------------------------------------------------------
-skeletonPropsApi :: View model action
+skeletonPropsApi :: View context model action
 skeletonPropsApi =
   """
   -- | Props for 'skeleton_'
-  data SkeletonProps action
+  data SkeletonProps model action
     = SkeletonProps
     { skeletonCircle :: Bool
       -- ^ Round skeleton (e.g. avatar placeholder) instead of rounded rectangle
     , skeletonClasses :: [MisoString]
       -- ^ Size the skeleton with utility classes (e.g. @h-4 w-[150px]@)
-    , skeletonAttrs :: [Attribute action]
+    , skeletonAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: rounded rectangle
-  defaultSkeletonProps :: SkeletonProps action
+  defaultSkeletonProps :: SkeletonProps model action
   defaultSkeletonProps
     = SkeletonProps
     { skeletonCircle = False

@@ -25,7 +25,7 @@ import qualified Miso.Svg.Property  as SP
 import           Miso.UI.Icons
 -----------------------------------------------------------------------------
 -- | Props for 'themeSelect_'
-data ThemeSwitcherProps action
+data ThemeSwitcherProps model action
   = ThemeSwitcherProps
   { themeSwitcherThemes :: [(MisoString, MisoString)]
     -- ^ (value, label) pairs
@@ -33,11 +33,11 @@ data ThemeSwitcherProps action
     -- ^ value of the currently selected theme
   , themeSwitcherClasses :: [MisoString]
     -- ^ Extra classes for the @select@
-  , themeSwitcherAttrs :: [Attribute action]
+  , themeSwitcherAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: basecoat's stock themes
-defaultThemeSwitcherProps :: ThemeSwitcherProps action
+defaultThemeSwitcherProps :: ThemeSwitcherProps model action
 defaultThemeSwitcherProps
   = ThemeSwitcherProps
   { themeSwitcherThemes =
@@ -56,8 +56,8 @@ defaultThemeSwitcherProps
 -- select that emits the chosen theme name
 themeSelect_
   :: (MisoString -> action)
-  -> ThemeSwitcherProps action
-  -> View model action
+  -> ThemeSwitcherProps model action
+  -> View context model action
 themeSelect_ changeTheme ThemeSwitcherProps {..} =
   H.select_
     ( P.classes_ ("select" : themeSwitcherClasses)
@@ -73,7 +73,7 @@ themeSelect_ changeTheme ThemeSwitcherProps {..} =
     ]
 -----------------------------------------------------------------------------
 -- | Sun\/moon button that emits the given action on click
-darkModeToggle_ :: action -> View model action
+darkModeToggle_ :: action -> View context model action
 darkModeToggle_ toggle =
   H.button_
   [ P.class_ "btn-icon-outline size-8"
@@ -105,7 +105,7 @@ darkModeToggle_ toggle =
     ]
   ]
 -----------------------------------------------------------------------------
-themeSwitcherCodeSample :: View model action
+themeSwitcherCodeSample :: View context model action
 themeSwitcherCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -117,18 +117,18 @@ themeSwitcherCodeSample =
   -----------------------------------------------------------------------------
   data Action = ChangeTheme MisoString | ToggleDarkMode
   -----------------------------------------------------------------------------
-  myHeader :: View model Action
+  myHeader :: View context model Action
   myHeader = vfrag
     [ themeSelect_ ChangeTheme defaultThemeSwitcherProps
     , darkModeToggle_ ToggleDarkMode
     ]
   """
 -----------------------------------------------------------------------------
-themeSwitcherPropsApi :: View model action
+themeSwitcherPropsApi :: View context model action
 themeSwitcherPropsApi =
   """
   -- | Props for 'themeSelect_'
-  data ThemeSwitcherProps action
+  data ThemeSwitcherProps model action
     = ThemeSwitcherProps
     { themeSwitcherThemes :: [(MisoString, MisoString)]
       -- ^ (value, label) pairs
@@ -136,11 +136,11 @@ themeSwitcherPropsApi =
       -- ^ value of the currently selected theme
     , themeSwitcherClasses :: [MisoString]
       -- ^ Extra classes for the @select@
-    , themeSwitcherAttrs :: [Attribute action]
+    , themeSwitcherAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: basecoat's stock themes
-  defaultThemeSwitcherProps :: ThemeSwitcherProps action
+  defaultThemeSwitcherProps :: ThemeSwitcherProps model action
   defaultThemeSwitcherProps
     = ThemeSwitcherProps
     { themeSwitcherThemes =

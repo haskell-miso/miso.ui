@@ -25,15 +25,15 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'radioGroup_'
-data RadioGroupProps action
+data RadioGroupProps model action
   = RadioGroupProps
   { radioGroupClasses :: [MisoString]
     -- ^ Extra classes appended to the @fieldset@
-  , radioGroupAttrs :: [Attribute action]
+  , radioGroupAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultRadioGroupProps :: RadioGroupProps action
+defaultRadioGroupProps :: RadioGroupProps model action
 defaultRadioGroupProps
   = RadioGroupProps
   { radioGroupClasses = []
@@ -41,7 +41,7 @@ defaultRadioGroupProps
   }
 -----------------------------------------------------------------------------
 -- | Props for a single 'radio_' inside a group
-data RadioProps action
+data RadioProps model action
   = RadioProps
   { radioName :: MisoString
     -- ^ Groups radios together (required)
@@ -52,11 +52,11 @@ data RadioProps action
     -- ^ Extra classes appended to the @input@
   , radioLabelClasses :: [MisoString]
     -- ^ Extra classes appended to the wrapping @label@
-  , radioAttrs :: [Attribute action]
+  , radioAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: unchecked, enabled
-defaultRadioProps :: RadioProps action
+defaultRadioProps :: RadioProps model action
 defaultRadioProps
   = RadioProps
   { radioName = "radio-group"
@@ -70,9 +70,9 @@ defaultRadioProps
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/radio-group/ Radio Group>: fieldset of 'radio_'
 radioGroup_
-  :: RadioGroupProps action
-  -> [View model action]
-  -> View model action
+  :: RadioGroupProps model action
+  -> [View context model action]
+  -> View context model action
 radioGroup_ RadioGroupProps {..} kids =
   H.fieldset_
     ( P.classes_ ("grid" : "gap-3" : radioGroupClasses)
@@ -81,16 +81,16 @@ radioGroup_ RadioGroupProps {..} kids =
 -----------------------------------------------------------------------------
 -- | Label-wrapped radio input; children render as the label text
 radio_
-  :: RadioProps action
-  -> [View model action]
-  -> View model action
+  :: RadioProps model action
+  -> [View context model action]
+  -> View context model action
 radio_ cfg kids =
   H.label_
   [ P.classes_ ("label" : radioLabelClasses cfg) ]
   ( radioInput_ cfg : kids )
 -----------------------------------------------------------------------------
 -- | The bare radio @input@, for custom layouts
-radioInput_ :: RadioProps action -> View model action
+radioInput_ :: RadioProps model action -> View context model action
 radioInput_ RadioProps {..} = H.input_ $ concat
   [ [ P.classes_ ("input" : radioClasses)
     , P.type_ "radio"
@@ -103,7 +103,7 @@ radioInput_ RadioProps {..} = H.input_ $ concat
   ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-radioGroupUsage :: View model action
+radioGroupUsage :: View context model action
 radioGroupUsage =
   radioGroup_ defaultRadioGroupProps
   [ radio_ defaultRadioProps { radioName = "my-group", radioValue = "default" }
@@ -122,7 +122,7 @@ radioGroupUsage =
     [ "Compact" ]
   ]
 -----------------------------------------------------------------------------
-radioGroupSample :: View model action
+radioGroupSample :: View context model action
 radioGroupSample =
   H.div_
   [ P.class_ "flex flex-col gap-y-6" ]
@@ -172,7 +172,7 @@ radioGroupSample =
           ]
         ]
 -----------------------------------------------------------------------------
-radioGroupCodeSample :: View model action
+radioGroupCodeSample :: View context model action
 radioGroupCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -183,7 +183,7 @@ radioGroupCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.RadioGroup
   -----------------------------------------------------------------------------
-  radioGroupUsage :: View model action
+  radioGroupUsage :: View context model action
   radioGroupUsage =
     radioGroup_ defaultRadioGroupProps
     [ radio_ defaultRadioProps { radioName = "my-group", radioValue = "default" }
@@ -203,19 +203,19 @@ radioGroupCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-radioGroupPropsApi :: View model action
+radioGroupPropsApi :: View context model action
 radioGroupPropsApi =
   """
   -- | Props for 'radioGroup_'
-  data RadioGroupProps action
+  data RadioGroupProps model action
     = RadioGroupProps
     { radioGroupClasses :: [MisoString]
       -- ^ Extra classes appended to the @fieldset@
-    , radioGroupAttrs :: [Attribute action]
+    , radioGroupAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultRadioGroupProps :: RadioGroupProps action
+  defaultRadioGroupProps :: RadioGroupProps model action
   defaultRadioGroupProps
     = RadioGroupProps
     { radioGroupClasses = []
@@ -223,7 +223,7 @@ radioGroupPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for a single 'radio_' inside a group
-  data RadioProps action
+  data RadioProps model action
     = RadioProps
     { radioName :: MisoString
       -- ^ Groups radios together (required)
@@ -234,11 +234,11 @@ radioGroupPropsApi =
       -- ^ Extra classes appended to the @input@
     , radioLabelClasses :: [MisoString]
       -- ^ Extra classes appended to the wrapping @label@
-    , radioAttrs :: [Attribute action]
+    , radioAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: unchecked, enabled
-  defaultRadioProps :: RadioProps action
+  defaultRadioProps :: RadioProps model action
   defaultRadioProps
     = RadioProps
     { radioName = "radio-group"

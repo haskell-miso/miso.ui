@@ -27,17 +27,17 @@ import qualified Miso.Html.Property as P
 import           Miso.UI.Icons
 -----------------------------------------------------------------------------
 -- | Props for 'accordion_'
-data AccordionProps action
+data AccordionProps model action
   = AccordionProps
   { accordionMultiple :: Bool
     -- ^ Allow several sections open at once (@data-multiple@)
   , accordionClasses :: [MisoString]
     -- ^ Extra classes appended to the root @section.accordion@
-  , accordionAttrs :: [Attribute action]
+  , accordionAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: exclusive expand
-defaultAccordionProps :: AccordionProps action
+defaultAccordionProps :: AccordionProps model action
 defaultAccordionProps
   = AccordionProps
   { accordionMultiple = False
@@ -46,18 +46,18 @@ defaultAccordionProps
   }
 -----------------------------------------------------------------------------
 -- | Props for 'accordionSection_'
-data AccordionItemProps action
+data AccordionItemProps model action
   = AccordionItemProps
   { accordionItemOpen :: Bool
     -- ^ Section expanded initially
   , accordionItemDisabled :: Bool
     -- ^ Renders with @aria-disabled@
   , accordionItemClasses :: [MisoString]
-  , accordionItemAttrs :: [Attribute action]
+  , accordionItemAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: collapsed, enabled
-defaultAccordionItemProps :: AccordionItemProps action
+defaultAccordionItemProps :: AccordionItemProps model action
 defaultAccordionItemProps
   = AccordionItemProps
   { accordionItemOpen = False
@@ -68,9 +68,9 @@ defaultAccordionItemProps
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/accordion/ Accordion>, driven by 'AccordionProps'
 accordion_
-  :: AccordionProps action
-  -> [View model action]
-  -> View model action
+  :: AccordionProps model action
+  -> [View context model action]
+  -> View context model action
 accordion_ AccordionProps {..} kids =
   H.section_
     ( concat
@@ -81,9 +81,9 @@ accordion_ AccordionProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 accordionSection_
-  :: AccordionItemProps action
-  -> [View model action]
-  -> View model action
+  :: AccordionItemProps model action
+  -> [View context model action]
+  -> View context model action
 accordionSection_ AccordionItemProps {..} kids =
   H.details_
     ( concat
@@ -97,9 +97,9 @@ accordionSection_ AccordionItemProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 accordionHeader_
-  :: [ Attribute action ]
-  -> [ View model action ]
-  -> View model action
+  :: [ Attribute model action ]
+  -> [ View context model action ]
+  -> View context model action
 accordionHeader_ attrs kids = H.summary_
   ( P.className
       "w-full focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all outline-none rounded-md"
@@ -124,9 +124,9 @@ accordionHeader_ attrs kids = H.summary_
   ]
 -----------------------------------------------------------------------------
 accordionBody_
-  :: [ Attribute action ]
-  -> [ View model action ]
-  -> View model action
+  :: [ Attribute model action ]
+  -> [ View context model action ]
+  -> View context model action
 accordionBody_ attrs kids =
   H.section_
     ( P.className "pb-4"
@@ -138,7 +138,7 @@ accordionBody_ attrs kids =
       kids
     ]
 -----------------------------------------------------------------------------
-accordionSample :: View model action
+accordionSample :: View context model action
 accordionSample =
   accordion_ defaultAccordionProps
     [ accordionSection_ defaultAccordionItemProps { accordionItemOpen = True }
@@ -161,7 +161,7 @@ accordionSample =
       ]
     ]
 -----------------------------------------------------------------------------
-accordionCodeSample :: View model action
+accordionCodeSample :: View context model action
 accordionCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -173,7 +173,7 @@ accordionCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Accordion
   -----------------------------------------------------------------------------
-  accordionSample :: View model action
+  accordionSample :: View context model action
   accordionSample =
     accordion_ defaultAccordionProps
       [ accordionSection_ defaultAccordionItemProps { accordionItemOpen = True }
@@ -197,21 +197,21 @@ accordionCodeSample =
       ]
   """
 -----------------------------------------------------------------------------
-accordionPropsApi :: View model action
+accordionPropsApi :: View context model action
 accordionPropsApi =
   """
   -- | Props for 'accordion_'
-  data AccordionProps action
+  data AccordionProps model action
     = AccordionProps
     { accordionMultiple :: Bool
       -- ^ Allow several sections open at once (@data-multiple@)
     , accordionClasses :: [MisoString]
       -- ^ Extra classes appended to the root @section.accordion@
-    , accordionAttrs :: [Attribute action]
+    , accordionAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: exclusive expand
-  defaultAccordionProps :: AccordionProps action
+  defaultAccordionProps :: AccordionProps model action
   defaultAccordionProps
     = AccordionProps
     { accordionMultiple = False
@@ -220,18 +220,18 @@ accordionPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for 'accordionSection_'
-  data AccordionItemProps action
+  data AccordionItemProps model action
     = AccordionItemProps
     { accordionItemOpen :: Bool
       -- ^ Section expanded initially
     , accordionItemDisabled :: Bool
       -- ^ Renders with @aria-disabled@
     , accordionItemClasses :: [MisoString]
-    , accordionItemAttrs :: [Attribute action]
+    , accordionItemAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: collapsed, enabled
-  defaultAccordionItemProps :: AccordionItemProps action
+  defaultAccordionItemProps :: AccordionItemProps model action
   defaultAccordionItemProps
     = AccordionItemProps
     { accordionItemOpen = False

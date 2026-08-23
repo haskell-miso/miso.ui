@@ -32,15 +32,15 @@ import           Miso.UI.Switch
 import           Miso.UI.Textarea
 -----------------------------------------------------------------------------
 -- | Props for 'form_'
-data FormProps action
+data FormProps model action
   = FormProps
   { formClasses :: [MisoString]
     -- ^ Extra classes appended to @form.form@ (e.g. @grid gap-6@)
-  , formAttrs :: [Attribute action]
+  , formAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: vertical form grid
-defaultFormProps :: FormProps action
+defaultFormProps :: FormProps model action
 defaultFormProps
   = FormProps
   { formClasses = [ "grid", "gap-6" ]
@@ -49,9 +49,9 @@ defaultFormProps
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/form/ Form>, driven by 'FormProps'
 form_
-  :: FormProps action
-  -> [View model action]
-  -> View model action
+  :: FormProps model action
+  -> [View context model action]
+  -> View context model action
 form_ FormProps {..} kids =
   H.form_
     ( P.classes_ ("form" : formClasses)
@@ -59,18 +59,18 @@ form_ FormProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 -- | Props for 'field_': label + control + description stack
-data FieldProps model action
+data FieldProps context model action
   = FieldProps
   { fieldId :: Maybe MisoString
     -- ^ id of the labelled control (@for@ on the label)
-  , fieldLabel :: Maybe (View model action)
-  , fieldDescription :: Maybe (View model action)
+  , fieldLabel :: Maybe (View context model action)
+  , fieldDescription :: Maybe (View context model action)
   , fieldClasses :: [MisoString]
-  , fieldAttrs :: [Attribute action]
+  , fieldAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultFieldProps :: FieldProps model action
+defaultFieldProps :: FieldProps context model action
 defaultFieldProps
   = FieldProps
   { fieldId = Nothing
@@ -83,9 +83,9 @@ defaultFieldProps
 -- | <https://basecoatui.com/components/field/ Field>: labelled control with
 -- optional description. Children are the control(s).
 field_
-  :: FieldProps model action
-  -> [View model action]
-  -> View model action
+  :: FieldProps context model action
+  -> [View context model action]
+  -> View context model action
 field_ FieldProps {..} kids =
   H.div_
     ( P.classes_ ("grid" : "gap-2" : fieldClasses)
@@ -100,7 +100,7 @@ field_ FieldProps {..} kids =
     ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-formUsage :: View model action
+formUsage :: View context model action
 formUsage =
   form_ defaultFormProps
   [ field_ defaultFieldProps
@@ -127,7 +127,7 @@ formUsage =
     [ "Submit" ]
   ]
 -----------------------------------------------------------------------------
-formSample :: View model action
+formSample :: View context model action
 formSample =
   form_ defaultFormProps { formClasses = [ "grid", "w-full", "max-w-sm", "gap-6" ] }
   [ field_ defaultFieldProps
@@ -236,7 +236,7 @@ formSample =
       where
         switchId = if disabled then "demo-form-switch-disabled" else "demo-form-switch"
 -----------------------------------------------------------------------------
-formCodeSample :: View model action
+formCodeSample :: View context model action
 formCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -254,7 +254,7 @@ formCodeSample =
   import           Miso.UI.Textarea
   import           Miso.UI.Form
   -----------------------------------------------------------------------------
-  formUsage :: View model action
+  formUsage :: View context model action
   formUsage =
     form_ defaultFormProps
     [ field_ defaultFieldProps
@@ -282,19 +282,19 @@ formCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-formPropsApi :: View model action
+formPropsApi :: View context model action
 formPropsApi =
   """
   -- | Props for 'form_'
-  data FormProps action
+  data FormProps model action
     = FormProps
     { formClasses :: [MisoString]
       -- ^ Extra classes appended to @form.form@ (e.g. @grid gap-6@)
-    , formAttrs :: [Attribute action]
+    , formAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: vertical form grid
-  defaultFormProps :: FormProps action
+  defaultFormProps :: FormProps model action
   defaultFormProps
     = FormProps
     { formClasses = [ "grid", "gap-6" ]
@@ -302,18 +302,18 @@ formPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for 'field_': label + control + description stack
-  data FieldProps model action
+  data FieldProps context model action
     = FieldProps
     { fieldId :: Maybe MisoString
       -- ^ id of the labelled control (@for@ on the label)
-    , fieldLabel :: Maybe (View model action)
-    , fieldDescription :: Maybe (View model action)
+    , fieldLabel :: Maybe (View context model action)
+    , fieldDescription :: Maybe (View context model action)
     , fieldClasses :: [MisoString]
-    , fieldAttrs :: [Attribute action]
+    , fieldAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultFieldProps :: FieldProps model action
+  defaultFieldProps :: FieldProps context model action
   defaultFieldProps
     = FieldProps
     { fieldId = Nothing

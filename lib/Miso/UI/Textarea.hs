@@ -23,7 +23,7 @@ import qualified Miso.Html.Property as P
 import           Miso.UI.Label
 -----------------------------------------------------------------------------
 -- | Props for 'textarea_'
-data TextareaProps action
+data TextareaProps model action
   = TextareaProps
   { textareaId :: Maybe MisoString
   , textareaPlaceholder :: Maybe MisoString
@@ -33,11 +33,11 @@ data TextareaProps action
     -- ^ Renders with @aria-invalid@ (error styling)
   , textareaClasses :: [MisoString]
     -- ^ Extra classes appended to @textarea@
-  , textareaAttrs :: [Attribute action]
+  , textareaAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: enabled, no placeholder
-defaultTextareaProps :: TextareaProps action
+defaultTextareaProps :: TextareaProps model action
 defaultTextareaProps
   = TextareaProps
   { textareaId = Nothing
@@ -50,7 +50,7 @@ defaultTextareaProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/textarea/ Textarea>, driven by 'TextareaProps'
-textarea_ :: TextareaProps action -> View model action
+textarea_ :: TextareaProps model action -> View context model action
 textarea_ TextareaProps {..} = H.textarea_ $ concat
   [ [ P.classes_ ("textarea" : textareaClasses) ]
   , [ P.id_ i | Just i <- [textareaId] ]
@@ -62,7 +62,7 @@ textarea_ TextareaProps {..} = H.textarea_ $ concat
   ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-textareaUsage :: View model action
+textareaUsage :: View context model action
 textareaUsage =
   H.div_
   [ P.class_ "flex flex-col gap-y-6" ]
@@ -81,7 +81,7 @@ textareaUsage =
     ]
   ]
 -----------------------------------------------------------------------------
-textareaSample :: View model action
+textareaSample :: View context model action
 textareaSample =
   H.div_
   [ P.class_ "flex flex-col gap-y-10" ]
@@ -121,7 +121,7 @@ textareaSample =
     ]
   ]
 -----------------------------------------------------------------------------
-textareaCodeSample :: View model action
+textareaCodeSample :: View context model action
 textareaCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -133,7 +133,7 @@ textareaCodeSample =
   import           Miso.UI.Label
   import           Miso.UI.Textarea
   -----------------------------------------------------------------------------
-  textareaUsage :: View model action
+  textareaUsage :: View context model action
   textareaUsage =
     H.div_
     [ P.class_ "flex flex-col gap-y-6" ]
@@ -153,11 +153,11 @@ textareaCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-textareaPropsApi :: View model action
+textareaPropsApi :: View context model action
 textareaPropsApi =
   """
   -- | Props for 'textarea_'
-  data TextareaProps action
+  data TextareaProps model action
     = TextareaProps
     { textareaId :: Maybe MisoString
     , textareaPlaceholder :: Maybe MisoString
@@ -167,11 +167,11 @@ textareaPropsApi =
       -- ^ Renders with @aria-invalid@ (error styling)
     , textareaClasses :: [MisoString]
       -- ^ Extra classes appended to @textarea@
-    , textareaAttrs :: [Attribute action]
+    , textareaAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: enabled, no placeholder
-  defaultTextareaProps :: TextareaProps action
+  defaultTextareaProps :: TextareaProps model action
   defaultTextareaProps
     = TextareaProps
     { textareaId = Nothing

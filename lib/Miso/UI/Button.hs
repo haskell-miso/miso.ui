@@ -26,7 +26,7 @@ import           Miso.UI.Types
 import           Miso.UI.Icons
 -----------------------------------------------------------------------------
 -- | Props for 'button'
-data ButtonProps action
+data ButtonProps model action
   = ButtonProps
   { buttonVariant :: Variant
     -- ^ 'Primary', 'Secondary', 'Destructive', 'Outline', 'Ghost' or 'Link'
@@ -37,12 +37,12 @@ data ButtonProps action
   , buttonDisabled :: Bool
   , buttonClasses :: [MisoString]
     -- ^ Extra classes appended to the computed basecoat class
-  , buttonAttrs :: [Attribute action]
+  , buttonAttrs :: [Attribute model action]
     -- ^ Extra attributes (e.g. @onClick@)
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: primary variant, default size
-defaultButtonProps :: ButtonProps action
+defaultButtonProps :: ButtonProps model action
 defaultButtonProps
   = ButtonProps
   { buttonVariant = Primary
@@ -54,7 +54,7 @@ defaultButtonProps
   }
 -----------------------------------------------------------------------------
 -- | Computes the basecoat button class (e.g. @btn-sm-icon-outline@)
-buttonClass :: ButtonProps action -> MisoString
+buttonClass :: ButtonProps model action -> MisoString
 buttonClass ButtonProps {..} = MS.intercalate "-" $ concat
   [ [ "btn" ]
   , [ sizeSuffix buttonSize | buttonSize /= DefaultSize ]
@@ -64,9 +64,9 @@ buttonClass ButtonProps {..} = MS.intercalate "-" $ concat
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/button/ Button>, driven by 'ButtonProps'
 button_
-  :: ButtonProps action
-  -> [View model action]
-  -> View model action
+  :: ButtonProps model action
+  -> [View context model action]
+  -> View context model action
 button_ cfg kids =
   optionalAttrs
     H.button_
@@ -78,7 +78,7 @@ button_ cfg kids =
     kids
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-buttonUsage :: View model action
+buttonUsage :: View context model action
 buttonUsage =
   H.div_
   [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -96,7 +96,7 @@ buttonUsage =
     [ loaderIcon [ P.class_ "animate-spin" ], "Loading" ]
   ]
 -----------------------------------------------------------------------------
-buttonSample :: View model action
+buttonSample :: View context model action
 buttonSample =
   H.div_
   [ P.class_ "flex flex-col gap-6" ]
@@ -137,7 +137,7 @@ buttonSample =
     iconButton v icon =
       button_ defaultButtonProps { buttonIcon = True, buttonVariant = v } [ icon ]
 -----------------------------------------------------------------------------
-buttonCodeSample :: View model action
+buttonCodeSample :: View context model action
 buttonCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -151,7 +151,7 @@ buttonCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Button
   -----------------------------------------------------------------------------
-  buttonUsage :: View model action
+  buttonUsage :: View context model action
   buttonUsage =
     H.div_
     [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -170,11 +170,11 @@ buttonCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-buttonPropsApi :: View model action
+buttonPropsApi :: View context model action
 buttonPropsApi =
   """
   -- | Props for 'button'
-  data ButtonProps action
+  data ButtonProps model action
     = ButtonProps
     { buttonVariant :: Variant
       -- ^ 'Primary', 'Secondary', 'Destructive', 'Outline', 'Ghost' or 'Link'
@@ -185,12 +185,12 @@ buttonPropsApi =
     , buttonDisabled :: Bool
     , buttonClasses :: [MisoString]
       -- ^ Extra classes appended to the computed basecoat class
-    , buttonAttrs :: [Attribute action]
+    , buttonAttrs :: [Attribute model action]
       -- ^ Extra attributes (e.g. @onClick@)
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: primary variant, default size
-  defaultButtonProps :: ButtonProps action
+  defaultButtonProps :: ButtonProps model action
   defaultButtonProps
     = ButtonProps
     { buttonVariant = Primary

@@ -27,15 +27,15 @@ import           Miso.UI.DropDownMenu
 import           Miso.UI.Icons
 -----------------------------------------------------------------------------
 -- | Props for 'breadcrumb_'
-data BreadcrumbProps action
+data BreadcrumbProps model action
   = BreadcrumbProps
   { breadcrumbClasses :: [MisoString]
     -- ^ Extra classes appended to the @ol@
-  , breadcrumbAttrs :: [Attribute action]
+  , breadcrumbAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultBreadcrumbProps :: BreadcrumbProps action
+defaultBreadcrumbProps :: BreadcrumbProps model action
 defaultBreadcrumbProps
   = BreadcrumbProps
   { breadcrumbClasses = []
@@ -45,9 +45,9 @@ defaultBreadcrumbProps
 -- | <https://basecoatui.com/components/breadcrumb/ Breadcrumb>.
 -- Children are 'breadcrumbItem_' \/ 'breadcrumbSeparator_' views.
 breadcrumb_
-  :: BreadcrumbProps action
-  -> [View model action]
-  -> View model action
+  :: BreadcrumbProps model action
+  -> [View context model action]
+  -> View context model action
 breadcrumb_ BreadcrumbProps {..} kids =
   H.ol_
     ( P.classes_
@@ -60,9 +60,9 @@ breadcrumb_ BreadcrumbProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 breadcrumbItem_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 breadcrumbItem_ attrs kids =
   H.li_ (P.class_ "inline-flex items-center gap-1.5" : attrs) kids
 -----------------------------------------------------------------------------
@@ -70,8 +70,8 @@ breadcrumbItem_ attrs kids =
 breadcrumbLink_
   :: MisoString
   -- ^ href
-  -> [View model action]
-  -> View model action
+  -> [View context model action]
+  -> View context model action
 breadcrumbLink_ url kids = breadcrumbItem_ []
   [ H.a_
     [ P.class_ "hover:text-foreground transition-colors"
@@ -81,17 +81,17 @@ breadcrumbLink_ url kids = breadcrumbItem_ []
 -----------------------------------------------------------------------------
 -- | The current page (last crumb)
 breadcrumbPage_
-  :: [View model action]
-  -> View model action
+  :: [View context model action]
+  -> View context model action
 breadcrumbPage_ kids = breadcrumbItem_ []
   [ H.span_ [ P.class_ "text-foreground font-normal" ] kids
   ]
 -----------------------------------------------------------------------------
-breadcrumbSeparator_ :: View model action
+breadcrumbSeparator_ :: View context model action
 breadcrumbSeparator_ =
   H.li_ [] [ chevronRightIcon [ P.class_ "size-3.5" ] ]
 -----------------------------------------------------------------------------
-breadcrumbSample :: View model action
+breadcrumbSample :: View context model action
 breadcrumbSample =
   breadcrumb_ defaultBreadcrumbProps
   [ breadcrumbLink_ "#" [ "Home" ]
@@ -117,7 +117,7 @@ breadcrumbSample =
   , breadcrumbPage_ [ "Breadcrumb" ]
   ]
 -----------------------------------------------------------------------------
-breadcrumbCodeSample :: View model action
+breadcrumbCodeSample :: View context model action
 breadcrumbCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -130,7 +130,7 @@ breadcrumbCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Breadcrumb
   -----------------------------------------------------------------------------
-  breadcrumbSample :: View model action
+  breadcrumbSample :: View context model action
   breadcrumbSample =
     breadcrumb_ defaultBreadcrumbProps
     [ breadcrumbLink_ "#" [ "Home" ]
@@ -157,19 +157,19 @@ breadcrumbCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-breadcrumbPropsApi :: View model action
+breadcrumbPropsApi :: View context model action
 breadcrumbPropsApi =
   """
   -- | Props for 'breadcrumb_'
-  data BreadcrumbProps action
+  data BreadcrumbProps model action
     = BreadcrumbProps
     { breadcrumbClasses :: [MisoString]
       -- ^ Extra classes appended to the @ol@
-    , breadcrumbAttrs :: [Attribute action]
+    , breadcrumbAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultBreadcrumbProps :: BreadcrumbProps action
+  defaultBreadcrumbProps :: BreadcrumbProps model action
   defaultBreadcrumbProps
     = BreadcrumbProps
     { breadcrumbClasses = []

@@ -23,7 +23,7 @@ import qualified Miso.Html.Property as P
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'badge_'
-data BadgeProps action
+data BadgeProps model action
   = BadgeProps
   { badgeVariant :: Variant
     -- ^ 'Primary', 'Secondary', 'Destructive' or 'Outline'
@@ -33,11 +33,11 @@ data BadgeProps action
     -- ^ When set, renders as a link (an anchor element)
   , badgeClasses :: [MisoString]
     -- ^ Extra classes appended to the computed basecoat class
-  , badgeAttrs :: [Attribute action]
+  , badgeAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: primary variant, not rounded
-defaultBadgeProps :: BadgeProps action
+defaultBadgeProps :: BadgeProps model action
 defaultBadgeProps
   = BadgeProps
   { badgeVariant = Primary
@@ -48,7 +48,7 @@ defaultBadgeProps
   }
 -----------------------------------------------------------------------------
 -- | Computes the basecoat badge class (e.g. @badge-outline@)
-badgeClass :: BadgeProps action -> MisoString
+badgeClass :: BadgeProps model action -> MisoString
 badgeClass BadgeProps {..} =
   case badgeVariant of
     Primary -> "badge"
@@ -56,9 +56,9 @@ badgeClass BadgeProps {..} =
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/badge/ Badge>, driven by 'BadgeProps'
 badge_
-  :: BadgeProps action
-  -> [View model action]
-  -> View model action
+  :: BadgeProps model action
+  -> [View context model action]
+  -> View context model action
 badge_ cfg kids = element attrs kids
   where
     element =
@@ -76,7 +76,7 @@ badge_ cfg kids = element attrs kids
       , badgeAttrs cfg
       ]
 -----------------------------------------------------------------------------
-badgeSample :: View model action
+badgeSample :: View context model action
 badgeSample =
   H.div_
   [ P.class_ "flex flex-col gap-2" ]
@@ -104,7 +104,7 @@ badgeSample =
     ]
   ]
 -----------------------------------------------------------------------------
-badgeCodeSample :: View model action
+badgeCodeSample :: View context model action
 badgeCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -116,7 +116,7 @@ badgeCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Badge
   -----------------------------------------------------------------------------
-  badgeSample :: View model action
+  badgeSample :: View context model action
   badgeSample =
     H.div_
     [ P.class_ "flex flex-col gap-2" ]
@@ -145,11 +145,11 @@ badgeCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-badgePropsApi :: View model action
+badgePropsApi :: View context model action
 badgePropsApi =
   """
   -- | Props for 'badge_'
-  data BadgeProps action
+  data BadgeProps model action
     = BadgeProps
     { badgeVariant :: Variant
       -- ^ 'Primary', 'Secondary', 'Destructive' or 'Outline'
@@ -159,11 +159,11 @@ badgePropsApi =
       -- ^ When set, renders as a link (an anchor element)
     , badgeClasses :: [MisoString]
       -- ^ Extra classes appended to the computed basecoat class
-    , badgeAttrs :: [Attribute action]
+    , badgeAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: primary variant, not rounded
-  defaultBadgeProps :: BadgeProps action
+  defaultBadgeProps :: BadgeProps model action
   defaultBadgeProps
     = BadgeProps
     { badgeVariant = Primary

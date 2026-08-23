@@ -26,20 +26,20 @@ import           Miso.UI.Icons
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'empty_'. Icon, title and description nest other views.
-data EmptyProps model action
+data EmptyProps context model action
   = EmptyProps
-  { emptyIcon :: Maybe (View model action)
+  { emptyIcon :: Maybe (View context model action)
     -- ^ Icon shown in the header medallion
-  , emptyTitle :: Maybe (View model action)
-  , emptyDescription :: Maybe (View model action)
-  , emptyFooter :: [View model action]
+  , emptyTitle :: Maybe (View context model action)
+  , emptyDescription :: Maybe (View context model action)
+  , emptyFooter :: [View context model action]
     -- ^ Content under the actions (e.g. a \"learn more\" link)
   , emptyClasses :: [MisoString]
-  , emptyAttrs :: [Attribute action]
+  , emptyAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: bare empty state
-defaultEmptyProps :: EmptyProps model action
+defaultEmptyProps :: EmptyProps context model action
 defaultEmptyProps
   = EmptyProps
   { emptyIcon = Nothing
@@ -53,9 +53,9 @@ defaultEmptyProps
 -- | <https://basecoatui.com/components/empty/ Empty> state, driven by 'EmptyProps'.
 -- Children render as the action row.
 empty_
-  :: EmptyProps model action
-  -> [View model action]
-  -> View model action
+  :: EmptyProps context model action
+  -> [View context model action]
+  -> View context model action
 empty_ EmptyProps {..} kids =
   H.div_
     ( P.classes_
@@ -93,7 +93,7 @@ empty_ EmptyProps {..} kids =
     , emptyFooter
     ]
 -----------------------------------------------------------------------------
-emptySample :: View model action
+emptySample :: View context model action
 emptySample =
   empty_ defaultEmptyProps
     { emptyIcon = Just folderIcon
@@ -126,7 +126,7 @@ emptySample =
       , S.path_ [ SP.d_ "M7 17 17 7" ]
       ]
 -----------------------------------------------------------------------------
-emptyCodeSample :: View model action
+emptyCodeSample :: View context model action
 emptyCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -142,7 +142,7 @@ emptyCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Empty
   -----------------------------------------------------------------------------
-  emptySample :: View model action
+  emptySample :: View context model action
   emptySample =
     empty_ defaultEmptyProps
       { emptyIcon = Just folderIcon
@@ -176,24 +176,24 @@ emptyCodeSample =
         ]
   """
 -----------------------------------------------------------------------------
-emptyPropsApi :: View model action
+emptyPropsApi :: View context model action
 emptyPropsApi =
   """
   -- | Props for 'empty_'. Icon, title and description nest other views.
-  data EmptyProps model action
+  data EmptyProps context model action
     = EmptyProps
-    { emptyIcon :: Maybe (View model action)
+    { emptyIcon :: Maybe (View context model action)
       -- ^ Icon shown in the header medallion
-    , emptyTitle :: Maybe (View model action)
-    , emptyDescription :: Maybe (View model action)
-    , emptyFooter :: [View model action]
+    , emptyTitle :: Maybe (View context model action)
+    , emptyDescription :: Maybe (View context model action)
+    , emptyFooter :: [View context model action]
       -- ^ Content under the actions (e.g. a \\"learn more\\" link)
     , emptyClasses :: [MisoString]
-    , emptyAttrs :: [Attribute action]
+    , emptyAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: bare empty state
-  defaultEmptyProps :: EmptyProps model action
+  defaultEmptyProps :: EmptyProps context model action
   defaultEmptyProps
     = EmptyProps
     { emptyIcon = Nothing

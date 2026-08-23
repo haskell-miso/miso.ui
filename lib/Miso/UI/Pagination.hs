@@ -26,15 +26,15 @@ import qualified Miso.Html.Property as P
 import           Miso.UI.Icons
 -----------------------------------------------------------------------------
 -- | Props for 'pagination_'
-data PaginationProps action
+data PaginationProps model action
   = PaginationProps
   { paginationClasses :: [MisoString]
     -- ^ Extra classes appended to the @nav@
-  , paginationAttrs :: [Attribute action]
+  , paginationAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultPaginationProps :: PaginationProps action
+defaultPaginationProps :: PaginationProps model action
 defaultPaginationProps
   = PaginationProps
   { paginationClasses = []
@@ -44,9 +44,9 @@ defaultPaginationProps
 -- | <https://basecoatui.com/components/pagination/ Pagination>.
 -- Children are 'paginationLink_' \/ 'paginationPrevious_' \/ etc.
 pagination_
-  :: PaginationProps action
-  -> [View model action]
-  -> View model action
+  :: PaginationProps model action
+  -> [View context model action]
+  -> View context model action
 pagination_ PaginationProps {..} kids =
   H.nav_
     ( P.classes_ ("mx-auto" : "flex" : "w-full" : "justify-center" : paginationClasses)
@@ -64,8 +64,8 @@ paginationLink_
   :: Bool
   -> MisoString
   -- ^ href
-  -> [View model action]
-  -> View model action
+  -> [View context model action]
+  -> View context model action
 paginationLink_ current url kids =
   H.li_ []
   [ H.a_
@@ -74,7 +74,7 @@ paginationLink_ current url kids =
     ] kids
   ]
 -----------------------------------------------------------------------------
-paginationPrevious_ :: MisoString -> View model action
+paginationPrevious_ :: MisoString -> View context model action
 paginationPrevious_ url =
   H.li_ []
   [ H.a_
@@ -82,7 +82,7 @@ paginationPrevious_ url =
     [ chevronLeftIcon [], "Previous" ]
   ]
 -----------------------------------------------------------------------------
-paginationNext_ :: MisoString -> View model action
+paginationNext_ :: MisoString -> View context model action
 paginationNext_ url =
   H.li_ []
   [ H.a_
@@ -90,7 +90,7 @@ paginationNext_ url =
     [ "Next", chevronRightIcon [] ]
   ]
 -----------------------------------------------------------------------------
-paginationEllipsis_ :: MisoString -> View model action
+paginationEllipsis_ :: MisoString -> View context model action
 paginationEllipsis_ url =
   H.li_ []
   [ H.a_
@@ -98,7 +98,7 @@ paginationEllipsis_ url =
     [ dotsIcon [] ]
   ]
 -----------------------------------------------------------------------------
-paginationSample :: View model action
+paginationSample :: View context model action
 paginationSample =
   H.div_
   [ P.class_ "inline-flex" ]
@@ -112,7 +112,7 @@ paginationSample =
     ]
   ]
 -----------------------------------------------------------------------------
-paginationCodeSample :: View model action
+paginationCodeSample :: View context model action
 paginationCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -124,7 +124,7 @@ paginationCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Pagination
   -----------------------------------------------------------------------------
-  paginationSample :: View model action
+  paginationSample :: View context model action
   paginationSample =
     H.div_
     [ P.class_ "inline-flex" ]
@@ -139,19 +139,19 @@ paginationCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-paginationPropsApi :: View model action
+paginationPropsApi :: View context model action
 paginationPropsApi =
   """
   -- | Props for 'pagination_'
-  data PaginationProps action
+  data PaginationProps model action
     = PaginationProps
     { paginationClasses :: [MisoString]
       -- ^ Extra classes appended to the @nav@
-    , paginationAttrs :: [Attribute action]
+    , paginationAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultPaginationProps :: PaginationProps action
+  defaultPaginationProps :: PaginationProps model action
   defaultPaginationProps
     = PaginationProps
     { paginationClasses = []

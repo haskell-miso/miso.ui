@@ -28,17 +28,17 @@ import qualified Miso.Html as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'tabs_'
-data TabsProps action
+data TabsProps model action
   = TabsProps
   { tabsId :: MisoString
     -- ^ id of the tabs root (basecoat JS keys off it; required)
   , tabsClasses :: [MisoString]
     -- ^ Extra classes appended to @div.tabs@
-  , tabsAttrs :: [Attribute action]
+  , tabsAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultTabsProps :: TabsProps action
+defaultTabsProps :: TabsProps model action
 defaultTabsProps
   = TabsProps
   { tabsId = "tabs"
@@ -47,7 +47,7 @@ defaultTabsProps
   }
 -----------------------------------------------------------------------------
 -- | Props for 'tabButton_'
-data TabButtonProps action
+data TabButtonProps model action
   = TabButtonProps
   { tabButtonId :: MisoString
     -- ^ id of this tab button (matched by the panel's @aria-labelledby@)
@@ -55,11 +55,11 @@ data TabButtonProps action
     -- ^ id of the controlled panel
   , tabButtonSelected :: Bool
   , tabButtonDisabled :: Bool
-  , tabButtonAttrs :: [Attribute action]
+  , tabButtonAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: unselected tab
-defaultTabButtonProps :: TabButtonProps action
+defaultTabButtonProps :: TabButtonProps model action
 defaultTabButtonProps
   = TabButtonProps
   { tabButtonId = ""
@@ -70,18 +70,18 @@ defaultTabButtonProps
   }
 -----------------------------------------------------------------------------
 -- | Props for 'tab_' (a tab panel)
-data TabPanelProps action
+data TabPanelProps model action
   = TabPanelProps
   { tabPanelId :: MisoString
     -- ^ id of the panel (matched by the button's @aria-controls@)
   , tabPanelLabelledBy :: MisoString
     -- ^ id of the button labelling this panel
   , tabPanelSelected :: Bool
-  , tabPanelAttrs :: [Attribute action]
+  , tabPanelAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: hidden panel
-defaultTabPanelProps :: TabPanelProps action
+defaultTabPanelProps :: TabPanelProps model action
 defaultTabPanelProps
   = TabPanelProps
   { tabPanelId = ""
@@ -92,9 +92,9 @@ defaultTabPanelProps
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/tabs/ Tabs>, driven by 'TabsProps'
 tabs_
-  :: TabsProps action
-  -> [View model action]
-  -> View model action
+  :: TabsProps model action
+  -> [View context model action]
+  -> View context model action
 tabs_ TabsProps {..} kids =
   H.div_
     ( P.classes_ ("tabs" : tabsClasses)
@@ -103,9 +103,9 @@ tabs_ TabsProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 tabList_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 tabList_ attrs kids =
   H.nav_
     ( P.class_ "w-full"
@@ -115,9 +115,9 @@ tabList_ attrs kids =
     ) kids
 -----------------------------------------------------------------------------
 tabButton_
-  :: TabButtonProps action
-  -> [View model action]
-  -> View model action
+  :: TabButtonProps model action
+  -> [View context model action]
+  -> View context model action
 tabButton_ TabButtonProps {..} kids =
   H.button_
     ( concat
@@ -134,9 +134,9 @@ tabButton_ TabButtonProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 tab_
-  :: TabPanelProps action
-  -> [View model action]
-  -> View model action
+  :: TabPanelProps model action
+  -> [View context model action]
+  -> View context model action
 tab_ TabPanelProps {..} kids =
   H.div_
     ( concat
@@ -152,7 +152,7 @@ tab_ TabPanelProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-tabsUsage :: View model action
+tabsUsage :: View context model action
 tabsUsage =
   tabs_ defaultTabsProps { tabsId = "my-tabs" }
   [ tabList_ []
@@ -181,7 +181,7 @@ tabsUsage =
     [ "Password panel" ]
   ]
 -----------------------------------------------------------------------------
-tabsSample :: View model action
+tabsSample :: View context model action
 tabsSample =
   H.div_
   [ P.class_ "flex flex-col gap-6" ]
@@ -293,7 +293,7 @@ tabsSample =
         ]
       ]
 -----------------------------------------------------------------------------
-tabsCodeSample :: View model action
+tabsCodeSample :: View context model action
 tabsCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -304,7 +304,7 @@ tabsCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Tabs
   -----------------------------------------------------------------------------
-  tabsUsage :: View model action
+  tabsUsage :: View context model action
   tabsUsage =
     tabs_ defaultTabsProps { tabsId = "my-tabs" }
     [ tabList_ []
@@ -334,21 +334,21 @@ tabsCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-tabsPropsApi :: View model action
+tabsPropsApi :: View context model action
 tabsPropsApi =
   """
   -- | Props for 'tabs_'
-  data TabsProps action
+  data TabsProps model action
     = TabsProps
     { tabsId :: MisoString
       -- ^ id of the tabs root (basecoat JS keys off it; required)
     , tabsClasses :: [MisoString]
       -- ^ Extra classes appended to @div.tabs@
-    , tabsAttrs :: [Attribute action]
+    , tabsAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultTabsProps :: TabsProps action
+  defaultTabsProps :: TabsProps model action
   defaultTabsProps
     = TabsProps
     { tabsId = "tabs"
@@ -357,7 +357,7 @@ tabsPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for 'tabButton_'
-  data TabButtonProps action
+  data TabButtonProps model action
     = TabButtonProps
     { tabButtonId :: MisoString
       -- ^ id of this tab button (matched by the panel's @aria-labelledby@)
@@ -365,11 +365,11 @@ tabsPropsApi =
       -- ^ id of the controlled panel
     , tabButtonSelected :: Bool
     , tabButtonDisabled :: Bool
-    , tabButtonAttrs :: [Attribute action]
+    , tabButtonAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: unselected tab
-  defaultTabButtonProps :: TabButtonProps action
+  defaultTabButtonProps :: TabButtonProps model action
   defaultTabButtonProps
     = TabButtonProps
     { tabButtonId = ""
@@ -380,18 +380,18 @@ tabsPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for 'tab_' (a tab panel)
-  data TabPanelProps action
+  data TabPanelProps model action
     = TabPanelProps
     { tabPanelId :: MisoString
       -- ^ id of the panel (matched by the button's @aria-controls@)
     , tabPanelLabelledBy :: MisoString
       -- ^ id of the button labelling this panel
     , tabPanelSelected :: Bool
-    , tabPanelAttrs :: [Attribute action]
+    , tabPanelAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: hidden panel
-  defaultTabPanelProps :: TabPanelProps action
+  defaultTabPanelProps :: TabPanelProps model action
   defaultTabPanelProps
     = TabPanelProps
     { tabPanelId = ""

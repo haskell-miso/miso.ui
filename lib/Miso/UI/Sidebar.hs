@@ -22,18 +22,18 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'sidebar_'
-data SidebarProps action
+data SidebarProps model action
   = SidebarProps
   { sidebarId :: MisoString
   , sidebarOpen :: Bool
     -- ^ Visible (@aria-hidden@ when closed)
   , sidebarClasses :: [MisoString]
     -- ^ Extra classes appended to @aside.sidebar@
-  , sidebarAttrs :: [Attribute action]
+  , sidebarAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: open sidebar
-defaultSidebarProps :: SidebarProps action
+defaultSidebarProps :: SidebarProps model action
 defaultSidebarProps
   = SidebarProps
   { sidebarId = "sidebar"
@@ -45,9 +45,9 @@ defaultSidebarProps
 -- | <https://basecoatui.com/components/sidebar/ Sidebar>, driven by 'SidebarProps'.
 -- Children are 'sidebarGroup_' views wrapped in a @nav@.
 sidebar_
-  :: SidebarProps action
-  -> [View model action]
-  -> View model action
+  :: SidebarProps model action
+  -> [View context model action]
+  -> View context model action
 sidebar_ SidebarProps {..} kids =
   H.aside_
     ( concat
@@ -64,8 +64,8 @@ sidebar_ SidebarProps {..} kids =
 sidebarGroup_
   :: MisoString
   -- ^ group heading
-  -> [View model action]
-  -> View model action
+  -> [View context model action]
+  -> View context model action
 sidebarGroup_ heading kids =
   H.section_
   [ P.class_ "scrollbar" ]
@@ -74,9 +74,9 @@ sidebarGroup_ heading kids =
   ]
 -----------------------------------------------------------------------------
 sidebarNav_
-  :: [Attribute action]
-  -> [View model action]
-  -> View model action
+  :: [Attribute model action]
+  -> [View context model action]
+  -> View context model action
 sidebarNav_ attrs kids =
   H.ul_ attrs [ H.li_ [] [ k ] | k <- kids ]
 -----------------------------------------------------------------------------
@@ -85,8 +85,8 @@ sidebarItem_
   :: Bool
   -> MisoString
   -- ^ href
-  -> [View model action]
-  -> View model action
+  -> [View context model action]
+  -> View context model action
 sidebarItem_ current url kids =
   optionalAttrs
     H.a_
@@ -95,7 +95,7 @@ sidebarItem_ current url kids =
     [ P.aria_ "current" "page" ]
     kids
 -----------------------------------------------------------------------------
-sidebarCodeSample :: View model action
+sidebarCodeSample :: View context model action
 sidebarCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ sidebarCodeSample =
   -----------------------------------------------------------------------------
   import           Miso.UI.Sidebar
   -----------------------------------------------------------------------------
-  mySidebar :: View model action
+  mySidebar :: View context model action
   mySidebar =
     sidebar_ defaultSidebarProps
     [ sidebarGroup_ "Getting Started"
@@ -119,22 +119,22 @@ sidebarCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-sidebarPropsApi :: View model action
+sidebarPropsApi :: View context model action
 sidebarPropsApi =
   """
   -- | Props for 'sidebar_'
-  data SidebarProps action
+  data SidebarProps model action
     = SidebarProps
     { sidebarId :: MisoString
     , sidebarOpen :: Bool
       -- ^ Visible (@aria-hidden@ when closed)
     , sidebarClasses :: [MisoString]
       -- ^ Extra classes appended to @aside.sidebar@
-    , sidebarAttrs :: [Attribute action]
+    , sidebarAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: open sidebar
-  defaultSidebarProps :: SidebarProps action
+  defaultSidebarProps :: SidebarProps model action
   defaultSidebarProps
     = SidebarProps
     { sidebarId = "sidebar"

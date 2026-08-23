@@ -20,17 +20,17 @@ import qualified Miso.Html.Element as H
 import qualified Miso.Html.Property as P
 -----------------------------------------------------------------------------
 -- | Props for 'label_'
-data LabelProps action
+data LabelProps model action
   = LabelProps
   { labelFor :: Maybe MisoString
     -- ^ @for@ attribute (id of the labelled control)
   , labelClasses :: [MisoString]
     -- ^ Extra classes appended to @label@
-  , labelAttrs :: [Attribute action]
+  , labelAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultLabelProps :: LabelProps action
+defaultLabelProps :: LabelProps model action
 defaultLabelProps
   = LabelProps
   { labelFor = Nothing
@@ -40,9 +40,9 @@ defaultLabelProps
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/label/ Label>, driven by 'LabelProps'
 label_
-  :: LabelProps action
-  -> [View model action]
-  -> View model action
+  :: LabelProps model action
+  -> [View context model action]
+  -> View context model action
 label_ LabelProps {..} kids = H.label_
   ( concat
     [ [ P.classes_ ("label" : labelClasses) ]
@@ -51,7 +51,7 @@ label_ LabelProps {..} kids = H.label_
     ]
   ) kids
 -----------------------------------------------------------------------------
-labelSample :: View model action
+labelSample :: View context model action
 labelSample =
   H.div_
   [ P.class_ "grid w-full max-w-sm gap-6" ]
@@ -88,7 +88,7 @@ labelSample =
     ]
   ]
 -----------------------------------------------------------------------------
-labelCodeSample :: View model action
+labelCodeSample :: View context model action
 labelCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -99,7 +99,7 @@ labelCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Label
   -----------------------------------------------------------------------------
-  labelSample :: View model action
+  labelSample :: View context model action
   labelSample =
     H.div_
     [ P.class_ "grid w-full max-w-sm gap-6" ]
@@ -137,21 +137,21 @@ labelCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-labelPropsApi :: View model action
+labelPropsApi :: View context model action
 labelPropsApi =
   """
   -- | Props for 'label_'
-  data LabelProps action
+  data LabelProps model action
     = LabelProps
     { labelFor :: Maybe MisoString
       -- ^ @for@ attribute (id of the labelled control)
     , labelClasses :: [MisoString]
       -- ^ Extra classes appended to @label@
-    , labelAttrs :: [Attribute action]
+    , labelAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultLabelProps :: LabelProps action
+  defaultLabelProps :: LabelProps model action
   defaultLabelProps
     = LabelProps
     { labelFor = Nothing

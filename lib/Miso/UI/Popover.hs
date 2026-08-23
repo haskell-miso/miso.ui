@@ -24,11 +24,11 @@ import           Miso.UI.Label
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'popover_'
-data PopoverProps model action
+data PopoverProps context model action
   = PopoverProps
   { popoverId :: MisoString
     -- ^ Base id; trigger\/popover ids are derived from it (required)
-  , popoverTrigger :: [View model action]
+  , popoverTrigger :: [View context model action]
     -- ^ Content of the trigger button (nests other views)
   , popoverTriggerClasses :: [MisoString]
     -- ^ Classes of the trigger button (defaults to @btn-outline@)
@@ -38,11 +38,11 @@ data PopoverProps model action
     -- ^ Placement side (@data-side@)
   , popoverAlign :: Align
     -- ^ Placement alignment (@data-align@)
-  , popoverAttrs :: [Attribute action]
+  , popoverAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: outline trigger, bottom placement
-defaultPopoverProps :: PopoverProps model action
+defaultPopoverProps :: PopoverProps context model action
 defaultPopoverProps
   = PopoverProps
   { popoverId = "popover"
@@ -57,9 +57,9 @@ defaultPopoverProps
 -- | <https://basecoatui.com/components/popover/ Popover>, driven by 'PopoverProps'.
 -- Children render inside the popover.
 popover_
-  :: PopoverProps model action
-  -> [View model action]
-  -> View model action
+  :: PopoverProps context model action
+  -> [View context model action]
+  -> View context model action
 popover_ cfg kids =
   H.div_
   ( P.class_ "popover"
@@ -87,7 +87,7 @@ popover_ cfg kids =
     ) kids
   ]
 -----------------------------------------------------------------------------
-popoverSample :: View model action
+popoverSample :: View context model action
 popoverSample =
   popover_ defaultPopoverProps
     { popoverId = "demo-popover"
@@ -122,7 +122,7 @@ popoverSample =
         }
       ]
 -----------------------------------------------------------------------------
-popoverCodeSample :: View model action
+popoverCodeSample :: View context model action
 popoverCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -136,7 +136,7 @@ popoverCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Popover
   -----------------------------------------------------------------------------
-  popoverSample :: View model action
+  popoverSample :: View context model action
   popoverSample =
     popover_ defaultPopoverProps
       { popoverId = "demo-popover"
@@ -172,15 +172,15 @@ popoverCodeSample =
         ]
   """
 -----------------------------------------------------------------------------
-popoverPropsApi :: View model action
+popoverPropsApi :: View context model action
 popoverPropsApi =
   """
   -- | Props for 'popover_'
-  data PopoverProps model action
+  data PopoverProps context model action
     = PopoverProps
     { popoverId :: MisoString
       -- ^ Base id; trigger\\/popover ids are derived from it (required)
-    , popoverTrigger :: [View model action]
+    , popoverTrigger :: [View context model action]
       -- ^ Content of the trigger button (nests other views)
     , popoverTriggerClasses :: [MisoString]
       -- ^ Classes of the trigger button (defaults to @btn-outline@)
@@ -190,11 +190,11 @@ popoverPropsApi =
       -- ^ Placement side (@data-side@)
     , popoverAlign :: Align
       -- ^ Placement alignment (@data-align@)
-    , popoverAttrs :: [Attribute action]
+    , popoverAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: outline trigger, bottom placement
-  defaultPopoverProps :: PopoverProps model action
+  defaultPopoverProps :: PopoverProps context model action
   defaultPopoverProps
     = PopoverProps
     { popoverId = "popover"

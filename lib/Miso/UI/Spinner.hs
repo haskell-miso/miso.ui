@@ -28,17 +28,17 @@ import           Miso.UI.Progress
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'spinner_'
-data SpinnerProps action
+data SpinnerProps model action
   = SpinnerProps
   { spinnerLabel :: MisoString
     -- ^ @aria-label@ for screen readers
   , spinnerClasses :: [MisoString]
     -- ^ Extra classes (e.g. @size-4@)
-  , spinnerAttrs :: [Attribute action]
+  , spinnerAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultSpinnerProps :: SpinnerProps action
+defaultSpinnerProps :: SpinnerProps model action
 defaultSpinnerProps
   = SpinnerProps
   { spinnerLabel = "Loading"
@@ -47,7 +47,7 @@ defaultSpinnerProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/spinner/ Spinner>, driven by 'SpinnerProps'
-spinner_ :: SpinnerProps action -> View model action
+spinner_ :: SpinnerProps model action -> View context model action
 spinner_ SpinnerProps {..} = lucide_
   ( [ P.classes_ ("animate-spin" : spinnerClasses)
     , P.aria_ "label" spinnerLabel
@@ -58,7 +58,7 @@ spinner_ SpinnerProps {..} = lucide_
   ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-spinnerUsage :: View model action
+spinnerUsage :: View context model action
 spinnerUsage =
   H.div_
   [ P.class_ "flex items-center gap-4" ]
@@ -68,7 +68,7 @@ spinnerUsage =
     { spinnerClasses = [ "size-8", "text-muted-foreground" ] }
   ]
 -----------------------------------------------------------------------------
-spinnerSample :: View model action
+spinnerSample :: View context model action
 spinnerSample =
   H.article_
   [ P.class_ "group/item flex items-center border text-sm rounded-md transition-colors [a]:hover:bg-accent/50 [a]:transition-colors duration-100 flex-wrap outline-none focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] border-border p-4 gap-4"
@@ -101,7 +101,7 @@ spinnerSample =
     ]
   ]
 -----------------------------------------------------------------------------
-spinnerCodeSample :: View model action
+spinnerCodeSample :: View context model action
 spinnerCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -118,7 +118,7 @@ spinnerCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Spinner
   -----------------------------------------------------------------------------
-  spinnerUsage :: View model action
+  spinnerUsage :: View context model action
   spinnerUsage =
     H.div_
     [ P.class_ "flex items-center gap-4" ]
@@ -129,21 +129,21 @@ spinnerCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-spinnerPropsApi :: View model action
+spinnerPropsApi :: View context model action
 spinnerPropsApi =
   """
   -- | Props for 'spinner_'
-  data SpinnerProps action
+  data SpinnerProps model action
     = SpinnerProps
     { spinnerLabel :: MisoString
       -- ^ @aria-label@ for screen readers
     , spinnerClasses :: [MisoString]
       -- ^ Extra classes (e.g. @size-4@)
-    , spinnerAttrs :: [Attribute action]
+    , spinnerAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultSpinnerProps :: SpinnerProps action
+  defaultSpinnerProps :: SpinnerProps model action
   defaultSpinnerProps
     = SpinnerProps
     { spinnerLabel = "Loading"
