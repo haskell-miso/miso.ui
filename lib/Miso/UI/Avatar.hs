@@ -50,7 +50,7 @@ defaultAvatarProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/avatar/ Avatar>, driven by 'AvatarProps'
-avatar_ :: AvatarProps model action -> View context model action
+avatar_ :: AvatarProps model action -> View context props model action
 avatar_ AvatarProps {..} = H.img_ $ concat
   [ [ P.src_ avatarSrc
     , P.alt_ avatarAlt
@@ -67,8 +67,8 @@ avatar_ AvatarProps {..} = H.img_ $ concat
 -- | Initials fallback when no image is available
 avatarFallback_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 avatarFallback_ attrs kids =
   H.span_
     ( P.class_ "size-8 shrink-0 bg-muted flex items-center justify-center rounded-full"
@@ -80,8 +80,8 @@ avatarFallback_ attrs kids =
 avatarGroup_
   :: Size
   -> [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 avatarGroup_ size attrs kids =
   H.div_
     ( P.classes_
@@ -98,7 +98,7 @@ avatarGroup_ size attrs kids =
     : attrs
     ) kids
 -----------------------------------------------------------------------------
-avatarSample :: View context model action
+avatarSample :: View context props model action
 avatarSample =
   H.div_
   [ P.class_ "flex flex-row flex-wrap items-center gap-4" ]
@@ -129,7 +129,7 @@ avatarSample =
       | user <- [ "dmjio", "shadcn", "adamwathan", "hunvreus" ]
       ]
 -----------------------------------------------------------------------------
-avatarCodeSample :: View context model action
+avatarCodeSample :: View context props model action
 avatarCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -141,7 +141,7 @@ avatarCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Avatar
   -----------------------------------------------------------------------------
-  avatarSample :: View context model action
+  avatarSample :: View context props model action
   avatarSample =
     H.div_
     [ P.class_ "flex flex-row flex-wrap items-center gap-4" ]
@@ -173,7 +173,7 @@ avatarCodeSample =
         ]
   """
 -----------------------------------------------------------------------------
-avatarPropsApi :: View context model action
+avatarPropsApi :: View context props model action
 avatarPropsApi =
   """
   -- | Props for 'avatar_'

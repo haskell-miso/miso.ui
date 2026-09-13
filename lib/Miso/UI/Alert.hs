@@ -47,8 +47,8 @@ defaultAlertProps
 -- Children are typically an icon, an 'alertHeader_' and an 'alertSection_'.
 alert_
   :: AlertProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 alert_ AlertProps {..} kids =
   H.div_
     ( P.classes_
@@ -62,17 +62,17 @@ alert_ AlertProps {..} kids =
 -----------------------------------------------------------------------------
 alertHeader_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 alertHeader_ attrs kids = H.h2_ attrs kids
 -----------------------------------------------------------------------------
 alertSection_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 alertSection_ attrs kids = H.section_ attrs kids
 -----------------------------------------------------------------------------
-alertSample :: View context model action
+alertSample :: View context props model action
 alertSample =
   H.div_
   [ P.class_ "p-4" ]
@@ -100,7 +100,7 @@ alertSample =
     ]
   ]
 -----------------------------------------------------------------------------
-alertCodeSample :: View context model action
+alertCodeSample :: View context props model action
 alertCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -113,7 +113,7 @@ alertCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Alert
   -----------------------------------------------------------------------------
-  alertSample :: View context model action
+  alertSample :: View context props model action
   alertSample =
     H.div_
     [ P.class_ "p-4" ]
@@ -142,7 +142,7 @@ alertCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-alertPropsApi :: View context model action
+alertPropsApi :: View context props model action
 alertPropsApi =
   """
   -- | Props for 'alert_'

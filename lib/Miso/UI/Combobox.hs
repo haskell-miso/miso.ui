@@ -27,11 +27,11 @@ import qualified Miso.Svg.Property  as SP
 import           Miso.UI.Icons
 -----------------------------------------------------------------------------
 -- | Props for 'combobox_'
-data ComboboxProps context model action
+data ComboboxProps context props model action
   = ComboboxProps
   { comboboxId :: MisoString
     -- ^ Base id; trigger\/popover\/listbox ids are derived from it (required)
-  , comboboxLabel :: [View context model action]
+  , comboboxLabel :: [View context props model action]
     -- ^ Content of the trigger button (current selection)
   , comboboxValue :: MisoString
     -- ^ Currently selected value (kept in a hidden input)
@@ -46,7 +46,7 @@ data ComboboxProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultComboboxProps :: ComboboxProps context model action
+defaultComboboxProps :: ComboboxProps context props model action
 defaultComboboxProps
   = ComboboxProps
   { comboboxId = "combobox"
@@ -62,9 +62,9 @@ defaultComboboxProps
 -- | <https://basecoatui.com/components/combobox/ Combobox>: searchable select.
 -- Children are 'comboboxOption_' \/ 'comboboxGroup_' views.
 combobox_
-  :: ComboboxProps context model action
-  -> [View context model action]
-  -> View context model action
+  :: ComboboxProps context props model action
+  -> [View context props model action]
+  -> View context props model action
 combobox_ cfg kids =
   H.div_
   ( P.class_ "select"
@@ -127,8 +127,8 @@ combobox_ cfg kids =
 comboboxOption_
   :: Bool
   -> MisoString
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 comboboxOption_ selected value kids =
   optionalAttrs
     H.div_
@@ -145,8 +145,8 @@ comboboxGroup_
   -- ^ group heading id
   -> MisoString
   -- ^ heading text
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 comboboxGroup_ headingId heading kids =
   H.div_
   [ P.aria_ "labelledby" headingId
@@ -157,7 +157,7 @@ comboboxGroup_ headingId heading kids =
   )
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-comboboxUsage :: View context model action
+comboboxUsage :: View context props model action
 comboboxUsage =
   combobox_ defaultComboboxProps
   { comboboxId = "my-combobox"
@@ -173,7 +173,7 @@ comboboxUsage =
   , comboboxOption_ False "Astro" [ "Astro" ]
   ]
 -----------------------------------------------------------------------------
-comboboxSample :: View context model action
+comboboxSample :: View context props model action
 comboboxSample =
   H.div_
   [ P.class_ "flex flex-wrap items-start gap-4" ]
@@ -244,7 +244,7 @@ comboboxSample =
       , S.path_ [ SP.d_ "M12 8v8" ]
       ]
 -----------------------------------------------------------------------------
-comboboxCodeSample :: View context model action
+comboboxCodeSample :: View context props model action
 comboboxCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -258,7 +258,7 @@ comboboxCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Combobox
   -----------------------------------------------------------------------------
-  comboboxUsage :: View context model action
+  comboboxUsage :: View context props model action
   comboboxUsage =
     combobox_ defaultComboboxProps
     { comboboxId = "my-combobox"
@@ -275,15 +275,15 @@ comboboxCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-comboboxPropsApi :: View context model action
+comboboxPropsApi :: View context props model action
 comboboxPropsApi =
   """
   -- | Props for 'combobox_'
-  data ComboboxProps context model action
+  data ComboboxProps context props model action
     = ComboboxProps
     { comboboxId :: MisoString
       -- ^ Base id; trigger\\/popover\\/listbox ids are derived from it (required)
-    , comboboxLabel :: [View context model action]
+    , comboboxLabel :: [View context props model action]
       -- ^ Content of the trigger button (current selection)
     , comboboxValue :: MisoString
       -- ^ Currently selected value (kept in a hidden input)
@@ -298,7 +298,7 @@ comboboxPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultComboboxProps :: ComboboxProps context model action
+  defaultComboboxProps :: ComboboxProps context props model action
   defaultComboboxProps
     = ComboboxProps
     { comboboxId = "combobox"

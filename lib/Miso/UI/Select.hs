@@ -51,8 +51,8 @@ defaultSelectProps
 -- Children are native @optgroup_@ \/ @option_@ views.
 select_
   :: SelectProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 select_ SelectProps {..} kids = H.select_
   ( concat
     [ [ P.classes_ ("select" : selectClasses) ]
@@ -63,11 +63,11 @@ select_ SelectProps {..} kids = H.select_
   ) kids
 -----------------------------------------------------------------------------
 -- | Props for the popover-based 'selectMenu_' (basecoat JS select)
-data SelectMenuProps context model action
+data SelectMenuProps context props model action
   = SelectMenuProps
   { selectMenuId :: MisoString
     -- ^ Base id; trigger\/popover\/listbox ids are derived from it (required)
-  , selectMenuLabel :: [View context model action]
+  , selectMenuLabel :: [View context props model action]
     -- ^ Content of the trigger button (current selection)
   , selectMenuValue :: MisoString
     -- ^ Currently selected value (kept in a hidden input)
@@ -80,7 +80,7 @@ data SelectMenuProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor for the JS select
-defaultSelectMenuProps :: SelectMenuProps context model action
+defaultSelectMenuProps :: SelectMenuProps context props model action
 defaultSelectMenuProps
   = SelectMenuProps
   { selectMenuId = "select-menu"
@@ -95,9 +95,9 @@ defaultSelectMenuProps
 -- | <https://basecoatui.com/components/select/ Select> (popover listbox).
 -- Children are 'selectOption_' \/ 'selectGroup_' views.
 selectMenu_
-  :: SelectMenuProps context model action
-  -> [View context model action]
-  -> View context model action
+  :: SelectMenuProps context props model action
+  -> [View context props model action]
+  -> View context props model action
 selectMenu_ cfg kids =
   H.div_
   ( P.class_ "select"
@@ -150,8 +150,8 @@ selectMenu_ cfg kids =
 selectOption_
   :: Bool
   -> MisoString
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 selectOption_ selected value kids =
   optionalAttrs
     H.div_
@@ -168,8 +168,8 @@ selectGroup_
   -- ^ group heading id
   -> MisoString
   -- ^ heading text
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 selectGroup_ headingId heading kids =
   H.div_
   [ P.aria_ "labelledby" headingId
@@ -180,7 +180,7 @@ selectGroup_ headingId heading kids =
   )
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-selectUsage :: View context model action
+selectUsage :: View context props model action
 selectUsage =
   H.div_
   [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -201,7 +201,7 @@ selectUsage =
     ]
   ]
 -----------------------------------------------------------------------------
-selectSample :: View context model action
+selectSample :: View context props model action
 selectSample =
   H.div_
   [ P.class_ "flex flex-col gap-4" ]
@@ -255,7 +255,7 @@ selectSample =
     ]
   ]
 -----------------------------------------------------------------------------
-selectCodeSample :: View context model action
+selectCodeSample :: View context props model action
 selectCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -267,7 +267,7 @@ selectCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Select
   -----------------------------------------------------------------------------
-  selectUsage :: View context model action
+  selectUsage :: View context props model action
   selectUsage =
     H.div_
     [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -289,7 +289,7 @@ selectCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-selectPropsApi :: View context model action
+selectPropsApi :: View context props model action
 selectPropsApi =
   """
   -- | Props for the native 'select_'
@@ -313,11 +313,11 @@ selectPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for the popover-based 'selectMenu_' (basecoat JS select)
-  data SelectMenuProps context model action
+  data SelectMenuProps context props model action
     = SelectMenuProps
     { selectMenuId :: MisoString
       -- ^ Base id; trigger\\/popover\\/listbox ids are derived from it (required)
-    , selectMenuLabel :: [View context model action]
+    , selectMenuLabel :: [View context props model action]
       -- ^ Content of the trigger button (current selection)
     , selectMenuValue :: MisoString
       -- ^ Currently selected value (kept in a hidden input)
@@ -330,7 +330,7 @@ selectPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor for the JS select
-  defaultSelectMenuProps :: SelectMenuProps context model action
+  defaultSelectMenuProps :: SelectMenuProps context props model action
   defaultSelectMenuProps
     = SelectMenuProps
     { selectMenuId = "select-menu"

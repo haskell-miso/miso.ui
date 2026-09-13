@@ -50,8 +50,8 @@ defaultFormProps
 -- | <https://basecoatui.com/components/form/ Form>, driven by 'FormProps'
 form_
   :: FormProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 form_ FormProps {..} kids =
   H.form_
     ( P.classes_ ("form" : formClasses)
@@ -59,18 +59,18 @@ form_ FormProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 -- | Props for 'field_': label + control + description stack
-data FieldProps context model action
+data FieldProps context props model action
   = FieldProps
   { fieldId :: Maybe MisoString
     -- ^ id of the labelled control (@for@ on the label)
-  , fieldLabel :: Maybe (View context model action)
-  , fieldDescription :: Maybe (View context model action)
+  , fieldLabel :: Maybe (View context props model action)
+  , fieldDescription :: Maybe (View context props model action)
   , fieldClasses :: [MisoString]
   , fieldAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultFieldProps :: FieldProps context model action
+defaultFieldProps :: FieldProps context props model action
 defaultFieldProps
   = FieldProps
   { fieldId = Nothing
@@ -83,9 +83,9 @@ defaultFieldProps
 -- | <https://basecoatui.com/components/field/ Field>: labelled control with
 -- optional description. Children are the control(s).
 field_
-  :: FieldProps context model action
-  -> [View context model action]
-  -> View context model action
+  :: FieldProps context props model action
+  -> [View context props model action]
+  -> View context props model action
 field_ FieldProps {..} kids =
   H.div_
     ( P.classes_ ("grid" : "gap-2" : fieldClasses)
@@ -100,7 +100,7 @@ field_ FieldProps {..} kids =
     ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-formUsage :: View context model action
+formUsage :: View context props model action
 formUsage =
   form_ defaultFormProps
   [ field_ defaultFieldProps
@@ -127,7 +127,7 @@ formUsage =
     [ "Submit" ]
   ]
 -----------------------------------------------------------------------------
-formSample :: View context model action
+formSample :: View context props model action
 formSample =
   form_ defaultFormProps { formClasses = [ "grid", "w-full", "max-w-sm", "gap-6" ] }
   [ field_ defaultFieldProps
@@ -236,7 +236,7 @@ formSample =
       where
         switchId = if disabled then "demo-form-switch-disabled" else "demo-form-switch"
 -----------------------------------------------------------------------------
-formCodeSample :: View context model action
+formCodeSample :: View context props model action
 formCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -254,7 +254,7 @@ formCodeSample =
   import           Miso.UI.Textarea
   import           Miso.UI.Form
   -----------------------------------------------------------------------------
-  formUsage :: View context model action
+  formUsage :: View context props model action
   formUsage =
     form_ defaultFormProps
     [ field_ defaultFieldProps
@@ -282,7 +282,7 @@ formCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-formPropsApi :: View context model action
+formPropsApi :: View context props model action
 formPropsApi =
   """
   -- | Props for 'form_'
@@ -302,18 +302,18 @@ formPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for 'field_': label + control + description stack
-  data FieldProps context model action
+  data FieldProps context props model action
     = FieldProps
     { fieldId :: Maybe MisoString
       -- ^ id of the labelled control (@for@ on the label)
-    , fieldLabel :: Maybe (View context model action)
-    , fieldDescription :: Maybe (View context model action)
+    , fieldLabel :: Maybe (View context props model action)
+    , fieldDescription :: Maybe (View context props model action)
     , fieldClasses :: [MisoString]
     , fieldAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultFieldProps :: FieldProps context model action
+  defaultFieldProps :: FieldProps context props model action
   defaultFieldProps
     = FieldProps
     { fieldId = Nothing

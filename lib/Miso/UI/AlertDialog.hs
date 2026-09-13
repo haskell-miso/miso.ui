@@ -74,7 +74,7 @@ alertDialogComponent = component () update_ view_
         $ [did]
       void $ dialog # ("close" :: MisoString) $ ()
 
-    view_ _ AlertDialogProps {..} () =
+    view_ () = vprops $ \AlertDialogProps {..} ->
       H.div_
       []
       [ button_ defaultButtonProps
@@ -111,7 +111,7 @@ alertDialogComponent = component () update_ view_
           ]
         ]
 -----------------------------------------------------------------------------
-alertDialogCodeSample :: View context model action
+alertDialogCodeSample :: View context props model action
 alertDialogCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -123,7 +123,7 @@ alertDialogCodeSample =
   -----------------------------------------------------------------------------
   -- 'AlertDialogProps' lives in the props slot of the miso 'Component' and is
   -- supplied at the mount site:
-  myView :: View context model action
+  myView :: View context props model action
   myView = mountWithProps_ "alert-dialog"
     defaultAlertDialogProps
       { alertDialogTitle = "Are you absolutely sure?"
@@ -133,7 +133,7 @@ alertDialogCodeSample =
     alertDialogComponent
   """
 -----------------------------------------------------------------------------
-alertDialogPropsApi :: View context model action
+alertDialogPropsApi :: View context props model action
 alertDialogPropsApi =
   """
   -- | Props for 'alertDialogComponent'. These live in the @props@ slot of the

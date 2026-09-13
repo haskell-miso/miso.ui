@@ -46,8 +46,8 @@ defaultSidebarProps
 -- Children are 'sidebarGroup_' views wrapped in a @nav@.
 sidebar_
   :: SidebarProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 sidebar_ SidebarProps {..} kids =
   H.aside_
     ( concat
@@ -64,8 +64,8 @@ sidebar_ SidebarProps {..} kids =
 sidebarGroup_
   :: MisoString
   -- ^ group heading
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 sidebarGroup_ heading kids =
   H.section_
   [ P.class_ "scrollbar" ]
@@ -75,8 +75,8 @@ sidebarGroup_ heading kids =
 -----------------------------------------------------------------------------
 sidebarNav_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 sidebarNav_ attrs kids =
   H.ul_ attrs [ H.li_ [] [ k ] | k <- kids ]
 -----------------------------------------------------------------------------
@@ -85,8 +85,8 @@ sidebarItem_
   :: Bool
   -> MisoString
   -- ^ href
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 sidebarItem_ current url kids =
   optionalAttrs
     H.a_
@@ -95,7 +95,7 @@ sidebarItem_ current url kids =
     [ P.aria_ "current" "page" ]
     kids
 -----------------------------------------------------------------------------
-sidebarCodeSample :: View context model action
+sidebarCodeSample :: View context props model action
 sidebarCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -105,7 +105,7 @@ sidebarCodeSample =
   -----------------------------------------------------------------------------
   import           Miso.UI.Sidebar
   -----------------------------------------------------------------------------
-  mySidebar :: View context model action
+  mySidebar :: View context props model action
   mySidebar =
     sidebar_ defaultSidebarProps
     [ sidebarGroup_ "Getting Started"
@@ -119,7 +119,7 @@ sidebarCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-sidebarPropsApi :: View context model action
+sidebarPropsApi :: View context props model action
 sidebarPropsApi =
   """
   -- | Props for 'sidebar_'

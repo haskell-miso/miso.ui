@@ -65,8 +65,8 @@ buttonClass ButtonProps {..} = MS.intercalate "-" $ concat
 -- | <https://basecoatui.com/components/button/ Button>, driven by 'ButtonProps'
 button_
   :: ButtonProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 button_ cfg kids =
   optionalAttrs
     H.button_
@@ -78,7 +78,7 @@ button_ cfg kids =
     kids
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-buttonUsage :: View context model action
+buttonUsage :: View context props model action
 buttonUsage =
   H.div_
   [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -96,7 +96,7 @@ buttonUsage =
     [ loaderIcon [ P.class_ "animate-spin" ], "Loading" ]
   ]
 -----------------------------------------------------------------------------
-buttonSample :: View context model action
+buttonSample :: View context props model action
 buttonSample =
   H.div_
   [ P.class_ "flex flex-col gap-6" ]
@@ -137,7 +137,7 @@ buttonSample =
     iconButton v icon =
       button_ defaultButtonProps { buttonIcon = True, buttonVariant = v } [ icon ]
 -----------------------------------------------------------------------------
-buttonCodeSample :: View context model action
+buttonCodeSample :: View context props model action
 buttonCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -151,7 +151,7 @@ buttonCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Button
   -----------------------------------------------------------------------------
-  buttonUsage :: View context model action
+  buttonUsage :: View context props model action
   buttonUsage =
     H.div_
     [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -170,7 +170,7 @@ buttonCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-buttonPropsApi :: View context model action
+buttonPropsApi :: View context props model action
 buttonPropsApi =
   """
   -- | Props for 'button'

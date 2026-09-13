@@ -50,7 +50,7 @@ defaultSliderProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/slider/ Slider>, driven by 'SliderProps'
-slider_ :: SliderProps model action -> View context model action
+slider_ :: SliderProps model action -> View context props model action
 slider_ SliderProps {..} = H.input_ $ concat
   [ [ CSS.style_ [ "--slider-value" =: sliderPercent ]
     , P.classes_ ("input" : sliderClasses)
@@ -68,7 +68,7 @@ slider_ SliderProps {..} = H.input_ $ concat
 sliderSample
   :: (DOMRef -> action)
   -> (DOMRef -> action)
-  -> View context model action
+  -> View context props model action
 sliderSample initSlider destroySlider =
   H.div_
   [ P.class_ "max-w-sm" ]
@@ -83,7 +83,7 @@ sliderSample initSlider destroySlider =
     }
   ]
 -----------------------------------------------------------------------------
-sliderCodeSample :: View context model action
+sliderCodeSample :: View context props model action
 sliderCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -98,7 +98,7 @@ sliderCodeSample =
   sliderSample
     :: (DOMRef -> action)
     -> (DOMRef -> action)
-    -> View context model action
+    -> View context props model action
   sliderSample initSlider destroySlider =
     H.div_
     [ P.class_ "max-w-sm" ]
@@ -114,7 +114,7 @@ sliderCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-sliderPropsApi :: View context model action
+sliderPropsApi :: View context props model action
 sliderPropsApi =
   """
   -- | Props for 'slider_'

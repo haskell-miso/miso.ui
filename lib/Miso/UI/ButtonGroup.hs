@@ -45,8 +45,8 @@ defaultButtonGroupProps
 -- row of buttons (children are typically 'Miso.UI.Button.button_' views)
 buttonGroup_
   :: ButtonGroupProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 buttonGroup_ ButtonGroupProps {..} kids =
   H.div_
     ( P.classes_ ("button-group" : buttonGroupClasses)
@@ -55,7 +55,7 @@ buttonGroup_ ButtonGroupProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-buttonGroupUsage :: View context model action
+buttonGroupUsage :: View context props model action
 buttonGroupUsage =
   buttonGroup_ defaultButtonGroupProps
   [ button_ defaultButtonProps { buttonVariant = Outline } [ "Archive" ]
@@ -64,7 +64,7 @@ buttonGroupUsage =
     [ dotsIcon [] ]
   ]
 -----------------------------------------------------------------------------
-buttonGroupSample :: View context model action
+buttonGroupSample :: View context props model action
 buttonGroupSample =
   H.div_
   [ P.class_ "flex w-fit items-stretch gap-2" ]
@@ -100,7 +100,7 @@ buttonGroupSample =
     ]
   ]
 -----------------------------------------------------------------------------
-buttonGroupCodeSample :: View context model action
+buttonGroupCodeSample :: View context props model action
 buttonGroupCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -115,7 +115,7 @@ buttonGroupCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.ButtonGroup
   -----------------------------------------------------------------------------
-  buttonGroupUsage :: View context model action
+  buttonGroupUsage :: View context props model action
   buttonGroupUsage =
     buttonGroup_ defaultButtonGroupProps
     [ button_ defaultButtonProps { buttonVariant = Outline } [ "Archive" ]
@@ -125,7 +125,7 @@ buttonGroupCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-buttonGroupPropsApi :: View context model action
+buttonGroupPropsApi :: View context props model action
 buttonGroupPropsApi =
   """
   -- | Props for 'buttonGroup_'

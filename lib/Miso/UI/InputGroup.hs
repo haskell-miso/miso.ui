@@ -30,18 +30,18 @@ import           Miso.UI.Textarea
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'inputGroup_'. Header and footer overlay the wrapped control.
-data InputGroupProps context model action
+data InputGroupProps context props model action
   = InputGroupProps
-  { inputGroupHeader :: [View context model action]
+  { inputGroupHeader :: [View context props model action]
     -- ^ Content pinned to the top of the group
-  , inputGroupFooter :: [View context model action]
+  , inputGroupFooter :: [View context props model action]
     -- ^ Content pinned to the bottom of the group
   , inputGroupClasses :: [MisoString]
   , inputGroupAttrs :: [Attribute model action]
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultInputGroupProps :: InputGroupProps context model action
+defaultInputGroupProps :: InputGroupProps context props model action
 defaultInputGroupProps
   = InputGroupProps
   { inputGroupHeader = []
@@ -53,9 +53,9 @@ defaultInputGroupProps
 -- | <https://basecoatui.com/components/input-group/ Input Group>: control with
 -- pinned header\/footer rows. Children are the wrapped control(s).
 inputGroup_
-  :: InputGroupProps context model action
-  -> [View context model action]
-  -> View context model action
+  :: InputGroupProps context props model action
+  -> [View context props model action]
+  -> View context props model action
 inputGroup_ InputGroupProps {..} kids =
   H.div_
     ( P.classes_ ("relative" : inputGroupClasses)
@@ -69,8 +69,8 @@ inputGroup_ InputGroupProps {..} kids =
 -----------------------------------------------------------------------------
 inputGroupHeader_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 inputGroupHeader_ attrs kids =
   H.header_
     ( P.class_ "absolute top-0 flex items-center w-full gap-2 p-3 border-b"
@@ -79,8 +79,8 @@ inputGroupHeader_ attrs kids =
 -----------------------------------------------------------------------------
 inputGroupFooter_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 inputGroupFooter_ attrs kids =
   H.footer_
     ( P.class_ "absolute bottom-0 flex items-center w-full gap-2 p-3 border-t"
@@ -88,7 +88,7 @@ inputGroupFooter_ attrs kids =
     ) kids
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-inputGroupUsage :: View context model action
+inputGroupUsage :: View context props model action
 inputGroupUsage =
   inputGroup_ defaultInputGroupProps
   { inputGroupHeader =
@@ -109,7 +109,7 @@ inputGroupUsage =
     }
   ]
 -----------------------------------------------------------------------------
-inputGroupSample :: View context model action
+inputGroupSample :: View context props model action
 inputGroupSample =
   inputGroup_ defaultInputGroupProps
     { inputGroupHeader =
@@ -172,7 +172,7 @@ inputGroupSample =
       , S.path_ [ SP.d_ "M20 4v7a4 4 0 0 1-4 4H4" ]
       ]
 -----------------------------------------------------------------------------
-inputGroupCodeSample :: View context model action
+inputGroupCodeSample :: View context props model action
 inputGroupCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -189,7 +189,7 @@ inputGroupCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.InputGroup
   -----------------------------------------------------------------------------
-  inputGroupUsage :: View context model action
+  inputGroupUsage :: View context props model action
   inputGroupUsage =
     inputGroup_ defaultInputGroupProps
     { inputGroupHeader =
@@ -211,22 +211,22 @@ inputGroupCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-inputGroupPropsApi :: View context model action
+inputGroupPropsApi :: View context props model action
 inputGroupPropsApi =
   """
   -- | Props for 'inputGroup_'. Header and footer overlay the wrapped control.
-  data InputGroupProps context model action
+  data InputGroupProps context props model action
     = InputGroupProps
-    { inputGroupHeader :: [View context model action]
+    { inputGroupHeader :: [View context props model action]
       -- ^ Content pinned to the top of the group
-    , inputGroupFooter :: [View context model action]
+    , inputGroupFooter :: [View context props model action]
       -- ^ Content pinned to the bottom of the group
     , inputGroupClasses :: [MisoString]
     , inputGroupAttrs :: [Attribute model action]
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultInputGroupProps :: InputGroupProps context model action
+  defaultInputGroupProps :: InputGroupProps context props model action
   defaultInputGroupProps
     = InputGroupProps
     { inputGroupHeader = []

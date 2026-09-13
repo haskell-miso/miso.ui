@@ -31,7 +31,7 @@ data Action
   | NoOp
 -----------------------------------------------------------------------------
 commandMenuComponent :: Component parent props MisoString Action
-commandMenuComponent = component "" update_ $ \_ _ _ -> view_
+commandMenuComponent = component "" update_ $ \_ -> view_
   where
     update_ NoOp = pure ()
     update_ (ShowDialog sel domRef) = do
@@ -48,7 +48,7 @@ commandMenuComponent = component "" update_ $ \_ _ _ -> view_
           $ [sel :: MisoString]
         void $ dialog # ("close" :: MisoString) $ ()
 -----------------------------------------------------------------------------
-view_ :: View context m Action
+view_ :: View context props m Action
 view_ = section_
     [ id_ "command-menu"
     , class_ "w-full rounded-lg scroll-mt-14"
@@ -324,7 +324,7 @@ view_ = section_
  ]
 
 -----------------------------------------------------------------------------
-commandMenuCodeSample :: View context model action
+commandMenuCodeSample :: View context props model action
 commandMenuCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -335,7 +335,7 @@ commandMenuCodeSample =
   import           Miso.UI.CommandMenu
   -----------------------------------------------------------------------------
   -- Mounts the stateful command menu component (Ctrl-K style palette)
-  myView :: View context model action
+  myView :: View context props model action
   myView = mount_ commandMenuComponent
   """
 -----------------------------------------------------------------------------

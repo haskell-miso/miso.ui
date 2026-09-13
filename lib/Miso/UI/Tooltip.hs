@@ -54,14 +54,14 @@ tooltipAttrs_ tip side = concat
 -- For tooltips on arbitrary elements use 'tooltipAttrs_'.
 tooltip_
   :: TooltipProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 tooltip_ TooltipProps {..} kids =
   button_ tooltipButton
     { buttonAttrs = tooltipAttrs_ tooltipText tooltipSide ++ buttonAttrs tooltipButton
     } kids
 -----------------------------------------------------------------------------
-tooltipSample :: View context model action
+tooltipSample :: View context props model action
 tooltipSample =
   H.div_
   [ P.class_ "flex flex-wrap items-center gap-4" ]
@@ -71,7 +71,7 @@ tooltipSample =
   , tooltip_ defaultTooltipProps { tooltipText = "Left tooltip", tooltipSide = LeftSide } [ "Left" ]
   ]
 -----------------------------------------------------------------------------
-tooltipCodeSample :: View context model action
+tooltipCodeSample :: View context props model action
 tooltipCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -84,7 +84,7 @@ tooltipCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Tooltip
   -----------------------------------------------------------------------------
-  tooltipSample :: View context model action
+  tooltipSample :: View context props model action
   tooltipSample =
     H.div_
     [ P.class_ "flex flex-wrap items-center gap-4" ]
@@ -95,7 +95,7 @@ tooltipCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-tooltipPropsApi :: View context model action
+tooltipPropsApi :: View context props model action
 tooltipPropsApi =
   """
   -- | Props for 'tooltip_'

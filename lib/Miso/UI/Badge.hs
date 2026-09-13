@@ -57,8 +57,8 @@ badgeClass BadgeProps {..} =
 -- | <https://basecoatui.com/components/badge/ Badge>, driven by 'BadgeProps'
 badge_
   :: BadgeProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 badge_ cfg kids = element attrs kids
   where
     element =
@@ -76,7 +76,7 @@ badge_ cfg kids = element attrs kids
       , badgeAttrs cfg
       ]
 -----------------------------------------------------------------------------
-badgeSample :: View context model action
+badgeSample :: View context props model action
 badgeSample =
   H.div_
   [ P.class_ "flex flex-col gap-2" ]
@@ -104,7 +104,7 @@ badgeSample =
     ]
   ]
 -----------------------------------------------------------------------------
-badgeCodeSample :: View context model action
+badgeCodeSample :: View context props model action
 badgeCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -116,7 +116,7 @@ badgeCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Badge
   -----------------------------------------------------------------------------
-  badgeSample :: View context model action
+  badgeSample :: View context props model action
   badgeSample =
     H.div_
     [ P.class_ "flex flex-col gap-2" ]
@@ -145,7 +145,7 @@ badgeCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-badgePropsApi :: View context model action
+badgePropsApi :: View context props model action
 badgePropsApi =
   """
   -- | Props for 'badge_'

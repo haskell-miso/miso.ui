@@ -50,7 +50,7 @@ defaultTextareaProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/textarea/ Textarea>, driven by 'TextareaProps'
-textarea_ :: TextareaProps model action -> View context model action
+textarea_ :: TextareaProps model action -> View context props model action
 textarea_ TextareaProps {..} = H.textarea_ $ concat
   [ [ P.classes_ ("textarea" : textareaClasses) ]
   , [ P.id_ i | Just i <- [textareaId] ]
@@ -62,7 +62,7 @@ textarea_ TextareaProps {..} = H.textarea_ $ concat
   ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-textareaUsage :: View context model action
+textareaUsage :: View context props model action
 textareaUsage =
   H.div_
   [ P.class_ "flex flex-col gap-y-6" ]
@@ -81,7 +81,7 @@ textareaUsage =
     ]
   ]
 -----------------------------------------------------------------------------
-textareaSample :: View context model action
+textareaSample :: View context props model action
 textareaSample =
   H.div_
   [ P.class_ "flex flex-col gap-y-10" ]
@@ -121,7 +121,7 @@ textareaSample =
     ]
   ]
 -----------------------------------------------------------------------------
-textareaCodeSample :: View context model action
+textareaCodeSample :: View context props model action
 textareaCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -133,7 +133,7 @@ textareaCodeSample =
   import           Miso.UI.Label
   import           Miso.UI.Textarea
   -----------------------------------------------------------------------------
-  textareaUsage :: View context model action
+  textareaUsage :: View context props model action
   textareaUsage =
     H.div_
     [ P.class_ "flex flex-col gap-y-6" ]
@@ -153,7 +153,7 @@ textareaCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-textareaPropsApi :: View context model action
+textareaPropsApi :: View context props model action
 textareaPropsApi =
   """
   -- | Props for 'textarea_'

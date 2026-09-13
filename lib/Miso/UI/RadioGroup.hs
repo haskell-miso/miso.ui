@@ -71,8 +71,8 @@ defaultRadioProps
 -- | <https://basecoatui.com/components/radio-group/ Radio Group>: fieldset of 'radio_'
 radioGroup_
   :: RadioGroupProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 radioGroup_ RadioGroupProps {..} kids =
   H.fieldset_
     ( P.classes_ ("grid" : "gap-3" : radioGroupClasses)
@@ -82,15 +82,15 @@ radioGroup_ RadioGroupProps {..} kids =
 -- | Label-wrapped radio input; children render as the label text
 radio_
   :: RadioProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 radio_ cfg kids =
   H.label_
   [ P.classes_ ("label" : radioLabelClasses cfg) ]
   ( radioInput_ cfg : kids )
 -----------------------------------------------------------------------------
 -- | The bare radio @input@, for custom layouts
-radioInput_ :: RadioProps model action -> View context model action
+radioInput_ :: RadioProps model action -> View context props model action
 radioInput_ RadioProps {..} = H.input_ $ concat
   [ [ P.classes_ ("input" : radioClasses)
     , P.type_ "radio"
@@ -103,7 +103,7 @@ radioInput_ RadioProps {..} = H.input_ $ concat
   ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-radioGroupUsage :: View context model action
+radioGroupUsage :: View context props model action
 radioGroupUsage =
   radioGroup_ defaultRadioGroupProps
   [ radio_ defaultRadioProps { radioName = "my-group", radioValue = "default" }
@@ -122,7 +122,7 @@ radioGroupUsage =
     [ "Compact" ]
   ]
 -----------------------------------------------------------------------------
-radioGroupSample :: View context model action
+radioGroupSample :: View context props model action
 radioGroupSample =
   H.div_
   [ P.class_ "flex flex-col gap-y-6" ]
@@ -172,7 +172,7 @@ radioGroupSample =
           ]
         ]
 -----------------------------------------------------------------------------
-radioGroupCodeSample :: View context model action
+radioGroupCodeSample :: View context props model action
 radioGroupCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -183,7 +183,7 @@ radioGroupCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.RadioGroup
   -----------------------------------------------------------------------------
-  radioGroupUsage :: View context model action
+  radioGroupUsage :: View context props model action
   radioGroupUsage =
     radioGroup_ defaultRadioGroupProps
     [ radio_ defaultRadioProps { radioName = "my-group", radioValue = "default" }
@@ -203,7 +203,7 @@ radioGroupCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-radioGroupPropsApi :: View context model action
+radioGroupPropsApi :: View context props model action
 radioGroupPropsApi =
   """
   -- | Props for 'radioGroup_'

@@ -93,8 +93,8 @@ defaultTabPanelProps
 -- | <https://basecoatui.com/components/tabs/ Tabs>, driven by 'TabsProps'
 tabs_
   :: TabsProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 tabs_ TabsProps {..} kids =
   H.div_
     ( P.classes_ ("tabs" : tabsClasses)
@@ -104,8 +104,8 @@ tabs_ TabsProps {..} kids =
 -----------------------------------------------------------------------------
 tabList_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 tabList_ attrs kids =
   H.nav_
     ( P.class_ "w-full"
@@ -116,8 +116,8 @@ tabList_ attrs kids =
 -----------------------------------------------------------------------------
 tabButton_
   :: TabButtonProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 tabButton_ TabButtonProps {..} kids =
   H.button_
     ( concat
@@ -135,8 +135,8 @@ tabButton_ TabButtonProps {..} kids =
 -----------------------------------------------------------------------------
 tab_
   :: TabPanelProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 tab_ TabPanelProps {..} kids =
   H.div_
     ( concat
@@ -152,7 +152,7 @@ tab_ TabPanelProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-tabsUsage :: View context model action
+tabsUsage :: View context props model action
 tabsUsage =
   tabs_ defaultTabsProps { tabsId = "my-tabs" }
   [ tabList_ []
@@ -181,7 +181,7 @@ tabsUsage =
     [ "Password panel" ]
   ]
 -----------------------------------------------------------------------------
-tabsSample :: View context model action
+tabsSample :: View context props model action
 tabsSample =
   H.div_
   [ P.class_ "flex flex-col gap-6" ]
@@ -293,7 +293,7 @@ tabsSample =
         ]
       ]
 -----------------------------------------------------------------------------
-tabsCodeSample :: View context model action
+tabsCodeSample :: View context props model action
 tabsCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -304,7 +304,7 @@ tabsCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Tabs
   -----------------------------------------------------------------------------
-  tabsUsage :: View context model action
+  tabsUsage :: View context props model action
   tabsUsage =
     tabs_ defaultTabsProps { tabsId = "my-tabs" }
     [ tabList_ []
@@ -334,7 +334,7 @@ tabsCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-tabsPropsApi :: View context model action
+tabsPropsApi :: View context props model action
 tabsPropsApi =
   """
   -- | Props for 'tabs_'

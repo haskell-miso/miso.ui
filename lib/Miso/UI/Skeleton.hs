@@ -39,7 +39,7 @@ defaultSkeletonProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/skeleton/ Skeleton>, driven by 'SkeletonProps'
-skeleton_ :: SkeletonProps model action -> View context model action
+skeleton_ :: SkeletonProps model action -> View context props model action
 skeleton_ SkeletonProps {..} =
   H.div_
     ( P.classes_
@@ -50,7 +50,7 @@ skeleton_ SkeletonProps {..} =
     : skeletonAttrs
     ) []
 -----------------------------------------------------------------------------
-skeletonSample :: View context model action
+skeletonSample :: View context props model action
 skeletonSample =
   H.div_
   [ P.class_ "flex flex-col gap-4" ]
@@ -83,7 +83,7 @@ skeletonSample =
         ]
       ]
 -----------------------------------------------------------------------------
-skeletonCodeSample :: View context model action
+skeletonCodeSample :: View context props model action
 skeletonCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -94,7 +94,7 @@ skeletonCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Skeleton
   -----------------------------------------------------------------------------
-  skeletonSample :: View context model action
+  skeletonSample :: View context props model action
   skeletonSample =
     H.div_
     [ P.class_ "flex flex-col gap-4" ]
@@ -128,7 +128,7 @@ skeletonCodeSample =
         ]
   """
 -----------------------------------------------------------------------------
-skeletonPropsApi :: View context model action
+skeletonPropsApi :: View context props model action
 skeletonPropsApi =
   """
   -- | Props for 'skeleton_'

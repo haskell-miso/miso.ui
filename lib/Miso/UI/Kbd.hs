@@ -39,8 +39,8 @@ defaultKbdProps
 -- | <https://basecoatui.com/components/kbd/ Kbd>, driven by 'KbdProps'
 kbd_
   :: KbdProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 kbd_ KbdProps {..} kids =
   H.kbd_
     ( P.classes_ ("kbd" : kbdClasses)
@@ -50,15 +50,15 @@ kbd_ KbdProps {..} kids =
 -- | Groups several 'kbd_' keys on one line
 kbdGroup_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 kbdGroup_ attrs kids =
   H.span_
     ( P.class_ "inline-flex items-center gap-1"
     : attrs
     ) kids
 -----------------------------------------------------------------------------
-kbdSample :: View context model action
+kbdSample :: View context props model action
 kbdSample =
   H.div_
   [ P.class_ "flex flex-col items-center gap-4" ]
@@ -71,7 +71,7 @@ kbdSample =
     ]
   ]
 -----------------------------------------------------------------------------
-kbdCodeSample :: View context model action
+kbdCodeSample :: View context props model action
 kbdCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -82,7 +82,7 @@ kbdCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Kbd
   -----------------------------------------------------------------------------
-  kbdSample :: View context model action
+  kbdSample :: View context props model action
   kbdSample =
     H.div_
     [ P.class_ "flex flex-col items-center gap-4" ]
@@ -96,7 +96,7 @@ kbdCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-kbdPropsApi :: View context model action
+kbdPropsApi :: View context props model action
 kbdPropsApi =
   """
   -- | Props for 'kbd_'
