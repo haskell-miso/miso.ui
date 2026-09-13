@@ -41,8 +41,8 @@ defaultLabelProps
 -- | <https://basecoatui.com/components/label/ Label>, driven by 'LabelProps'
 label_
   :: LabelProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 label_ LabelProps {..} kids = H.label_
   ( concat
     [ [ P.classes_ ("label" : labelClasses) ]
@@ -51,7 +51,7 @@ label_ LabelProps {..} kids = H.label_
     ]
   ) kids
 -----------------------------------------------------------------------------
-labelSample :: View context model action
+labelSample :: View context props model action
 labelSample =
   H.div_
   [ P.class_ "grid w-full max-w-sm gap-6" ]
@@ -88,7 +88,7 @@ labelSample =
     ]
   ]
 -----------------------------------------------------------------------------
-labelCodeSample :: View context model action
+labelCodeSample :: View context props model action
 labelCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -99,7 +99,7 @@ labelCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Label
   -----------------------------------------------------------------------------
-  labelSample :: View context model action
+  labelSample :: View context props model action
   labelSample =
     H.div_
     [ P.class_ "grid w-full max-w-sm gap-6" ]
@@ -137,7 +137,7 @@ labelCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-labelPropsApi :: View context model action
+labelPropsApi :: View context props model action
 labelPropsApi =
   """
   -- | Props for 'label_'

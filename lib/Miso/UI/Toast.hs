@@ -51,8 +51,8 @@ defaultToastProps
 toastTrigger_
   :: (ToastProps -> action)
   -> ToastProps
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 toastTrigger_ toAction cfg kids =
   button_ defaultButtonProps
     { buttonVariant = Outline
@@ -60,10 +60,10 @@ toastTrigger_ toAction cfg kids =
     } kids
 -----------------------------------------------------------------------------
 -- | The toaster container basecoat renders toasts into; place once per page
-toaster_ :: [Attribute model action] -> View context model action
+toaster_ :: [Attribute model action] -> View context props model action
 toaster_ attrs = H.div_ (P.id_ "toaster" : P.class_ "toaster" : attrs) []
 -----------------------------------------------------------------------------
-toastSample :: (ToastProps -> action) -> View context model action
+toastSample :: (ToastProps -> action) -> View context props model action
 toastSample toAction =
   H.div_
   [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -97,7 +97,7 @@ toastSample toAction =
       [ "Warning" ]
   ]
 -----------------------------------------------------------------------------
-toastCodeSample :: View context model action
+toastCodeSample :: View context props model action
 toastCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -111,7 +111,7 @@ toastCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Toast
   -----------------------------------------------------------------------------
-  toastSample :: (ToastProps -> action) -> View context model action
+  toastSample :: (ToastProps -> action) -> View context props model action
   toastSample toAction =
     H.div_
     [ P.class_ "flex flex-wrap items-center gap-2" ]
@@ -146,7 +146,7 @@ toastCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-toastPropsApi :: View context model action
+toastPropsApi :: View context props model action
 toastPropsApi =
   """
   -- | Props describing a basecoat toast. Dispatched to basecoat's toaster JS

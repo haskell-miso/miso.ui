@@ -45,8 +45,8 @@ defaultPaginationProps
 -- Children are 'paginationLink_' \/ 'paginationPrevious_' \/ etc.
 pagination_
   :: PaginationProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 pagination_ PaginationProps {..} kids =
   H.nav_
     ( P.classes_ ("mx-auto" : "flex" : "w-full" : "justify-center" : paginationClasses)
@@ -64,8 +64,8 @@ paginationLink_
   :: Bool
   -> MisoString
   -- ^ href
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 paginationLink_ current url kids =
   H.li_ []
   [ H.a_
@@ -74,7 +74,7 @@ paginationLink_ current url kids =
     ] kids
   ]
 -----------------------------------------------------------------------------
-paginationPrevious_ :: MisoString -> View context model action
+paginationPrevious_ :: MisoString -> View context props model action
 paginationPrevious_ url =
   H.li_ []
   [ H.a_
@@ -82,7 +82,7 @@ paginationPrevious_ url =
     [ chevronLeftIcon [], "Previous" ]
   ]
 -----------------------------------------------------------------------------
-paginationNext_ :: MisoString -> View context model action
+paginationNext_ :: MisoString -> View context props model action
 paginationNext_ url =
   H.li_ []
   [ H.a_
@@ -90,7 +90,7 @@ paginationNext_ url =
     [ "Next", chevronRightIcon [] ]
   ]
 -----------------------------------------------------------------------------
-paginationEllipsis_ :: MisoString -> View context model action
+paginationEllipsis_ :: MisoString -> View context props model action
 paginationEllipsis_ url =
   H.li_ []
   [ H.a_
@@ -98,7 +98,7 @@ paginationEllipsis_ url =
     [ dotsIcon [] ]
   ]
 -----------------------------------------------------------------------------
-paginationSample :: View context model action
+paginationSample :: View context props model action
 paginationSample =
   H.div_
   [ P.class_ "inline-flex" ]
@@ -112,7 +112,7 @@ paginationSample =
     ]
   ]
 -----------------------------------------------------------------------------
-paginationCodeSample :: View context model action
+paginationCodeSample :: View context props model action
 paginationCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -124,7 +124,7 @@ paginationCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Pagination
   -----------------------------------------------------------------------------
-  paginationSample :: View context model action
+  paginationSample :: View context props model action
   paginationSample =
     H.div_
     [ P.class_ "inline-flex" ]
@@ -139,7 +139,7 @@ paginationCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-paginationPropsApi :: View context model action
+paginationPropsApi :: View context props model action
 paginationPropsApi =
   """
   -- | Props for 'pagination_'

@@ -56,15 +56,15 @@ defaultCheckboxProps
 -- The children render as the label text.
 checkbox_
   :: CheckboxProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 checkbox_ cfg kids =
   H.label_
   [ P.classes_ ("label" : "gap-3" : checkboxLabelClasses cfg) ]
   ( checkboxInput_ cfg : kids )
 -----------------------------------------------------------------------------
 -- | The bare checkbox @input@, for custom layouts
-checkboxInput_ :: CheckboxProps model action -> View context model action
+checkboxInput_ :: CheckboxProps model action -> View context props model action
 checkboxInput_ CheckboxProps {..} = H.input_ $ concat
   [ [ P.classes_ ("input" : checkboxClasses)
     , P.type_ "checkbox"
@@ -78,7 +78,7 @@ checkboxInput_ CheckboxProps {..} = H.input_ $ concat
   ]
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-checkboxUsage :: View context model action
+checkboxUsage :: View context props model action
 checkboxUsage =
   H.div_
   [ P.class_ "flex flex-col gap-6" ]
@@ -87,7 +87,7 @@ checkboxUsage =
   , checkbox_ defaultCheckboxProps { checkboxDisabled = True } [ "Disabled" ]
   ]
 -----------------------------------------------------------------------------
-checkboxSample :: View context model action
+checkboxSample :: View context props model action
 checkboxSample =
   H.div_
   [ P.class_ "flex flex-col gap-6 max-w-lg" ]
@@ -129,7 +129,7 @@ checkboxSample =
     ]
   ]
 -----------------------------------------------------------------------------
-checkboxCodeSample :: View context model action
+checkboxCodeSample :: View context props model action
 checkboxCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -141,7 +141,7 @@ checkboxCodeSample =
   import           Miso.UI.Label
   import           Miso.UI.Checkbox
   -----------------------------------------------------------------------------
-  checkboxUsage :: View context model action
+  checkboxUsage :: View context props model action
   checkboxUsage =
     H.div_
     [ P.class_ "flex flex-col gap-6" ]
@@ -151,7 +151,7 @@ checkboxCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-checkboxPropsApi :: View context model action
+checkboxPropsApi :: View context props model action
 checkboxPropsApi =
   """
   -- | Props for 'checkbox_'

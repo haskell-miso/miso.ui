@@ -31,11 +31,11 @@ import           Miso.UI.Types
 -- | Props for 'card_'. Title, description and footer nest other views.
 data CardProps context model action
   = CardProps
-  { cardTitle :: Maybe (View context model action)
+  { cardTitle :: Maybe (View context props model action)
     -- ^ Heading shown in the card header
-  , cardDescription :: Maybe (View context model action)
+  , cardDescription :: Maybe (View context props model action)
     -- ^ Sub-heading shown under the title
-  , cardFooter :: Maybe [View context model action]
+  , cardFooter :: Maybe [View context props model action]
     -- ^ Footer content
   , cardFooterClasses :: [MisoString]
   , cardClasses :: [MisoString]
@@ -59,8 +59,8 @@ defaultCardProps
 -- Children render inside the card's content section.
 card_
   :: CardProps context model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 card_ CardProps {..} kids =
   H.div_
     ( P.classes_ ("card" : cardClasses)
@@ -81,24 +81,24 @@ card_ CardProps {..} kids =
 -----------------------------------------------------------------------------
 cardHeader_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 cardHeader_ = H.header_
 -----------------------------------------------------------------------------
 cardContent_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 cardContent_ = H.section_
 -----------------------------------------------------------------------------
 cardFooter_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 cardFooter_ = H.footer_
 -----------------------------------------------------------------------------
 -- | Compact usage example (source of the kitchen sink "Code" tab)
-cardUsage :: View context model action
+cardUsage :: View context props model action
 cardUsage =
   card_ defaultCardProps
   { cardTitle = Just "Login to your account"
@@ -120,7 +120,7 @@ cardUsage =
     ]
   ]
 -----------------------------------------------------------------------------
-cardSample :: View context model action
+cardSample :: View context props model action
 cardSample =
   H.div_
   [ P.class_ "flex flex-col gap-4" ]
@@ -195,7 +195,7 @@ cardSample =
     ]
   ]
 -----------------------------------------------------------------------------
-cardCodeSample :: View context model action
+cardCodeSample :: View context props model action
 cardCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -210,7 +210,7 @@ cardCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Card
   -----------------------------------------------------------------------------
-  cardUsage :: View context model action
+  cardUsage :: View context props model action
   cardUsage =
     card_ defaultCardProps
     { cardTitle = Just "Login to your account"
@@ -233,17 +233,17 @@ cardCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-cardPropsApi :: View context model action
+cardPropsApi :: View context props model action
 cardPropsApi =
   """
   -- | Props for 'card_'. Title, description and footer nest other views.
   data CardProps context model action
     = CardProps
-    { cardTitle :: Maybe (View context model action)
+    { cardTitle :: Maybe (View context props model action)
       -- ^ Heading shown in the card header
-    , cardDescription :: Maybe (View context model action)
+    , cardDescription :: Maybe (View context props model action)
       -- ^ Sub-heading shown under the title
-    , cardFooter :: Maybe [View context model action]
+    , cardFooter :: Maybe [View context props model action]
       -- ^ Footer content
     , cardFooterClasses :: [MisoString]
     , cardClasses :: [MisoString]

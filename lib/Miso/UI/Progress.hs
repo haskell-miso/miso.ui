@@ -41,7 +41,7 @@ defaultProgressProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/progress/ Progress>, driven by 'ProgressProps'
-progress_ :: ProgressProps model action -> View context model action
+progress_ :: ProgressProps model action -> View context props model action
 progress_ ProgressProps {..} =
   H.div_
     ( concat
@@ -64,7 +64,7 @@ progress_ ProgressProps {..} =
       []
     ]
 -----------------------------------------------------------------------------
-progressSample :: View context model action
+progressSample :: View context props model action
 progressSample =
   H.div_
   [ P.class_ "flex flex-col gap-4 max-w-sm" ]
@@ -72,7 +72,7 @@ progressSample =
   , progress_ defaultProgressProps { progressValue = 66 }
   ]
 -----------------------------------------------------------------------------
-progressCodeSample :: View context model action
+progressCodeSample :: View context props model action
 progressCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -85,7 +85,7 @@ progressCodeSample =
   import qualified Miso.String as MS
   import           Miso.UI.Progress
   -----------------------------------------------------------------------------
-  progressSample :: View context model action
+  progressSample :: View context props model action
   progressSample =
     H.div_
     [ P.class_ "flex flex-col gap-4 max-w-sm" ]
@@ -94,7 +94,7 @@ progressCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-progressPropsApi :: View context model action
+progressPropsApi :: View context props model action
 progressPropsApi =
   """
   -- | Props for 'progress_'

@@ -28,11 +28,11 @@ import           Miso.UI.Types
 -- | Props for 'empty_'. Icon, title and description nest other views.
 data EmptyProps context model action
   = EmptyProps
-  { emptyIcon :: Maybe (View context model action)
+  { emptyIcon :: Maybe (View context props model action)
     -- ^ Icon shown in the header medallion
-  , emptyTitle :: Maybe (View context model action)
-  , emptyDescription :: Maybe (View context model action)
-  , emptyFooter :: [View context model action]
+  , emptyTitle :: Maybe (View context props model action)
+  , emptyDescription :: Maybe (View context props model action)
+  , emptyFooter :: [View context props model action]
     -- ^ Content under the actions (e.g. a \"learn more\" link)
   , emptyClasses :: [MisoString]
   , emptyAttrs :: [Attribute model action]
@@ -54,8 +54,8 @@ defaultEmptyProps
 -- Children render as the action row.
 empty_
   :: EmptyProps context model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 empty_ EmptyProps {..} kids =
   H.div_
     ( P.classes_
@@ -93,7 +93,7 @@ empty_ EmptyProps {..} kids =
     , emptyFooter
     ]
 -----------------------------------------------------------------------------
-emptySample :: View context model action
+emptySample :: View context props model action
 emptySample =
   empty_ defaultEmptyProps
     { emptyIcon = Just folderIcon
@@ -126,7 +126,7 @@ emptySample =
       , S.path_ [ SP.d_ "M7 17 17 7" ]
       ]
 -----------------------------------------------------------------------------
-emptyCodeSample :: View context model action
+emptyCodeSample :: View context props model action
 emptyCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -142,7 +142,7 @@ emptyCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Empty
   -----------------------------------------------------------------------------
-  emptySample :: View context model action
+  emptySample :: View context props model action
   emptySample =
     empty_ defaultEmptyProps
       { emptyIcon = Just folderIcon
@@ -176,17 +176,17 @@ emptyCodeSample =
         ]
   """
 -----------------------------------------------------------------------------
-emptyPropsApi :: View context model action
+emptyPropsApi :: View context props model action
 emptyPropsApi =
   """
   -- | Props for 'empty_'. Icon, title and description nest other views.
   data EmptyProps context model action
     = EmptyProps
-    { emptyIcon :: Maybe (View context model action)
+    { emptyIcon :: Maybe (View context props model action)
       -- ^ Icon shown in the header medallion
-    , emptyTitle :: Maybe (View context model action)
-    , emptyDescription :: Maybe (View context model action)
-    , emptyFooter :: [View context model action]
+    , emptyTitle :: Maybe (View context props model action)
+    , emptyDescription :: Maybe (View context props model action)
+    , emptyFooter :: [View context props model action]
       -- ^ Content under the actions (e.g. a \\"learn more\\" link)
     , emptyClasses :: [MisoString]
     , emptyAttrs :: [Attribute model action]

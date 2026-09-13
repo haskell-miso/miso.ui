@@ -60,8 +60,8 @@ defaultDialogProps
 -- and a 'dialogCloseButton_'.
 dialog_
   :: DialogProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 dialog_ DialogProps {..} kids =
   H.dialog_
     ( concat
@@ -78,11 +78,11 @@ dialog_ DialogProps {..} kids =
 dialogHeader_
   :: MisoString
   -- ^ dialog id (matches 'dialogId')
-  -> [View context model action]
+  -> [View context props model action]
   -- ^ title
-  -> [View context model action]
+  -> [View context props model action]
   -- ^ description
-  -> View context model action
+  -> View context props model action
 dialogHeader_ did title description =
   H.header_ []
   [ H.h2_ [ P.id_ (did <> "-title") ] title
@@ -91,18 +91,18 @@ dialogHeader_ did title description =
 -----------------------------------------------------------------------------
 dialogSection_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 dialogSection_ = H.section_
 -----------------------------------------------------------------------------
 dialogFooter_
   :: [Attribute model action]
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 dialogFooter_ = H.footer_
 -----------------------------------------------------------------------------
 -- | The x-shaped close button in the dialog's corner
-dialogCloseButton_ :: action -> View context model action
+dialogCloseButton_ :: action -> View context props model action
 dialogCloseButton_ close =
   H.button_
   [ P.type_ "button"
@@ -216,7 +216,7 @@ view_ =
     lorem =
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
 -----------------------------------------------------------------------------
-dialogCodeSample :: View context model action
+dialogCodeSample :: View context props model action
 dialogCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -280,7 +280,7 @@ dialogCodeSample =
           void $ dialog # ("close" :: MisoString) $ ()
   """
 -----------------------------------------------------------------------------
-dialogPropsApi :: View context model action
+dialogPropsApi :: View context props model action
 dialogPropsApi =
   """
   -- | Props for 'dialog_' (the native @dialog@ element)

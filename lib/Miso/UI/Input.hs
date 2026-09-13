@@ -50,7 +50,7 @@ defaultInputProps
   }
 -----------------------------------------------------------------------------
 -- | <https://basecoatui.com/components/input/ Input>, driven by 'InputProps'
-input_ :: InputProps model action -> View context model action
+input_ :: InputProps model action -> View context props model action
 input_ InputProps {..} = H.input_ $ concat
   [ [ P.classes_ ("input" : inputClasses)
     , P.type_ inputType
@@ -63,7 +63,7 @@ input_ InputProps {..} = H.input_ $ concat
   , inputAttrs
   ]
 -----------------------------------------------------------------------------
-inputSample :: View context model action
+inputSample :: View context props model action
 inputSample =
   H.div_
   [ P.class_ "flex flex-col gap-y-4" ]
@@ -82,7 +82,7 @@ inputSample =
     | t <- [ "date", "datetime-local", "month", "week", "time" ]
     ]
 -----------------------------------------------------------------------------
-inputCodeSample :: View context model action
+inputCodeSample :: View context props model action
 inputCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -93,7 +93,7 @@ inputCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Input
   -----------------------------------------------------------------------------
-  inputSample :: View context model action
+  inputSample :: View context props model action
   inputSample =
     H.div_
     [ P.class_ "flex flex-col gap-y-4" ]
@@ -113,7 +113,7 @@ inputCodeSample =
       ]
   """
 -----------------------------------------------------------------------------
-inputPropsApi :: View context model action
+inputPropsApi :: View context props model action
 inputPropsApi =
   """
   -- | Props for 'input_'

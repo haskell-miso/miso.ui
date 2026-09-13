@@ -51,15 +51,15 @@ defaultSwitchProps
 -- The children render as the label text.
 switch_
   :: SwitchProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 switch_ cfg kids =
   H.label_
   [ P.classes_ ("label" : switchLabelClasses cfg) ]
   ( switchInput_ cfg : kids )
 -----------------------------------------------------------------------------
 -- | The bare switch @input@, for custom layouts
-switchInput_ :: SwitchProps model action -> View context model action
+switchInput_ :: SwitchProps model action -> View context props model action
 switchInput_ SwitchProps {..} = H.input_ $ concat
   [ [ P.classes_ ("input" : switchClasses)
     , P.type_ "checkbox"
@@ -72,7 +72,7 @@ switchInput_ SwitchProps {..} = H.input_ $ concat
   , switchAttrs
   ]
 -----------------------------------------------------------------------------
-switchSample :: View context model action
+switchSample :: View context props model action
 switchSample =
   H.div_
   [ P.class_ "inline-flex flex-col gap-y-6" ]
@@ -97,7 +97,7 @@ switchSample =
     ]
   ]
 -----------------------------------------------------------------------------
-switchCodeSample :: View context model action
+switchCodeSample :: View context props model action
 switchCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -108,7 +108,7 @@ switchCodeSample =
   import qualified Miso.Html.Property as P
   import           Miso.UI.Switch
   -----------------------------------------------------------------------------
-  switchSample :: View context model action
+  switchSample :: View context props model action
   switchSample =
     H.div_
     [ P.class_ "inline-flex flex-col gap-y-6" ]
@@ -134,7 +134,7 @@ switchCodeSample =
     ]
   """
 -----------------------------------------------------------------------------
-switchPropsApi :: View context model action
+switchPropsApi :: View context props model action
 switchPropsApi =
   """
   -- | Props for 'switch_'

@@ -140,7 +140,7 @@ ssrSafe what ls' =
 -- | The freshly generated code sample block
 generated :: String -> String -> [String] -> [String]
 generated sampleName codeName ls = concat
-  [ [ codeName <> " :: View model action"
+  [ [ codeName <> " :: View context props model action"
     , codeName <> " ="
     , "  \"\"\""
     , indent divider
@@ -215,7 +215,7 @@ updatePropsApi base ls
     propsName = base <> "PropsApi"
     sections = propsSections ls
     block = concat
-      [ [ propsName <> " :: View model action"
+      [ [ propsName <> " :: View context props model action"
         , propsName <> " ="
         , "  \"\"\""
         ]

@@ -28,7 +28,7 @@ data PopoverProps context model action
   = PopoverProps
   { popoverId :: MisoString
     -- ^ Base id; trigger\/popover ids are derived from it (required)
-  , popoverTrigger :: [View context model action]
+  , popoverTrigger :: [View context props model action]
     -- ^ Content of the trigger button (nests other views)
   , popoverTriggerClasses :: [MisoString]
     -- ^ Classes of the trigger button (defaults to @btn-outline@)
@@ -58,8 +58,8 @@ defaultPopoverProps
 -- Children render inside the popover.
 popover_
   :: PopoverProps context model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 popover_ cfg kids =
   H.div_
   ( P.class_ "popover"
@@ -87,7 +87,7 @@ popover_ cfg kids =
     ) kids
   ]
 -----------------------------------------------------------------------------
-popoverSample :: View context model action
+popoverSample :: View context props model action
 popoverSample =
   popover_ defaultPopoverProps
     { popoverId = "demo-popover"
@@ -122,7 +122,7 @@ popoverSample =
         }
       ]
 -----------------------------------------------------------------------------
-popoverCodeSample :: View context model action
+popoverCodeSample :: View context props model action
 popoverCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -136,7 +136,7 @@ popoverCodeSample =
   import           Miso.UI.Types
   import           Miso.UI.Popover
   -----------------------------------------------------------------------------
-  popoverSample :: View context model action
+  popoverSample :: View context props model action
   popoverSample =
     popover_ defaultPopoverProps
       { popoverId = "demo-popover"
@@ -172,7 +172,7 @@ popoverCodeSample =
         ]
   """
 -----------------------------------------------------------------------------
-popoverPropsApi :: View context model action
+popoverPropsApi :: View context props model action
 popoverPropsApi =
   """
   -- | Props for 'popover_'
@@ -180,7 +180,7 @@ popoverPropsApi =
     = PopoverProps
     { popoverId :: MisoString
       -- ^ Base id; trigger\\/popover ids are derived from it (required)
-    , popoverTrigger :: [View context model action]
+    , popoverTrigger :: [View context props model action]
       -- ^ Content of the trigger button (nests other views)
     , popoverTriggerClasses :: [MisoString]
       -- ^ Classes of the trigger button (defaults to @btn-outline@)

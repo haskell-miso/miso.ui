@@ -57,7 +57,7 @@ defaultThemeSwitcherProps
 themeSelect_
   :: (MisoString -> action)
   -> ThemeSwitcherProps model action
-  -> View context model action
+  -> View context props model action
 themeSelect_ changeTheme ThemeSwitcherProps {..} =
   H.select_
     ( P.classes_ ("select" : themeSwitcherClasses)
@@ -73,7 +73,7 @@ themeSelect_ changeTheme ThemeSwitcherProps {..} =
     ]
 -----------------------------------------------------------------------------
 -- | Sun\/moon button that emits the given action on click
-darkModeToggle_ :: action -> View context model action
+darkModeToggle_ :: action -> View context props model action
 darkModeToggle_ toggle =
   H.button_
   [ P.class_ "btn-icon-outline size-8"
@@ -105,7 +105,7 @@ darkModeToggle_ toggle =
     ]
   ]
 -----------------------------------------------------------------------------
-themeSwitcherCodeSample :: View context model action
+themeSwitcherCodeSample :: View context props model action
 themeSwitcherCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -117,14 +117,14 @@ themeSwitcherCodeSample =
   -----------------------------------------------------------------------------
   data Action = ChangeTheme MisoString | ToggleDarkMode
   -----------------------------------------------------------------------------
-  myHeader :: View context model Action
+  myHeader :: View context props model Action
   myHeader = vfrag
     [ themeSelect_ ChangeTheme defaultThemeSwitcherProps
     , darkModeToggle_ ToggleDarkMode
     ]
   """
 -----------------------------------------------------------------------------
-themeSwitcherPropsApi :: View context model action
+themeSwitcherPropsApi :: View context props model action
 themeSwitcherPropsApi =
   """
   -- | Props for 'themeSelect_'

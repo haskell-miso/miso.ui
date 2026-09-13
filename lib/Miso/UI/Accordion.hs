@@ -69,8 +69,8 @@ defaultAccordionItemProps
 -- | <https://basecoatui.com/components/accordion/ Accordion>, driven by 'AccordionProps'
 accordion_
   :: AccordionProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 accordion_ AccordionProps {..} kids =
   H.section_
     ( concat
@@ -82,8 +82,8 @@ accordion_ AccordionProps {..} kids =
 -----------------------------------------------------------------------------
 accordionSection_
   :: AccordionItemProps model action
-  -> [View context model action]
-  -> View context model action
+  -> [View context props model action]
+  -> View context props model action
 accordionSection_ AccordionItemProps {..} kids =
   H.details_
     ( concat
@@ -98,8 +98,8 @@ accordionSection_ AccordionItemProps {..} kids =
 -----------------------------------------------------------------------------
 accordionHeader_
   :: [ Attribute model action ]
-  -> [ View context model action ]
-  -> View context model action
+  -> [ View context props model action ]
+  -> View context props model action
 accordionHeader_ attrs kids = H.summary_
   ( P.className
       "w-full focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px] transition-all outline-none rounded-md"
@@ -125,8 +125,8 @@ accordionHeader_ attrs kids = H.summary_
 -----------------------------------------------------------------------------
 accordionBody_
   :: [ Attribute model action ]
-  -> [ View context model action ]
-  -> View context model action
+  -> [ View context props model action ]
+  -> View context props model action
 accordionBody_ attrs kids =
   H.section_
     ( P.className "pb-4"
@@ -138,7 +138,7 @@ accordionBody_ attrs kids =
       kids
     ]
 -----------------------------------------------------------------------------
-accordionSample :: View context model action
+accordionSample :: View context props model action
 accordionSample =
   accordion_ defaultAccordionProps
     [ accordionSection_ defaultAccordionItemProps { accordionItemOpen = True }
@@ -161,7 +161,7 @@ accordionSample =
       ]
     ]
 -----------------------------------------------------------------------------
-accordionCodeSample :: View context model action
+accordionCodeSample :: View context props model action
 accordionCodeSample =
   """
   -----------------------------------------------------------------------------
@@ -173,7 +173,7 @@ accordionCodeSample =
   import           Miso.UI.Icons
   import           Miso.UI.Accordion
   -----------------------------------------------------------------------------
-  accordionSample :: View context model action
+  accordionSample :: View context props model action
   accordionSample =
     accordion_ defaultAccordionProps
       [ accordionSection_ defaultAccordionItemProps { accordionItemOpen = True }
@@ -197,7 +197,7 @@ accordionCodeSample =
       ]
   """
 -----------------------------------------------------------------------------
-accordionPropsApi :: View context model action
+accordionPropsApi :: View context props model action
 accordionPropsApi =
   """
   -- | Props for 'accordion_'
