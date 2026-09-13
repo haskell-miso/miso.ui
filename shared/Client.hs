@@ -88,7 +88,7 @@ withMainAs content = vfrag
     ]
   ]
 -----------------------------------------------------------------------------
-homeView :: Eq context => context -> props -> Model -> View context props Model Action
+homeView :: Eq context => Model -> View context props Model Action
 homeView = \case
   Model Index ->
     withMainAs mainContent

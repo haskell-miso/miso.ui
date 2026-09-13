@@ -120,7 +120,7 @@ data Action
 -- | Demo component: two dialogs with triggers. The model tracks the id of
 -- the currently open dialog.
 dialogComponent :: Component parent props MisoString Action
-dialogComponent = component "" update_ $ \_ _ _ -> view_
+dialogComponent = component "" update_ $ \_ -> view_
   where
     update_ NoOp = pure ()
     update_ (ShowDialog sel domRef) = do
@@ -239,7 +239,7 @@ dialogCodeSample =
     | NoOp
   -----------------------------------------------------------------------------
   dialogComponent :: Component parent props MisoString Action
-  dialogComponent = component "" update_ $ \\_ _ _ ->
+  dialogComponent = component "" update_ $ \\_ ->
       H.div_ []
       [ button_ defaultButtonProps
         { buttonVariant = Outline
