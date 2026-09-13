@@ -24,7 +24,7 @@ import           Miso.UI.Label
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'popover_'
-data PopoverProps context model action
+data PopoverProps context props model action
   = PopoverProps
   { popoverId :: MisoString
     -- ^ Base id; trigger\/popover ids are derived from it (required)
@@ -42,7 +42,7 @@ data PopoverProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: outline trigger, bottom placement
-defaultPopoverProps :: PopoverProps context model action
+defaultPopoverProps :: PopoverProps context props model action
 defaultPopoverProps
   = PopoverProps
   { popoverId = "popover"
@@ -57,7 +57,7 @@ defaultPopoverProps
 -- | <https://basecoatui.com/components/popover/ Popover>, driven by 'PopoverProps'.
 -- Children render inside the popover.
 popover_
-  :: PopoverProps context model action
+  :: PopoverProps context props model action
   -> [View context props model action]
   -> View context props model action
 popover_ cfg kids =
@@ -176,7 +176,7 @@ popoverPropsApi :: View context props model action
 popoverPropsApi =
   """
   -- | Props for 'popover_'
-  data PopoverProps context model action
+  data PopoverProps context props model action
     = PopoverProps
     { popoverId :: MisoString
       -- ^ Base id; trigger\\/popover ids are derived from it (required)
@@ -194,7 +194,7 @@ popoverPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: outline trigger, bottom placement
-  defaultPopoverProps :: PopoverProps context model action
+  defaultPopoverProps :: PopoverProps context props model action
   defaultPopoverProps
     = PopoverProps
     { popoverId = "popover"

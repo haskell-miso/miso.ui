@@ -137,7 +137,7 @@ dialogComponent = component "" update_ $ \_ _ _ -> view_
           $ [sel :: MisoString]
         void $ dialog # ("close" :: MisoString) $ ()
 -----------------------------------------------------------------------------
-view_ :: View context MisoString Action
+view_ :: View context props MisoString Action
 view_ =
   H.div_
   [ P.class_ "flex flex-wrap items-center gap-4" ]

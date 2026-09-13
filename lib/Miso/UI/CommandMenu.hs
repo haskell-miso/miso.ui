@@ -31,7 +31,7 @@ data Action
   | NoOp
 -----------------------------------------------------------------------------
 commandMenuComponent :: Component parent props MisoString Action
-commandMenuComponent = component "" update_ $ \_ _ _ -> view_
+commandMenuComponent = component "" update_ $ \_ -> view_
   where
     update_ NoOp = pure ()
     update_ (ShowDialog sel domRef) = do

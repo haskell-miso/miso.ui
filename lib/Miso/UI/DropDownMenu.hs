@@ -30,7 +30,7 @@ import           Miso.UI.Icons
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'dropdownMenu_'
-data DropdownMenuProps context model action
+data DropdownMenuProps context props model action
   = DropdownMenuProps
   { dropdownMenuId :: MisoString
     -- ^ Base id; trigger\/popover\/menu ids are derived from it (required)
@@ -46,7 +46,7 @@ data DropdownMenuProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: outline trigger button, no alignment override
-defaultDropdownMenuProps :: DropdownMenuProps context model action
+defaultDropdownMenuProps :: DropdownMenuProps context props model action
 defaultDropdownMenuProps
   = DropdownMenuProps
   { dropdownMenuId = "dropdown-menu"
@@ -60,7 +60,7 @@ defaultDropdownMenuProps
 -- | <https://basecoatui.com/components/dropdown-menu/ Dropdown Menu>.
 -- Children are 'menuItem_' \/ 'menuGroup_' \/ 'menuSeparator_' views.
 dropdownMenu_
-  :: DropdownMenuProps context model action
+  :: DropdownMenuProps context props model action
   -> [View context props model action]
   -> View context props model action
 dropdownMenu_ cfg kids =
@@ -331,7 +331,7 @@ dropdownMenuPropsApi :: View context props model action
 dropdownMenuPropsApi =
   """
   -- | Props for 'dropdownMenu_'
-  data DropdownMenuProps context model action
+  data DropdownMenuProps context props model action
     = DropdownMenuProps
     { dropdownMenuId :: MisoString
       -- ^ Base id; trigger\\/popover\\/menu ids are derived from it (required)
@@ -347,7 +347,7 @@ dropdownMenuPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: outline trigger button, no alignment override
-  defaultDropdownMenuProps :: DropdownMenuProps context model action
+  defaultDropdownMenuProps :: DropdownMenuProps context props model action
   defaultDropdownMenuProps
     = DropdownMenuProps
     { dropdownMenuId = "dropdown-menu"

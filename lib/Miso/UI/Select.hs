@@ -63,7 +63,7 @@ select_ SelectProps {..} kids = H.select_
   ) kids
 -----------------------------------------------------------------------------
 -- | Props for the popover-based 'selectMenu_' (basecoat JS select)
-data SelectMenuProps context model action
+data SelectMenuProps context props model action
   = SelectMenuProps
   { selectMenuId :: MisoString
     -- ^ Base id; trigger\/popover\/listbox ids are derived from it (required)
@@ -80,7 +80,7 @@ data SelectMenuProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor for the JS select
-defaultSelectMenuProps :: SelectMenuProps context model action
+defaultSelectMenuProps :: SelectMenuProps context props model action
 defaultSelectMenuProps
   = SelectMenuProps
   { selectMenuId = "select-menu"
@@ -95,7 +95,7 @@ defaultSelectMenuProps
 -- | <https://basecoatui.com/components/select/ Select> (popover listbox).
 -- Children are 'selectOption_' \/ 'selectGroup_' views.
 selectMenu_
-  :: SelectMenuProps context model action
+  :: SelectMenuProps context props model action
   -> [View context props model action]
   -> View context props model action
 selectMenu_ cfg kids =
@@ -313,7 +313,7 @@ selectPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for the popover-based 'selectMenu_' (basecoat JS select)
-  data SelectMenuProps context model action
+  data SelectMenuProps context props model action
     = SelectMenuProps
     { selectMenuId :: MisoString
       -- ^ Base id; trigger\\/popover\\/listbox ids are derived from it (required)
@@ -330,7 +330,7 @@ selectPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor for the JS select
-  defaultSelectMenuProps :: SelectMenuProps context model action
+  defaultSelectMenuProps :: SelectMenuProps context props model action
   defaultSelectMenuProps
     = SelectMenuProps
     { selectMenuId = "select-menu"

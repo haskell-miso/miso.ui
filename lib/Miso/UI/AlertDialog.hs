@@ -74,7 +74,7 @@ alertDialogComponent = component () update_ view_
         $ [did]
       void $ dialog # ("close" :: MisoString) $ ()
 
-    view_ _ AlertDialogProps {..} () =
+    view_ () = vprops $ \AlertDialogProps {..} ->
       H.div_
       []
       [ button_ defaultButtonProps

@@ -29,7 +29,7 @@ import           Miso.UI.Label
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'card_'. Title, description and footer nest other views.
-data CardProps context model action
+data CardProps context props model action
   = CardProps
   { cardTitle :: Maybe (View context props model action)
     -- ^ Heading shown in the card header
@@ -44,7 +44,7 @@ data CardProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: bare card
-defaultCardProps :: CardProps context model action
+defaultCardProps :: CardProps context props model action
 defaultCardProps
   = CardProps
   { cardTitle = Nothing
@@ -58,7 +58,7 @@ defaultCardProps
 -- | <https://basecoatui.com/components/card/ Card>, driven by 'CardProps'.
 -- Children render inside the card's content section.
 card_
-  :: CardProps context model action
+  :: CardProps context props model action
   -> [View context props model action]
   -> View context props model action
 card_ CardProps {..} kids =
@@ -237,7 +237,7 @@ cardPropsApi :: View context props model action
 cardPropsApi =
   """
   -- | Props for 'card_'. Title, description and footer nest other views.
-  data CardProps context model action
+  data CardProps context props model action
     = CardProps
     { cardTitle :: Maybe (View context props model action)
       -- ^ Heading shown in the card header
@@ -252,7 +252,7 @@ cardPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: bare card
-  defaultCardProps :: CardProps context model action
+  defaultCardProps :: CardProps context props model action
   defaultCardProps
     = CardProps
     { cardTitle = Nothing

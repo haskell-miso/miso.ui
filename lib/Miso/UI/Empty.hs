@@ -26,7 +26,7 @@ import           Miso.UI.Icons
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'empty_'. Icon, title and description nest other views.
-data EmptyProps context model action
+data EmptyProps context props model action
   = EmptyProps
   { emptyIcon :: Maybe (View context props model action)
     -- ^ Icon shown in the header medallion
@@ -39,7 +39,7 @@ data EmptyProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor: bare empty state
-defaultEmptyProps :: EmptyProps context model action
+defaultEmptyProps :: EmptyProps context props model action
 defaultEmptyProps
   = EmptyProps
   { emptyIcon = Nothing
@@ -53,7 +53,7 @@ defaultEmptyProps
 -- | <https://basecoatui.com/components/empty/ Empty> state, driven by 'EmptyProps'.
 -- Children render as the action row.
 empty_
-  :: EmptyProps context model action
+  :: EmptyProps context props model action
   -> [View context props model action]
   -> View context props model action
 empty_ EmptyProps {..} kids =
@@ -180,7 +180,7 @@ emptyPropsApi :: View context props model action
 emptyPropsApi =
   """
   -- | Props for 'empty_'. Icon, title and description nest other views.
-  data EmptyProps context model action
+  data EmptyProps context props model action
     = EmptyProps
     { emptyIcon :: Maybe (View context props model action)
       -- ^ Icon shown in the header medallion
@@ -193,7 +193,7 @@ emptyPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor: bare empty state
-  defaultEmptyProps :: EmptyProps context model action
+  defaultEmptyProps :: EmptyProps context props model action
   defaultEmptyProps
     = EmptyProps
     { emptyIcon = Nothing

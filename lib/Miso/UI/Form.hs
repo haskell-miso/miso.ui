@@ -59,7 +59,7 @@ form_ FormProps {..} kids =
     ) kids
 -----------------------------------------------------------------------------
 -- | Props for 'field_': label + control + description stack
-data FieldProps context model action
+data FieldProps context props model action
   = FieldProps
   { fieldId :: Maybe MisoString
     -- ^ id of the labelled control (@for@ on the label)
@@ -70,7 +70,7 @@ data FieldProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultFieldProps :: FieldProps context model action
+defaultFieldProps :: FieldProps context props model action
 defaultFieldProps
   = FieldProps
   { fieldId = Nothing
@@ -83,7 +83,7 @@ defaultFieldProps
 -- | <https://basecoatui.com/components/field/ Field>: labelled control with
 -- optional description. Children are the control(s).
 field_
-  :: FieldProps context model action
+  :: FieldProps context props model action
   -> [View context props model action]
   -> View context props model action
 field_ FieldProps {..} kids =
@@ -302,7 +302,7 @@ formPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Props for 'field_': label + control + description stack
-  data FieldProps context model action
+  data FieldProps context props model action
     = FieldProps
     { fieldId :: Maybe MisoString
       -- ^ id of the labelled control (@for@ on the label)
@@ -313,7 +313,7 @@ formPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultFieldProps :: FieldProps context model action
+  defaultFieldProps :: FieldProps context props model action
   defaultFieldProps
     = FieldProps
     { fieldId = Nothing

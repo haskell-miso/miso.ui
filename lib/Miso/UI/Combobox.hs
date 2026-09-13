@@ -27,7 +27,7 @@ import qualified Miso.Svg.Property  as SP
 import           Miso.UI.Icons
 -----------------------------------------------------------------------------
 -- | Props for 'combobox_'
-data ComboboxProps context model action
+data ComboboxProps context props model action
   = ComboboxProps
   { comboboxId :: MisoString
     -- ^ Base id; trigger\/popover\/listbox ids are derived from it (required)
@@ -46,7 +46,7 @@ data ComboboxProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultComboboxProps :: ComboboxProps context model action
+defaultComboboxProps :: ComboboxProps context props model action
 defaultComboboxProps
   = ComboboxProps
   { comboboxId = "combobox"
@@ -62,7 +62,7 @@ defaultComboboxProps
 -- | <https://basecoatui.com/components/combobox/ Combobox>: searchable select.
 -- Children are 'comboboxOption_' \/ 'comboboxGroup_' views.
 combobox_
-  :: ComboboxProps context model action
+  :: ComboboxProps context props model action
   -> [View context props model action]
   -> View context props model action
 combobox_ cfg kids =
@@ -279,7 +279,7 @@ comboboxPropsApi :: View context props model action
 comboboxPropsApi =
   """
   -- | Props for 'combobox_'
-  data ComboboxProps context model action
+  data ComboboxProps context props model action
     = ComboboxProps
     { comboboxId :: MisoString
       -- ^ Base id; trigger\\/popover\\/listbox ids are derived from it (required)
@@ -298,7 +298,7 @@ comboboxPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultComboboxProps :: ComboboxProps context model action
+  defaultComboboxProps :: ComboboxProps context props model action
   defaultComboboxProps
     = ComboboxProps
     { comboboxId = "combobox"

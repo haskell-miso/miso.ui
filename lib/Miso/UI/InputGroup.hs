@@ -30,7 +30,7 @@ import           Miso.UI.Textarea
 import           Miso.UI.Types
 -----------------------------------------------------------------------------
 -- | Props for 'inputGroup_'. Header and footer overlay the wrapped control.
-data InputGroupProps context model action
+data InputGroupProps context props model action
   = InputGroupProps
   { inputGroupHeader :: [View context props model action]
     -- ^ Content pinned to the top of the group
@@ -41,7 +41,7 @@ data InputGroupProps context model action
   }
 -----------------------------------------------------------------------------
 -- | Smart constructor
-defaultInputGroupProps :: InputGroupProps context model action
+defaultInputGroupProps :: InputGroupProps context props model action
 defaultInputGroupProps
   = InputGroupProps
   { inputGroupHeader = []
@@ -53,7 +53,7 @@ defaultInputGroupProps
 -- | <https://basecoatui.com/components/input-group/ Input Group>: control with
 -- pinned header\/footer rows. Children are the wrapped control(s).
 inputGroup_
-  :: InputGroupProps context model action
+  :: InputGroupProps context props model action
   -> [View context props model action]
   -> View context props model action
 inputGroup_ InputGroupProps {..} kids =
@@ -215,7 +215,7 @@ inputGroupPropsApi :: View context props model action
 inputGroupPropsApi =
   """
   -- | Props for 'inputGroup_'. Header and footer overlay the wrapped control.
-  data InputGroupProps context model action
+  data InputGroupProps context props model action
     = InputGroupProps
     { inputGroupHeader :: [View context props model action]
       -- ^ Content pinned to the top of the group
@@ -226,7 +226,7 @@ inputGroupPropsApi =
     }
   -----------------------------------------------------------------------------
   -- | Smart constructor
-  defaultInputGroupProps :: InputGroupProps context model action
+  defaultInputGroupProps :: InputGroupProps context props model action
   defaultInputGroupProps
     = InputGroupProps
     { inputGroupHeader = []

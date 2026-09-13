@@ -18,7 +18,7 @@ main = do
   BL8.writeFile ("public/" <> "index.html") (toHtml indexHtml)
   putStrLn "Wrote to public/index.html..."
 -----------------------------------------------------------------------------
-indexHtml :: [View () m a]
+indexHtml :: [View () () m a]
 indexHtml =
   [ doctype_
   , html_ [ lang_ "en", class_ "dark theme-claude" ]
