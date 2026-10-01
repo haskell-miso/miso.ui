@@ -27,6 +27,12 @@ Once in the shell, you can call `cabal run` to start the development server and 
 $ nix develop .#wasm --command bash -c "make"
 ```
 
+### Build (MicroHs)
+
+```bash
+$ nix develop .#mhs --command bash -c "make mhs"
+```
+
 ### Serve
 
 To host the built application you can call `serve`
