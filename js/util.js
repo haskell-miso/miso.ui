@@ -60,3 +60,32 @@ globalThis.copyButton = function (button) {
       console.error('Failed to copy text: ', err);
     });
 }
+
+/* scroll to the element named by a URI fragment ("#id") */
+globalThis.scrollToFragment = function (fragment) {
+  const frag = fragment.slice(1);
+  if (frag) {
+    const element = document.getElementById(frag);
+    if (element) element.scrollIntoView();
+  }
+}
+
+/* basecoat events: 'sidebar', 'theme' */
+globalThis.dispatchBasecoat = function (name) {
+  document.dispatchEvent(new CustomEvent('basecoat:' + name));
+}
+
+globalThis.showToast = function (category, title, description, label) {
+  const msg = toastMsg(category, title, description, label);
+  document.dispatchEvent(new CustomEvent('basecoat:toast', msg));
+}
+
+/* swap the theme-* class on <html> */
+globalThis.changeTheme = function (theme) {
+  document.documentElement.classList.forEach(c => {
+    if (c.startsWith('theme-')) {
+      document.documentElement.classList.remove(c);
+    }
+  });
+  document.documentElement.classList.add('theme-' + theme);
+}

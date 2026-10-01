@@ -1,7 +1,6 @@
 -----------------------------------------------------------------------------
 {-# LANGUAGE CPP                #-}
 {-# LANGUAGE LambdaCase         #-}
-{-# LANGUAGE QuasiQuotes        #-}
 {-# LANGUAGE DeriveGeneric      #-}
 {-# LANGUAGE NamedFieldPuns     #-}
 {-# LANGUAGE DeriveAnyClass     #-}
@@ -14,9 +13,9 @@
 -----------------------------------------------------------------------------
 module Client where
 -----------------------------------------------------------------------------
+import           Control.Monad (void)
 import           Prelude hiding ((.))
 -----------------------------------------------------------------------------
-import           Miso.FFI.QQ (js)
 import           Miso.Html hiding (data_)
 import qualified Miso.Html as H
 import qualified Miso.Html.Property as P
@@ -40,36 +39,23 @@ app = (component emptyModel update_ homeView) { mount = Just ScrollIntoView }
     update_ = \case
       ScrollIntoView -> io_ $ do
         URI { uriFragment } <- getURI
-        [js|
-          const frag = ${uriFragment}.slice(1);
-          if (frag) {
-            const element = document.getElementById (frag);
-            if (element) element.scrollIntoView();
-          }
-          return;
-        |]
+        void (jsg1 "scrollToFragment" uriFragment)
       CopyButton domRef ->
-        io_ [js| return copyButton(${domRef}); |]
+        io_ $ void (jsg1 "copyButton" domRef)
       Toaster {..} ->
-        io_ [js| const msg = toastMsg (${category}, ${title}, ${description}, ${label});
-                 return document.dispatchEvent (new CustomEvent('basecoat:toast', msg)); |]
+        io_ $ void (jsg4 "showToast" category title description label)
       InitSlider domRef ->
-        io_ [js| return initSlider(${domRef}); |]
+        io_ $ void (jsg1 "initSlider" domRef)
       DestroySlider domRef ->
-        io_ [js| return deinitSlider(${domRef}); |]
+        io_ $ void (jsg1 "deinitSlider" domRef)
       ToggleSidebar ->
-        io_ [js| document.dispatchEvent (new CustomEvent('basecoat:sidebar')); |]
+        io_ $ void (jsg1 "dispatchBasecoat" ("sidebar" :: MisoString))
       ToggleDarkMode ->
-        io_ [js| return document.dispatchEvent (new CustomEvent('basecoat:theme')); |]
+        io_ $ void (jsg1 "dispatchBasecoat" ("theme" :: MisoString))
       Highlight domRef ->
-        io_ [js| return hljs.highlightElement(${domRef}); |]
+        io_ $ void (jsg "hljs" >>= \hljs -> hljs # "highlightElement" $ [domRef])
       ChangeTheme theme ->
-        io_ [js| document.documentElement.classList.forEach(c => {
-                   if (c.startsWith('theme-')) {
-                     document.documentElement.classList.remove(c);
-                   }
-                 });
-                 return document.documentElement.classList.add('theme-' + ${theme}); |]
+        io_ $ void (jsg1 "changeTheme" theme)
 -----------------------------------------------------------------------------
 withMainAs
   :: View context props Model Action

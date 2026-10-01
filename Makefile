@@ -4,6 +4,8 @@ all: update build optim prerender
 
 js: update-js build-js
 
+mhs: build-mhs
+
 update:
 	wasm32-wasi-cabal update
 
@@ -35,7 +37,7 @@ check-samples:
 	runghc scripts/sync-samples.hs --check
 
 clean:
-	rm -rf dist-newstyle public
+	rm -rf dist-newstyle dist-mcabal public
 
 update-js:
 	cabal update --with-ghc=javascript-unknown-ghcjs-ghc --with-hc-pkg=javascript-unknown-ghcjs-ghc-pkg
@@ -47,3 +49,10 @@ build-js:
 	cp -rv static public
 	cp -rv assets public/
 	bunx swc ./all.js -o public/index.js
+
+build-mhs:
+	mcabal --options=-tbrowser build
+	rm -rf public
+	cp -rv static public
+	cp -rv assets public/
+	cp -v ./dist-mcabal/bin/mhs/app public/index.js

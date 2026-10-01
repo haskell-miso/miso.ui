@@ -4,3 +4,5 @@ result
 public
 /TAGS
 /cabal.project.local
+.mcabal
+.emcache
