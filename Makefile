@@ -24,7 +24,7 @@ prerender:
 	nix develop --command bash -c "cabal update && cabal run prerender"
 
 optim:
-	wasm-opt -all -O2 public/app.wasm -o public/app.wasm
+	wasm-opt -all --disable-compact-imports -O2 public/app.wasm -o public/app.wasm
 	wasm-tools strip -o public/app.wasm public/app.wasm
 
 serve:
