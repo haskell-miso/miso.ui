@@ -63,7 +63,8 @@ globalThis.copyButton = function (button) {
 
 /* scroll to the element named by a URI fragment ("#id") */
 globalThis.scrollToFragment = function (fragment) {
-  const frag = fragment.slice(1);
+  /* miso 1.15 stores uriFragment without the leading '#' */
+  const frag = fragment.replace(/^#/, '');
   if (frag) {
     const element = document.getElementById(frag);
     if (element) element.scrollIntoView();
